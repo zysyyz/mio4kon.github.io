@@ -97,14 +97,14 @@
 
                         
                         <li>
-                            <a href="/archives/">Archives</a>
+                            <a href="/tags/">Tags</a>
                         </li>
                         
                     
 
                         
                         <li>
-                            <a href="/tags/">Tags</a>
+                            <a href="/archives/">Archives</a>
                         </li>
                         
                     
@@ -184,22 +184,46 @@
 
 <div class="post-preview">
 
-    <a href="/2015/06/01/Design Support Library轻松打造酷炫Android5.0风格/">
+    <a href="/2015/06/01/Android使用JAVA8新特性/">
         <h2 class="post-title">
-            Design Support Library 轻松打造酷炫Android5.0风格
+            Android如何使用JAVA8新特性--lambda表达式
         </h2>
         <h3 class="post-subtitle">
-            Material Design
+            lambda表达式
         </h3>
         <div class="post-content-preview">
-            NavigationViewDrawerLayout已经流行了一段时间了,现在知乎,饿了么等几乎都是使用DrawerLayout,而NavigationView是在Design Support Library中推出,使得抽屉的实现更加简单.
-build.gradle 
-12345dependencies &#123;    compile fileTree(dir: &apos;libs&a......
+            准备工作1.下载java8,并配置java8环境变量.
+2.配置参数可以自由切换java7,java8 (mac 环境)
+
+在.bash_profile下添加
+
+123export JAVA7_HOME=/Library/Java/JavaVirtualMachines/jdk1.7.0_71.jdk/Contents/Homeexport JAVA8_HOME=/Library/Java/......
         </div>
     </a>
     <p class="post-meta">
         Posted by Mio4kon on
         2015-06-01
+    </p>
+
+</div>
+<hr>
+
+<div class="post-preview">
+
+    <a href="/2015/04/16/Android webview之java与js交互/">
+        <h2 class="post-title">
+            Android Hybrid app开发之java与js交互
+        </h2>
+        <h3 class="post-subtitle">
+            Hybrid app开发
+        </h3>
+        <div class="post-content-preview">
+            js调用java代码android代码123456789101112131415161718192021...&#123;    webView = (WebView) findViewById (R.id.webview);    webView.getSettings ().setJavaScriptEnabled (true);    webView.addJavascriptInte......
+        </div>
+    </a>
+    <p class="post-meta">
+        Posted by Mio4kon on
+        2015-04-16
     </p>
 
 </div>
@@ -220,27 +244,6 @@ build.gradle
 
 来看一个例子:
 中国气象局提供一组API用来实时的提供温度压强的变化.我们要开发一个展示板用来展示......
-        </div>
-    </a>
-    <p class="post-meta">
-        Posted by Mio4kon on
-        2015-04-16
-    </p>
-
-</div>
-<hr>
-
-<div class="post-preview">
-
-    <a href="/2015/04/16/Android webview之java与js交互/">
-        <h2 class="post-title">
-            Android Hybrid app开发之java与js交互
-        </h2>
-        <h3 class="post-subtitle">
-            Hybrid app开发
-        </h3>
-        <div class="post-content-preview">
-            js调用java代码android代码123456789101112131415161718192021...&#123;    webView = (WebView) findViewById (R.id.webview);    webView.getSettings ().setJavaScriptEnabled (true);    webView.addJavascriptInte......
         </div>
     </a>
     <p class="post-meta">
@@ -385,6 +388,29 @@ Canvastranslate
 
 <div class="post-preview">
 
+    <a href="/2014/11/29/navigation_drawer/">
+        <h2 class="post-title">
+            Navigation Drawer 打造MD侧边栏
+        </h2>
+        <h3 class="post-subtitle">
+            Google原生侧边菜单 Navigation Drawer! 
+        </h3>
+        <div class="post-content-preview">
+            Navigation Drawer参考链接:官方API丨博客
+使用方法Xml写入控件&lt;RelativeLayout xmlns:android=&quot;http://schemas.android.com/apk/res/android&quot;
+                xmlns:tools=&quot;http://schemas.android.com/tools&......
+        </div>
+    </a>
+    <p class="post-meta">
+        Posted by Mio4kon on
+        2014-11-29
+    </p>
+
+</div>
+<hr>
+
+<div class="post-preview">
+
     <a href="/2014/11/29/toolbar/">
         <h2 class="post-title">
             ToolBar 打造MD TitleBar
@@ -407,29 +433,6 @@ Canvastranslate
 &lt;application
         android:allowBackup=&quot;true&quot;
         android:icon=&quot;@drawable......
-        </div>
-    </a>
-    <p class="post-meta">
-        Posted by Mio4kon on
-        2014-11-29
-    </p>
-
-</div>
-<hr>
-
-<div class="post-preview">
-
-    <a href="/2014/11/29/navigation_drawer/">
-        <h2 class="post-title">
-            Navigation Drawer 打造MD侧边栏
-        </h2>
-        <h3 class="post-subtitle">
-            Google原生侧边菜单 Navigation Drawer! 
-        </h3>
-        <div class="post-content-preview">
-            Navigation Drawer参考链接:官方API丨博客
-使用方法Xml写入控件&lt;RelativeLayout xmlns:android=&quot;http://schemas.android.com/apk/res/android&quot;
-                xmlns:tools=&quot;http://schemas.android.com/tools&......
         </div>
     </a>
     <p class="post-meta">
@@ -489,7 +492,11 @@ Canvastranslate
                             
                         
                             
+                        
+                            
                             <a href="/tags/#Material Design" title="Material Design" rel="3">Material Design</a>
+                            
+                        
                             
                         
                             
@@ -520,22 +527,6 @@ Canvastranslate
                         
                             
                             <a href="/tags/#Head First,设计模式" title="Head First,设计模式" rel="2">Head First,设计模式</a>
-                            
-                        
-                            
-                        
-                            
-                        
-                            
-                        
-                            
-                        
-                            
-                        
-                            
-                        
-                            
-                        
                             
                         
                     </div>
