@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="android mio4kon mio">
+    <meta name="keyword"  content="">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>
+        
+          自动化之旅--Appium - Mio4kon的博客 | Mio4kon&#39;s Blog
+        
+    </title>
+
+    <link rel="canonical" href="http://mio4kon.com/2017/02/13/自动化之旅--Appium/">
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/hux-blog.min.css">
+
+    <!-- Pygments Highlight CSS -->
+    <link rel="stylesheet" href="/css/highlight.css">
+
+    <!-- Custom Fonts -->
+    <!-- <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"> -->
+    <!-- Hux change font-awesome CDN to qiniu -->
+    <link href="https://cdn.staticfile.org/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+
+    <!-- Hux Delete, sad but pending in China
+    <link href='http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/
+    css'>
+    -->
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+
+<!-- hack iOS CSS :active style -->
+<body ontouchstart="">
+
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">Mio4kon</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <!-- Known Issue, found by Hux:
+            <nav>'s height woule be hold on by its content.
+            so, when navbar scale out, the <nav> will cover tags.
+            also mask any touch event of tags, unfortunately.
+        -->
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+
+                    
+
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/about/">About</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/archives/">Archives</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/tags/">Tags</a>
+                        </li>
+                        
+                    
+                    
+                </ul>
+            </div>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+<script>
+    // Drop Bootstarp low-performance Navbar
+    // Use customize navbar with high-quality material design animation
+    // in high-perf jank-free CSS3 implementation
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        // CLOSE
+            $navbar.className = " ";
+            // wait until animation end.
+            setTimeout(function(){
+                // prevent frequently toggle
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        // OPEN
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+    <!-- Main Content -->
+    
+<!-- Image to hack wechat -->
+<!-- <img src="http://mio4kon.com/img/icon_wechat.png" width="0" height="0"> -->
+<!-- <img src="{{ site.baseurl }}/{% if page.header-img %}{{ page.header-img }}{% else %}{{ site.header-img }}{% endif %}" width="0" height="0"> -->
+
+<!-- Post Header -->
+<style type="text/css">
+    header.intro-header{
+        background-image: url('post-bg.jpg')
+    }
+</style>
+<header class="intro-header" >
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+                        
+                          <a class="tag" href="/tags/#Appium" title="Appium">Appium</a>
+                        
+                    </div>
+                    <h1>自动化之旅--Appium</h1>
+                    <h2 class="subheading">走进自动化</h2>
+                    <span class="meta">
+                        Posted by Mio4kon on
+                        2017-02-13
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+    <!-- Post Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                <p>为了避免每次上线前重复的人工回归测试,保证每次上线的版本不会引起核心业务的不稳定,所以急需自动化测试来保证业务的稳定性.经过调研我尝试使用Appium进行自动化测试,原因是功能强大,跨平台而且社区也很活跃.</p>
+<h1 id="主流框架对比"><a href="#主流框架对比" class="headerlink" title="主流框架对比"></a>主流框架对比</h1><p><img src="http://mio4kon.qiniudn.com/14869609987714.jpg?imageView2/1/w/900/h/440|imageMogr2" alt="-w682"></p>
+<h1 id="Appium优点"><a href="#Appium优点" class="headerlink" title="Appium优点"></a>Appium优点</h1><ul>
+<li>开源</li>
+<li>跨架构:Native App、Hybird App、Web App</li>
+<li>跨设备:Android、iOS、Firefox OS</li>
+<li>不依赖源码</li>
+<li>测试脚本支持多种语言:Java、Javascript、PHP、Python、C#、Ruby等</li>
+<li>不需要重新编译APP</li>
+</ul>
+<h1 id="Appium-Android架构"><a href="#Appium-Android架构" class="headerlink" title="Appium-Android架构"></a>Appium-Android架构</h1><p><img src="http://mio4kon.qiniudn.com/14869635664446.jpg?imageView2/1/w/900/h/440|imageMogr2" alt="-w664"></p>
+<p>Android 4.2以上是用UiAutomator，Android 2.3 ~ 4.1用的是 Instrumentation.<br><strong>Appium 1.6版本以上增加了<code>UiAutomator2</code></strong></p>
+<p><strong>核心理念</strong>: Appium使用C/S架构,运行时候Service端会监听Client端发送的命令,再讲这些命令发送给手机,控制手机做出响应.</p>
+<h1 id="Appium-使用"><a href="#Appium-使用" class="headerlink" title="Appium 使用"></a>Appium 使用</h1><ul>
+<li><p>安装配置Appium </p>
+<p>  npm install -g appium<br>  npm install -g appium-doctor<br>  appium-doctor</p>
+</li>
+</ul>
+<p><code>appium-doctor</code>用来检查电脑是否缺少相关依赖.当所有都是对勾表示Appium环境配置完毕,如下:</p>
+<p><img src="http://mio4kon.qiniudn.com/14869666165254.jpg?imageView2/1/w/900/h/440|imageMogr2" alt=""></p>
+<ul>
+<li><p>开启appium服务器:</p>
+<pre><code>appium --address 127.0.0.1 --port 4723 --log &quot;/Users/mio4kon/Desktop/appium.log&quot; --log-timestamp --local-timezone --session-override
+</code></pre></li>
+</ul>
+<ul>
+<li>Capabiltiy配置:</li>
+</ul>
+<p>test的<code>setUp</code>方法中设置<code>Capabiltiy</code>:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">DesiredCapabilities capabilities = <span class="keyword">new</span> DesiredCapabilities ();</div><div class="line">capabilities.setCapability (MobileCapabilityType.DEVICE_NAME, deviceName);</div><div class="line">capabilities.setCapability (MobileCapabilityType.PLATFORM_NAME, platformName);</div><div class="line">capabilities.setCapability (MobileCapabilityType.PLATFORM_VERSION, platformVersion);</div><div class="line">capabilities.setCapability (MobileCapabilityType.APP, apkPath);</div><div class="line">capabilities.setCapability (AndroidMobileCapabilityType.APP_PACKAGE, appPackage);</div><div class="line">capabilities.setCapability (AndroidMobileCapabilityType.APP_ACTIVITY, appActivity);</div><div class="line">capabilities.setCapability (MobileCapabilityType.AUTOMATION_NAME, AutomationName.ANDROID_UIAUTOMATOR2);</div></pre></td></tr></table></figure>
+<p>这里我使用的是<code>testng</code>中的<code>Parameters</code>注释来配置参数.</p>
+<p><img src="http://mio4kon.qiniudn.com/14869678446451.jpg?imageView2/1/w/900/h/440|imageMogr2" alt=""></p>
+<ul>
+<li>写测试用例</li>
+</ul>
+<h1 id="编写用例"><a href="#编写用例" class="headerlink" title="编写用例"></a>编写用例</h1><h2 id="查找元素"><a href="#查找元素" class="headerlink" title="查找元素"></a>查找元素</h2><ul>
+<li><p>为了让测试用例能够方便复用,简化写用例的时间,必要的封装是不可少的.<br>利用Page Object模式将页面上的元素,功能进行封装.这样所有test只需要简单的控制页面元素即可.</p>
+</li>
+<li><p>查找元素可以通过id,name,xpath等等(可以通过<code>UIAutomatorViewer</code>获取页面的id,name等信息)<br>比如用xpath查找登录按钮:  <code>By.xpath (&quot;//button[@name=&#39;login&#39;]&quot;)</code><br><a href="http://www.zvon.org/comp/r/tut-XPath_1.html#Pages~XPath_as_filesystem_addressing" target="_blank" rel="external">xpath实例教程</a></p>
+</li>
+<li><p>可以使用yaml文件进行管理页面元素:</p>
+</li>
+</ul>
+<p><img src="http://mio4kon.qiniudn.com/14869709464700.jpg?imageView2/1/w/900/h/440|imageMogr2" alt=""></p>
+<p>然后在BasePage中讲yaml解析封装成<code>Locator</code>对象.并保存到集合.<br>这样所有的PageObject都可以通过下面方法来定位元素.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">protected</span> Locator <span class="title">getLocator</span><span class="params">(String locatorName)</span> </span>&#123;</div><div class="line">        checkNotNull (locatorName);</div><div class="line">        Page page = getPage ();</div><div class="line">        List&lt;Locator&gt; locators = page.locators;</div><div class="line">        <span class="keyword">for</span>(Locator locator : locators) &#123;</div><div class="line">            <span class="keyword">if</span> (locatorName.equals (locator.name)) &#123;</div><div class="line">                <span class="keyword">return</span> locator;</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">        <span class="keyword">return</span> <span class="keyword">null</span>;</div><div class="line">    &#125;</div><div class="line">    </div><div class="line"><span class="keyword">public</span> Locator 请输入手机号 = getLocator (<span class="string">"请输入手机号"</span>);</div><div class="line"><span class="keyword">public</span> Locator 请输入验证码 = getLocator (<span class="string">"请输入验证码"</span>);</div><div class="line"><span class="keyword">public</span> Locator 发送验证码 = getLocator (<span class="string">"发送验证码"</span>);</div></pre></td></tr></table></figure>
+<p>TODO: 用工具生成对应page类</p>
+<h2 id="元素交互"><a href="#元素交互" class="headerlink" title="元素交互"></a>元素交互</h2><p>将交互事件,封装在<code>ElementActions</code>中.使用起来非常简单:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">actions.text (loginPage.请输入手机号, phone);</div><div class="line">actions.click (loginPage.发送验证码);</div><div class="line">actions.text (loginPage.请输入验证码, pwd);</div><div class="line">actions.click (loginPage.登录);</div></pre></td></tr></table></figure>
+<p>常用的交互事件:单击,连击,上下左右滑动,后退,输入文本等等.</p>
+<p>上面元素定位其实只是封装Locator,并没有真正的查找元素,查找元素实际上是在<code>ElementActions</code>中处理的.由于应用经常处理网络请求,控件有时候需要过段时间才可见,所以在查找控件时候需要给予一定的时间.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line">WebElement element;</div><div class="line"><span class="keyword">try</span> &#123;</div><div class="line">    element = (<span class="keyword">new</span> WebDriverWait (mDriver, locator.timeOutInSeconds)).until (</div><div class="line">            <span class="keyword">new</span> ExpectedCondition&lt;WebElement&gt; () &#123;</div><div class="line"></div><div class="line">                <span class="meta">@Override</span></div><div class="line">                <span class="function"><span class="keyword">public</span> WebElement <span class="title">apply</span><span class="params">(WebDriver driver)</span> </span>&#123;</div><div class="line">                    List&lt;WebElement&gt; elements = getElement (locator);</div><div class="line">                    <span class="keyword">if</span> (elements.size () != <span class="number">0</span>) &#123;</div><div class="line">                        <span class="keyword">return</span> elements.get (<span class="number">0</span>);</div><div class="line">                    &#125;</div><div class="line">                    <span class="keyword">return</span> <span class="keyword">null</span>;</div><div class="line">                &#125;</div><div class="line">            &#125;);</div><div class="line"></div><div class="line">&#125; <span class="keyword">catch</span> (NoSuchElementException | TimeoutException e) &#123;</div><div class="line">    log.e (TAG, <span class="string">"超时[%4$d秒],找不到元素:[%1$s] , [By.%2$s : %3$s]"</span>, locator.name, locator.type, locator.value, locator.timeOutInSeconds);</div><div class="line">    <span class="keyword">throw</span> e;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h2 id="断言"><a href="#断言" class="headerlink" title="断言"></a>断言</h2><p>同样为了使用方便讲常用的断言封装,如Toast验证等.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">validatesToast</span><span class="params">(<span class="keyword">final</span> String msg)</span> </span>&#123;</div><div class="line">    checkNotNull (msg);</div><div class="line">    <span class="keyword">final</span> WebDriverWait wait = <span class="keyword">new</span> WebDriverWait (mDriver, <span class="number">10</span>);</div><div class="line">    assertNotNull (wait.until (ExpectedConditions</div><div class="line">                                       .presenceOfElementLocated (By.xpath (String.format (<span class="string">"//*[@text=\'%s\']"</span>, msg)))));</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h2 id="测试报告"><a href="#测试报告" class="headerlink" title="测试报告"></a>测试报告</h2><p>测试报告可以直观的展示测试的成功率,截图等信息.这里选择<a href="http://extentreports.com/" target="_blank" rel="external">extentreports</a>做为测试报告的框架.</p>
+<p>最终效果:</p>
+<p><img src="http://mio4kon.qiniudn.com/14869768987854.jpg?imageView2/1/w/900/h/440|imageMogr2" alt="-w1083"></p>
+<h2 id="踩坑"><a href="#踩坑" class="headerlink" title="踩坑"></a>踩坑</h2><ul>
+<li><code>findElementByName</code>无效.</li>
+</ul>
+<blockquote>
+<p>Searching by name was deprecated over a year ago and removed from 1.5. In general, searching by accessibility id is better for a variety of reasons.</p>
+</blockquote>
+<p>如上<code>findElementByName</code>这个方法从<code>Appium 1.5</code>之后删除了,但是API不经能找到并且也没提示过时.这不坑爹嘛.后来使用下面的代码才解决用name查找元素的方法.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">String query = <span class="string">"new UiSelector().textContains"</span> + <span class="string">"(\""</span> + locator.value + <span class="string">"\")"</span>;</div><div class="line">webElements = mDriver.findElementsByAndroidUIAutomator (query);</div></pre></td></tr></table></figure>
+<ul>
+<li>据说<code>Appium 1.6.3</code>可以查找 Toast 的信息了.然后屁颠屁颠的跑去试了下网上的例子发现不好使啊.一度以为是Client版本的问题.搞了半天才发现需要加下面的代码:</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">capabilities.setCapability (MobileCapabilityType.AUTOMATION_NAME, AutomationName.ANDROID_UIAUTOMATOR2);</div></pre></td></tr></table></figure>
+<p>(感觉现在的Appium文档不全而且有点乱</p>
+<ul>
+<li>无意中发现测试的时候高德地图弹Toast报错.然后直接编译安装却不保存.猜测是不是在安装过程中Appium改了啥.看了下Service日志,竟然在安装的时候重新签名…</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">App not signed with debug cert.</div><div class="line">2017-02-13 18:17:19:848 - info: [debug] [ADB] Resigning apk.</div><div class="line">2017-02-13 18:17:23:938 - info: [debug] [ADB] Zip-aligning &apos;app-debug.apk&apos;</div><div class="line">2017-02-13 18:17:23:958 - info: [ADB] Checking whether zipalign is present</div><div class="line">2017-02-13 18:17:23:964 - info: [ADB] Using zipalign from /Users/mio4kon/Library/Android/sdk/build-tools/25.0.2/zipalign</div><div class="line">2017-02-13 18:17:23:968 - info: [debug] [ADB] Zip-aligning apk.</div><div class="line">2017-02-13 18:17:24:104 - info: [AndroidDriver] Remote apk path is /data/local/tmp/463eb03788048b4a1dacfe28545ee76e.apk</div></pre></td></tr></table></figure>
+<p>解决方法:  </p>
+<p><code>capabilities.setCapability (AndroidMobileCapabilityType.NO_SIGN, true);</code></p>
+
+
+                <hr>
+
+                
+
+                <ul class="pager">
+                    
+                    
+                        <li class="next">
+                            <a href="/2016/10/14/Atom之React Native配置/" data-toggle="tooltip" data-placement="top" title="React Native 开发工具之 Atom 配置">Next Post &rarr;</a>
+                        </li>
+                    
+                </ul>
+
+                
+
+                
+                <!-- disqus 评论框 start -->
+                <div class="comment">
+                    <div id="disqus_thread" class="disqus-thread"></div>
+                </div>
+                <!-- disqus 评论框 end -->
+                
+
+            </div>
+    <!-- Side Catalog Container -->
+        
+
+    <!-- Sidebar Container -->
+
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                <!-- Featured Tags -->
+                
+                <section>
+                    <!-- no hr -->
+                    <h5><a href="/tags/">FEATURED TAGS</a></h5>
+                    <div class="tags">
+                       
+                          <a class="tag" href="/tags/#Appium" title="Appium">Appium</a>
+                        
+                    </div>
+                </section>
+                
+
+                <!-- Friends Blog -->
+                
+                <hr>
+                <h5>FRIENDS</h5>
+                <ul class="list-inline">
+
+                    
+                        <li><a href="http://blog.kaijun.rocks" target="_blank">Kaijun&#39;s Blog</a></li>
+                    
+                        <li><a href="http://huangxuan.me" target="_blank">Hux Blog</a></li>
+                    
+                        <li><a href="#" target="_blank">Foo</a></li>
+                    
+                        <li><a href="#" target="_blank">Bar</a></li>
+                    
+                        <li><a href="#" target="_blank">Example Friends</a></li>
+                    
+                        <li><a href="#" target="_blank">It helps SEO</a></li>
+                    
+                </ul>
+                
+            </div>
+
+        </div>
+    </div>
+</article>
+
+
+
+
+<!-- disqus 公共JS代码 start (一个网页只需插入一次) -->
+<script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES * * */
+    var disqus_shortname = "hexo-theme-huxblog";
+    var disqus_identifier = "http://mio4kon.com/2017/02/13/自动化之旅--Appium/";
+    var disqus_url = "http://mio4kon.com/2017/02/13/自动化之旅--Appium/";
+
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<!-- disqus 公共JS代码 end -->
+
+
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+<!-- anchor-js, Doc:http://bryanbraun.github.io/anchorjs/ -->
+<script>
+    async("https://cdn.bootcss.com/anchor-js/1.1.1/anchor.min.js",function(){
+        anchors.options = {
+          visible: 'always',
+          placement: 'right',
+          icon: '#'
+        };
+        anchors.add().remove('.intro-header h1').remove('.subheading').remove('.sidebar-container h5');
+    })
+</script>
+<style>
+    /* place left on bigger screen */
+    @media all and (min-width: 800px) {
+        .anchorjs-link{
+            position: absolute;
+            left: -0.75em;
+            font-size: 1.1em;
+            margin-top : -0.1em;
+        }
+    }
+</style>
+
+
+
+    <!-- Footer -->
+    <!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                
+                
+                
+                    <li>
+                        <a target="_blank" href="https://www.zhihu.com/people/Mio4kon">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa  fa-stack-1x fa-inverse">知</i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+                    <li>
+                        <a target="_blank" href="http://weibo.com/Mio秋山澪">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-weibo fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+
+                
+                    <li>
+                        <a target="_blank"  href="https://github.com/Mio4kon">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+
+                </ul>
+                <p class="copyright text-muted">
+                    Copyright &copy; Mio4kon 2017 
+                    <br>
+                    Theme by <a href="http://huangxuan.me">Hux</a> 
+                    <span style="display: inline-block; margin: 0 5px;">
+                        <i class="fa fa-heart"></i>
+                    </span> 
+                    Ported by <a href="http://blog.kaijun.rocks">Kaijun</a> | 
+                    <iframe
+                        style="margin-left: 2px; margin-bottom:-5px;"
+                        frameborder="0" scrolling="0" width="91px" height="20px"
+                        src="https://ghbtns.com/github-btn.html?user=kaijun&repo=hexo-theme-huxblog&type=star&count=true" >
+                    </iframe>
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+<script src="/js/jquery.min.js"></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="/js/bootstrap.min.js"></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/js/hux-blog.min.js"></script>
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!-- 
+     Because of the native support for backtick-style fenced code blocks 
+     right within the Markdown is landed in Github Pages, 
+     From V1.6, There is no need for Highlight.js, 
+     so Huxblog drops it officially.
+
+     - https://github.com/blog/2100-github-pages-now-faster-and-simpler-with-jekyll-3-0  
+     - https://help.github.com/articles/creating-and-highlighting-code-blocks/    
+-->
+<!--
+    <script>
+        async("http://cdn.bootcss.com/highlight.js/8.6/highlight.min.js", function(){
+            hljs.initHighlightingOnLoad();
+        })
+    </script>
+    <link href="http://cdn.bootcss.com/highlight.js/8.6/styles/github.min.css" rel="stylesheet">
+-->
+
+
+<!-- jquery.tagcloud.js -->
+<script>
+    // only load tagcloud.js in tag.html
+    if($('#tag_cloud').length !== 0){
+        async("http://mio4kon.com/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                //size: {start: 1, end: 1, unit: 'em'},
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+<!--fastClick.js -->
+<script>
+    async("https://cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+<!-- Google Analytics -->
+
+
+
+
+<!-- Baidu Tongji -->
+
+
+<!-- Side Catalog -->
+
+
+
+
+
+<!-- Image to hack wechat -->
+<img src="http://mio4kon.com/img/icon_wechat.png" width="0" height="0" />
+<!-- Migrate from head to bottom, no longer block render and still work -->
+
+</body>
+
+</html>

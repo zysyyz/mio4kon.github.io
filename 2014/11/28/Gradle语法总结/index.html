@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="android mio4kon mio">
+    <meta name="keyword"  content="">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>
+        
+          Gradle语法总结 - Mio4kon的博客 | Mio4kon&#39;s Blog
+        
+    </title>
+
+    <link rel="canonical" href="http://mio4kon.com/2014/11/28/Gradle语法总结/">
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/hux-blog.min.css">
+
+    <!-- Pygments Highlight CSS -->
+    <link rel="stylesheet" href="/css/highlight.css">
+
+    <!-- Custom Fonts -->
+    <!-- <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"> -->
+    <!-- Hux change font-awesome CDN to qiniu -->
+    <link href="https://cdn.staticfile.org/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+
+    <!-- Hux Delete, sad but pending in China
+    <link href='http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/
+    css'>
+    -->
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+
+<!-- hack iOS CSS :active style -->
+<body ontouchstart="">
+
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">Mio4kon</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <!-- Known Issue, found by Hux:
+            <nav>'s height woule be hold on by its content.
+            so, when navbar scale out, the <nav> will cover tags.
+            also mask any touch event of tags, unfortunately.
+        -->
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+
+                    
+
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/about/">About</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/archives/">Archives</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/tags/">Tags</a>
+                        </li>
+                        
+                    
+                    
+                </ul>
+            </div>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+<script>
+    // Drop Bootstarp low-performance Navbar
+    // Use customize navbar with high-quality material design animation
+    // in high-perf jank-free CSS3 implementation
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        // CLOSE
+            $navbar.className = " ";
+            // wait until animation end.
+            setTimeout(function(){
+                // prevent frequently toggle
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        // OPEN
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+    <!-- Main Content -->
+    
+<!-- Image to hack wechat -->
+<!-- <img src="http://mio4kon.com/img/icon_wechat.png" width="0" height="0"> -->
+<!-- <img src="{{ site.baseurl }}/{% if page.header-img %}{{ page.header-img }}{% else %}{{ site.header-img }}{% endif %}" width="0" height="0"> -->
+
+<!-- Post Header -->
+<style type="text/css">
+    header.intro-header{
+        background-image: url('/img/home-bg.jpg')
+    }
+</style>
+<header class="intro-header" >
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+                        
+                          <a class="tag" href="/tags/#Gradle" title="Gradle">Gradle</a>
+                        
+                    </div>
+                    <h1>Gradle语法总结</h1>
+                    <h2 class="subheading">Gradle学习总结</h2>
+                    <span class="meta">
+                        Posted by Mio4kon on
+                        2014-11-28
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+    <!-- Post Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                <h1 id="安装Gradle"><a href="#安装Gradle" class="headerlink" title="安装Gradle"></a>安装Gradle</h1><p>简单来说就是<code>下载</code>-&gt;<code>解压</code>-&gt;<code>配置环境变量</code>.<br>然后利用gradle -v 来查看是否安装成功.</p>
+<h1 id="gradle简单入门"><a href="#gradle简单入门" class="headerlink" title="gradle简单入门"></a>gradle简单入门</h1><h2 id="Hello-World"><a href="#Hello-World" class="headerlink" title="Hello World!"></a>Hello World!</h2><ol>
+<li>在任意文件夹中建立build.gradle文件,然后输入</li>
+</ol>
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">task helloWorld &lt;&lt; &#123;</div><div class="line">	println <span class="string">"hello World!!!"</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<blockquote>
+<p>注:<code>&lt;&lt;</code>代表追加的意思.既向<code>helloWorld</code>这个任务加入执行过程.可以用doLash达到通样效果.</p>
+</blockquote>
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">task helloWorld &#123;</div><div class="line">   doLast &#123;</div><div class="line">      println <span class="string">'helloWorld'</span>&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<blockquote>
+<p>注: 如果需要向Task的最前面加入执行过程，我们可以使用doFirst.</p>
+</blockquote>
+<ol>
+<li>终端进入该文件夹.输入命令</li>
+</ol>
+<p><code>gradle helloWorld</code></p>
+<ol>
+<li>结果</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">miodeMacBook-Pro:gradledemo mio$ gradle helloWorld</div><div class="line">:helloWorld</div><div class="line">hello World!!!</div></pre></td></tr></table></figure>
+<h2 id="利用gradle拷贝文件"><a href="#利用gradle拷贝文件" class="headerlink" title="利用gradle拷贝文件"></a>利用gradle拷贝文件</h2><ol>
+<li>在刚才的文件夹建两个文件夹A,B</li>
+<li>在A文件夹中随便放入什么,比如一个txt文件.</li>
+<li>在build.gradle中添加task</li>
+</ol>
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">task copyFile(<span class="string">type:</span>Copy)&#123;</div><div class="line">	from <span class="string">'A'</span></div><div class="line">	into <span class="string">'B'</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<ol>
+<li>终端命令</li>
+</ol>
+<p><code>gradle copyFile</code></p>
+<ol>
+<li>然后就可以见证奇迹了.是不是很简单?</li>
+</ol>
+<h2 id="入门总结"><a href="#入门总结" class="headerlink" title="入门总结"></a>入门总结</h2><p>通过上面两个例子可以发现.gradle的<code>Task</code>表示逻辑上比较独立的执行过程.<br>通过命令<code>gradle tasks</code>可以查看该<code>Project</code>中所有的<code>Task</code>,不仅仅是刚才我们写的还有gradle默认提供的.<br>如下:</p>
+<a id="more"></a>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">miodeMacBook-Pro:gradledemo mio$ gradle tasks</div><div class="line">:tasks</div><div class="line"></div><div class="line">------------------------------------------------------------</div><div class="line">All tasks runnable from root project</div><div class="line">------------------------------------------------------------</div><div class="line"></div><div class="line">Build Setup tasks</div><div class="line">-----------------</div><div class="line">init - Initializes a new Gradle build. [incubating]</div><div class="line">wrapper - Generates Gradle wrapper files. [incubating]</div><div class="line"></div><div class="line">Help tasks</div><div class="line">----------</div><div class="line">components - Displays the components produced by root project &apos;gradledemo&apos;. [incubating]</div><div class="line">dependencies - Displays all dependencies declared in root project &apos;gradledemo&apos;.</div><div class="line">dependencyInsight - Displays the insight into a specific dependency in root project &apos;gradledemo&apos;.</div><div class="line">help - Displays a help message.</div><div class="line">projects - Displays the sub-projects of root project &apos;gradledemo&apos;.</div><div class="line">properties - Displays the properties of root project &apos;gradledemo&apos;.</div><div class="line">tasks - Displays the tasks runnable from root project &apos;gradledemo&apos;.</div><div class="line"></div><div class="line">Other tasks</div><div class="line">-----------</div><div class="line">copyFile</div><div class="line">helloWorld</div></pre></td></tr></table></figure>
+<h1 id="创建Task的多种方法"><a href="#创建Task的多种方法" class="headerlink" title="创建Task的多种方法"></a>创建Task的多种方法</h1><p>我们之前定义的Task实际上是位于TaskContanier中的.Project中的Tasks属性就表示这个TaskContanier.</p>
+<h2 id="通过TaskContanier创建Task"><a href="#通过TaskContanier创建Task" class="headerlink" title="通过TaskContanier创建Task"></a>通过TaskContanier创建Task</h2><ol>
+<li>gradle文件添加:</li>
+</ol>
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">tasks.create(<span class="string">name:</span> <span class="string">'hehe'</span>) &lt;&lt; &#123;</div><div class="line">   println <span class="string">'hehe'</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<ol>
+<li>终端运行<code>gradle hehe</code> ,发现task创建成功了.</li>
+</ol>
+<h2 id="Task之间的依赖关系"><a href="#Task之间的依赖关系" class="headerlink" title="Task之间的依赖关系"></a>Task之间的依赖关系</h2><p>如何让TaskA依赖TaskB?既执行A之前先执行B.可以通过下面方法声明.</p>
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">task taskB&lt;&lt; &#123;</div><div class="line">	println <span class="string">'taskB'</span></div><div class="line">&#125;</div><div class="line"></div><div class="line">task taskA(<span class="string">dependsOn:</span>taskB)&lt;&lt;&#123;</div><div class="line">    println <span class="string">'taskA'</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>结果:taskB先执行–&gt;taskA再执行</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">miodeMacBook-Pro:gradledemo mio$ gradle taskA</div><div class="line">:taskB</div><div class="line">taskB</div><div class="line">:taskA</div><div class="line">taskA</div></pre></td></tr></table></figure>
+<blockquote>
+<p>注:也可以在定义完task之后声明依赖<code>taskA.dependsOn taskB</code></p>
+</blockquote>
+<h2 id="Task的Property"><a href="#Task的Property" class="headerlink" title="Task的Property"></a>Task的Property</h2><p>一个<code>Task</code>除了执行操作之外，还可以包含多个<code>Property</code>，其中有Gradle为每个Task默认定义的Property，比如<code>description</code>，<code>logger</code>等。另外，每一个特定的Task类型还可能带有<code>特定的Property</code>，比如Copy的from和to等。当然，我们还可以动态地向Task中加入额外的Property。</p>
+<p>配置Task的Property有很多方法:</p>
+<ol>
+<li>在定义时配置</li>
+</ol>
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">task taskProperty&lt;&lt;&#123;</div><div class="line">	description = <span class="string">"this is taskProperty"</span></div><div class="line">	println description</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<ol>
+<li>通过调用Task的configure方法配置</li>
+</ol>
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">task haha&lt;&lt;&#123;</div><div class="line"></div><div class="line">	println description</div><div class="line">&#125;</div><div class="line">haha.configure&#123;</div><div class="line">	description = <span class="string">"this is haha for configure"</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h1 id="读懂Gradle语法"><a href="#读懂Gradle语法" class="headerlink" title="读懂Gradle语法"></a>读懂Gradle语法</h1><p>Gradle是一种声明式的构建工具。在执行时，Gradle并不会一开始便顺序执行build.gradle文件中的内容，而是分为两个阶段，第一个阶段是配置阶段，然后才是实际的执行阶段。在配置阶段，Gradle将读取所有build.gradle文件的所有内容来配置Project和Task等，比如设置Project和Task的Property，处理Task之间的依赖关系等。<br>Gradle的DSL只是Groovy语言的内部DSL.既必须遵循Groovy的语法规则.</p>
+<blockquote>
+<p>DSL:领域专用语言(domain specific language)</p>
+</blockquote>
+<p>&lt;&lt;待续</p>
+
+
+                <hr>
+
+                
+
+                <ul class="pager">
+                    
+                        <li class="previous">
+                            <a href="/2014/11/29/navigation_drawer/" data-toggle="tooltip" data-placement="top" title="Navigation Drawer 打造MD侧边栏">&larr; Previous Post</a>
+                        </li>
+                    
+                    
+                        <li class="next">
+                            <a href="/2014/11/16/Android 动画 -帧动画/" data-toggle="tooltip" data-placement="top" title="Android 动画----帧动画">Next Post &rarr;</a>
+                        </li>
+                    
+                </ul>
+
+                
+
+                
+                <!-- disqus 评论框 start -->
+                <div class="comment">
+                    <div id="disqus_thread" class="disqus-thread"></div>
+                </div>
+                <!-- disqus 评论框 end -->
+                
+
+            </div>
+    <!-- Side Catalog Container -->
+        
+
+    <!-- Sidebar Container -->
+
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                <!-- Featured Tags -->
+                
+                <section>
+                    <!-- no hr -->
+                    <h5><a href="/tags/">FEATURED TAGS</a></h5>
+                    <div class="tags">
+                       
+                          <a class="tag" href="/tags/#Gradle" title="Gradle">Gradle</a>
+                        
+                    </div>
+                </section>
+                
+
+                <!-- Friends Blog -->
+                
+                <hr>
+                <h5>FRIENDS</h5>
+                <ul class="list-inline">
+
+                    
+                        <li><a href="http://blog.kaijun.rocks" target="_blank">Kaijun&#39;s Blog</a></li>
+                    
+                        <li><a href="http://huangxuan.me" target="_blank">Hux Blog</a></li>
+                    
+                        <li><a href="#" target="_blank">Foo</a></li>
+                    
+                        <li><a href="#" target="_blank">Bar</a></li>
+                    
+                        <li><a href="#" target="_blank">Example Friends</a></li>
+                    
+                        <li><a href="#" target="_blank">It helps SEO</a></li>
+                    
+                </ul>
+                
+            </div>
+
+        </div>
+    </div>
+</article>
+
+
+
+
+<!-- disqus 公共JS代码 start (一个网页只需插入一次) -->
+<script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES * * */
+    var disqus_shortname = "hexo-theme-huxblog";
+    var disqus_identifier = "http://mio4kon.com/2014/11/28/Gradle语法总结/";
+    var disqus_url = "http://mio4kon.com/2014/11/28/Gradle语法总结/";
+
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<!-- disqus 公共JS代码 end -->
+
+
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+<!-- anchor-js, Doc:http://bryanbraun.github.io/anchorjs/ -->
+<script>
+    async("https://cdn.bootcss.com/anchor-js/1.1.1/anchor.min.js",function(){
+        anchors.options = {
+          visible: 'always',
+          placement: 'right',
+          icon: '#'
+        };
+        anchors.add().remove('.intro-header h1').remove('.subheading').remove('.sidebar-container h5');
+    })
+</script>
+<style>
+    /* place left on bigger screen */
+    @media all and (min-width: 800px) {
+        .anchorjs-link{
+            position: absolute;
+            left: -0.75em;
+            font-size: 1.1em;
+            margin-top : -0.1em;
+        }
+    }
+</style>
+
+
+
+    <!-- Footer -->
+    <!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                
+                
+                
+                    <li>
+                        <a target="_blank" href="https://www.zhihu.com/people/Mio4kon">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa  fa-stack-1x fa-inverse">知</i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+                    <li>
+                        <a target="_blank" href="http://weibo.com/Mio秋山澪">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-weibo fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+
+                
+                    <li>
+                        <a target="_blank"  href="https://github.com/Mio4kon">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+
+                </ul>
+                <p class="copyright text-muted">
+                    Copyright &copy; Mio4kon 2017 
+                    <br>
+                    Theme by <a href="http://huangxuan.me">Hux</a> 
+                    <span style="display: inline-block; margin: 0 5px;">
+                        <i class="fa fa-heart"></i>
+                    </span> 
+                    Ported by <a href="http://blog.kaijun.rocks">Kaijun</a> | 
+                    <iframe
+                        style="margin-left: 2px; margin-bottom:-5px;"
+                        frameborder="0" scrolling="0" width="91px" height="20px"
+                        src="https://ghbtns.com/github-btn.html?user=kaijun&repo=hexo-theme-huxblog&type=star&count=true" >
+                    </iframe>
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+<script src="/js/jquery.min.js"></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="/js/bootstrap.min.js"></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/js/hux-blog.min.js"></script>
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!-- 
+     Because of the native support for backtick-style fenced code blocks 
+     right within the Markdown is landed in Github Pages, 
+     From V1.6, There is no need for Highlight.js, 
+     so Huxblog drops it officially.
+
+     - https://github.com/blog/2100-github-pages-now-faster-and-simpler-with-jekyll-3-0  
+     - https://help.github.com/articles/creating-and-highlighting-code-blocks/    
+-->
+<!--
+    <script>
+        async("http://cdn.bootcss.com/highlight.js/8.6/highlight.min.js", function(){
+            hljs.initHighlightingOnLoad();
+        })
+    </script>
+    <link href="http://cdn.bootcss.com/highlight.js/8.6/styles/github.min.css" rel="stylesheet">
+-->
+
+
+<!-- jquery.tagcloud.js -->
+<script>
+    // only load tagcloud.js in tag.html
+    if($('#tag_cloud').length !== 0){
+        async("http://mio4kon.com/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                //size: {start: 1, end: 1, unit: 'em'},
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+<!--fastClick.js -->
+<script>
+    async("https://cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+<!-- Google Analytics -->
+
+
+
+
+<!-- Baidu Tongji -->
+
+
+<!-- Side Catalog -->
+
+
+
+
+
+<!-- Image to hack wechat -->
+<img src="http://mio4kon.com/img/icon_wechat.png" width="0" height="0" />
+<!-- Migrate from head to bottom, no longer block render and still work -->
+
+</body>
+
+</html>

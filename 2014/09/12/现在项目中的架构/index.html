@@ -1,0 +1,636 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="android mio4kon mio">
+    <meta name="keyword"  content="">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>
+        
+          公司项目中部分SDK的架构方式(beta 2.0) - Mio4kon的博客 | Mio4kon&#39;s Blog
+        
+    </title>
+
+    <link rel="canonical" href="http://mio4kon.com/2014/09/12/现在项目中的架构/">
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/hux-blog.min.css">
+
+    <!-- Pygments Highlight CSS -->
+    <link rel="stylesheet" href="/css/highlight.css">
+
+    <!-- Custom Fonts -->
+    <!-- <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"> -->
+    <!-- Hux change font-awesome CDN to qiniu -->
+    <link href="https://cdn.staticfile.org/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+
+    <!-- Hux Delete, sad but pending in China
+    <link href='http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/
+    css'>
+    -->
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+
+<!-- hack iOS CSS :active style -->
+<body ontouchstart="">
+
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">Mio4kon</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <!-- Known Issue, found by Hux:
+            <nav>'s height woule be hold on by its content.
+            so, when navbar scale out, the <nav> will cover tags.
+            also mask any touch event of tags, unfortunately.
+        -->
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+
+                    
+
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/about/">About</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/archives/">Archives</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/tags/">Tags</a>
+                        </li>
+                        
+                    
+                    
+                </ul>
+            </div>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+<script>
+    // Drop Bootstarp low-performance Navbar
+    // Use customize navbar with high-quality material design animation
+    // in high-perf jank-free CSS3 implementation
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        // CLOSE
+            $navbar.className = " ";
+            // wait until animation end.
+            setTimeout(function(){
+                // prevent frequently toggle
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        // OPEN
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+    <!-- Main Content -->
+    
+<!-- Image to hack wechat -->
+<!-- <img src="http://mio4kon.com/img/icon_wechat.png" width="0" height="0"> -->
+<!-- <img src="{{ site.baseurl }}/{% if page.header-img %}{{ page.header-img }}{% else %}{{ site.header-img }}{% endif %}" width="0" height="0"> -->
+
+<!-- Post Header -->
+<style type="text/css">
+    header.intro-header{
+        background-image: url('/img/home-bg.jpg')
+    }
+</style>
+<header class="intro-header" >
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+                        
+                          <a class="tag" href="/tags/#设计模式" title="设计模式">设计模式</a>
+                        
+                    </div>
+                    <h1>公司项目中部分SDK的架构方式(beta 2.0)</h1>
+                    <h2 class="subheading">mvp模式实战</h2>
+                    <span class="meta">
+                        Posted by Mio4kon on
+                        2014-09-12
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+    <!-- Post Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                <blockquote>
+<p>引言:为了使公司的支付等功能,多个APP可以公用,将其业务功能封装到SDK中.减少开发成本.<br>该SDK的编写基于MVP模式.MVP相对于MVC模式的好处在于,方便测试,View层代码避免臃肿等.</p>
+</blockquote>
+<p><img src="http://mio4kon.qiniudn.com/mvp.png" alt=""></p>
+<h3 id="model层使用Volley进行访问网络"><a href="#model层使用Volley进行访问网络" class="headerlink" title="model层使用Volley进行访问网络."></a>model层使用Volley进行访问网络.</h3><pre><code>public class UserModel extends BaseRequestModel implements IUserModel {
+    private String url;
+    private Map&lt;String, String&gt; requestMap;
+
+    @Override
+    public void login(String username, String password) {
+        url = NetConstantValue.HOST_URL + NetConstantValue.LOGIN_Url;
+        requestMap = new HashMap&lt;String, String&gt; ();
+        postMethod (url,requestMap, _BasicUserInfo.class,new Response.Listener&lt;_BasicUserInfo&gt; () {
+            @Override
+            public void onResponse(_BasicUserInfo response) {
+                if(response.flag == 1){ //login success
+                    _BasicUserInfo.BasicUserInfo basicUserInfo = response.data;
+                    NotificationCenter.defaultCenter ().postNotification (ConsNotification.Login,basicUserInfo);
+                    return;
+                }
+                NotificationCenter.defaultCenter ().postNotification (ConsNotification.Login,null);
+            }
+        },new Response.ErrorListener () {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                NotificationCenter.defaultCenter ().postNotification (ConsNotification.Login,null);
+            }
+        });
+    }
+ }
+</code></pre><a id="more"></a>         
+<h3 id="其中NotificationCenter利用的是观察者模式-发布-订阅模式-通过添加观察者接收网络请求成功-失败的消息"><a href="#其中NotificationCenter利用的是观察者模式-发布-订阅模式-通过添加观察者接收网络请求成功-失败的消息" class="headerlink" title="其中NotificationCenter利用的是观察者模式(发布-订阅模式),通过添加观察者接收网络请求成功/失败的消息."></a>其中<code>NotificationCenter</code>利用的是观察者模式(发布-订阅模式),通过添加观察者接收网络请求成功/失败的消息.</h3><blockquote>
+<p><code>NotificationCenter</code>的思想在于创建一个map集合,放入通知类型和观察者</p>
+</blockquote>
+<pre><code>public class NotificationCenter {
+    private HashMap&lt;String, DummyObservable&gt; observables;
+    private static NotificationCenter instance = null;
+    public static NotificationCenter defaultCenter() {
+        if (instance == null) {
+            instance = new NotificationCenter();
+        }
+        return instance;
+    }
+
+    public NotificationCenter() {
+        observables = new HashMap&lt;String, DummyObservable&gt;();
+    }
+
+    public void addObserver(String notification, Observer observer) {
+        DummyObservable observable = observables.get(notification);
+        if (observable == null) {
+            observable = new DummyObservable(notification);
+            observables.put(notification, observable);
+        }
+        observable.addObserver(observer);
+    }
+
+    public void removeObserver(String notification, Observer observer) {
+        DummyObservable observable = observables.get(notification);
+        if (observable != null) {
+            observable.removeObserver(observer);
+        }
+    }
+
+    public void postNotification(String notification, Object object) {
+        DummyObservable observable = observables.get(notification);
+        if (observable != null) {
+            if (object == null) {
+                observable.notifyObservers();
+            } else {
+                observable.notifyObservers(object);
+            }
+        }
+    }
+
+    class DummyObservable {
+        private String _name;
+        private List&lt;Observer&gt; _list = new ArrayList&lt;Observer&gt;();
+
+        DummyObservable(String name) {
+            _name = name;
+        }
+        public void addObserver(Observer observer) {
+            _list.add(observer);
+        }
+        public void removeObserver(Observer observer) {
+            _list.remove(observer);
+        }
+        public void notifyObservers(Object object) {
+            List&lt;Observer&gt; iterList = new ArrayList&lt;Observer&gt;(_list);
+            for(Observer item : iterList) {
+                if (item == null) {
+                    _list.remove(item);
+                    Log.i(&quot;NotificationCenter&quot;, _name+&quot;:WeakReference deleted by GC&quot;);
+                } else {
+                    item.update(null, object);
+                }
+            }
+        }
+        public void notifyObservers() {
+            notifyObservers(null);
+        }
+    }
+}
+</code></pre><h3 id="presenter层是对Model层的反馈并将反馈信息传到View层-View层通过接口实现获取信息以及对信息的展示"><a href="#presenter层是对Model层的反馈并将反馈信息传到View层-View层通过接口实现获取信息以及对信息的展示" class="headerlink" title="presenter层是对Model层的反馈并将反馈信息传到View层.View层通过接口实现获取信息以及对信息的展示."></a>presenter层是对Model层的反馈并将反馈信息传到View层.View层通过接口实现获取信息以及对信息的展示.</h3><pre><code>public class LoginPresenter {
+    private ILoginActivity mLoginActivity;
+    private IUserModel mUserModel;
+    public LoginPresenter(ILoginActivity loginActivity) {
+        mLoginActivity = loginActivity;
+        mUserModel = new UserModel ();
+    }
+
+      /**登陆方法**/
+    public observer login(String username,String password){
+        Observer observer;
+        mUserModel.login (username,md5Password);
+        NotificationCenter.defaultCenter ().addObserver (ConsNotification.Login,observer =new Observer () {
+            @Override
+           public void update(Observable observable, Object data) {
+                _BasicUserInfo.BasicUserInfo userInfo = (_BasicUserInfo.BasicUserInfo) data;
+                mLoginActivity.loginCallback (userInfo);
+                } 
+            }
+        });
+    }
+</code></pre><h3 id="View层的接口-很简单-一般对应界面的功能"><a href="#View层的接口-很简单-一般对应界面的功能" class="headerlink" title="View层的接口,很简单,一般对应界面的功能."></a>View层的接口,很简单,一般对应界面的功能.</h3><pre><code>public interface ILoginActivity {
+
+    public void loginCallback(_BasicUserInfo.BasicUserInfo userInfo);
+
+}
+</code></pre><h3 id="View层仅仅处理显示逻辑"><a href="#View层仅仅处理显示逻辑" class="headerlink" title="View层仅仅处理显示逻辑"></a>View层仅仅处理显示逻辑</h3><pre><code>public class LoginActivity extends BaseActivity implements ILoginActivity {
+
+@Override
+protected void onCreate() {
+    setContentView (R.layout.activity_login);
+    ButterKnife.inject (this);
+    mLoginPresenter = new LoginPresenter (this);
+}
+
+@Override
+public void loginCallback(_BasicUserInfo.BasicUserInfo userInfo) {
+           //TODO
+    }
+
+@Override
+public void onClick(View v) {
+    int id = v.getId ();
+    switch (id) {
+        case R.id.br_login: // 登录
+            mLoginPresenter.login (username,password);
+            break;
+    }
+}
+
+ }
+</code></pre><h3 id="最后记得当Observer使用结束后回收Observer"><a href="#最后记得当Observer使用结束后回收Observer" class="headerlink" title="最后记得当Observer使用结束后回收Observer."></a>最后记得当Observer使用结束后回收Observer.</h3>
+
+                <hr>
+
+                
+
+                <ul class="pager">
+                    
+                        <li class="previous">
+                            <a href="/2014/10/09/Android 获取通讯录联系人/" data-toggle="tooltip" data-placement="top" title="Android 获取通讯录联系人">&larr; Previous Post</a>
+                        </li>
+                    
+                    
+                        <li class="next">
+                            <a href="/2014/05/21/hexo命令与md语法/" data-toggle="tooltip" data-placement="top" title="Hexo 命令 与 MarkDown 语法">Next Post &rarr;</a>
+                        </li>
+                    
+                </ul>
+
+                
+
+                
+                <!-- disqus 评论框 start -->
+                <div class="comment">
+                    <div id="disqus_thread" class="disqus-thread"></div>
+                </div>
+                <!-- disqus 评论框 end -->
+                
+
+            </div>
+    <!-- Side Catalog Container -->
+        
+
+    <!-- Sidebar Container -->
+
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                <!-- Featured Tags -->
+                
+                <section>
+                    <!-- no hr -->
+                    <h5><a href="/tags/">FEATURED TAGS</a></h5>
+                    <div class="tags">
+                       
+                          <a class="tag" href="/tags/#设计模式" title="设计模式">设计模式</a>
+                        
+                    </div>
+                </section>
+                
+
+                <!-- Friends Blog -->
+                
+                <hr>
+                <h5>FRIENDS</h5>
+                <ul class="list-inline">
+
+                    
+                        <li><a href="http://blog.kaijun.rocks" target="_blank">Kaijun&#39;s Blog</a></li>
+                    
+                        <li><a href="http://huangxuan.me" target="_blank">Hux Blog</a></li>
+                    
+                        <li><a href="#" target="_blank">Foo</a></li>
+                    
+                        <li><a href="#" target="_blank">Bar</a></li>
+                    
+                        <li><a href="#" target="_blank">Example Friends</a></li>
+                    
+                        <li><a href="#" target="_blank">It helps SEO</a></li>
+                    
+                </ul>
+                
+            </div>
+
+        </div>
+    </div>
+</article>
+
+
+
+
+<!-- disqus 公共JS代码 start (一个网页只需插入一次) -->
+<script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES * * */
+    var disqus_shortname = "hexo-theme-huxblog";
+    var disqus_identifier = "http://mio4kon.com/2014/09/12/现在项目中的架构/";
+    var disqus_url = "http://mio4kon.com/2014/09/12/现在项目中的架构/";
+
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<!-- disqus 公共JS代码 end -->
+
+
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+<!-- anchor-js, Doc:http://bryanbraun.github.io/anchorjs/ -->
+<script>
+    async("https://cdn.bootcss.com/anchor-js/1.1.1/anchor.min.js",function(){
+        anchors.options = {
+          visible: 'always',
+          placement: 'right',
+          icon: '#'
+        };
+        anchors.add().remove('.intro-header h1').remove('.subheading').remove('.sidebar-container h5');
+    })
+</script>
+<style>
+    /* place left on bigger screen */
+    @media all and (min-width: 800px) {
+        .anchorjs-link{
+            position: absolute;
+            left: -0.75em;
+            font-size: 1.1em;
+            margin-top : -0.1em;
+        }
+    }
+</style>
+
+
+
+    <!-- Footer -->
+    <!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                
+                
+                
+                    <li>
+                        <a target="_blank" href="https://www.zhihu.com/people/Mio4kon">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa  fa-stack-1x fa-inverse">知</i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+                    <li>
+                        <a target="_blank" href="http://weibo.com/Mio秋山澪">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-weibo fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+
+                
+                    <li>
+                        <a target="_blank"  href="https://github.com/Mio4kon">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+
+                </ul>
+                <p class="copyright text-muted">
+                    Copyright &copy; Mio4kon 2017 
+                    <br>
+                    Theme by <a href="http://huangxuan.me">Hux</a> 
+                    <span style="display: inline-block; margin: 0 5px;">
+                        <i class="fa fa-heart"></i>
+                    </span> 
+                    Ported by <a href="http://blog.kaijun.rocks">Kaijun</a> | 
+                    <iframe
+                        style="margin-left: 2px; margin-bottom:-5px;"
+                        frameborder="0" scrolling="0" width="91px" height="20px"
+                        src="https://ghbtns.com/github-btn.html?user=kaijun&repo=hexo-theme-huxblog&type=star&count=true" >
+                    </iframe>
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+<script src="/js/jquery.min.js"></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="/js/bootstrap.min.js"></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/js/hux-blog.min.js"></script>
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!-- 
+     Because of the native support for backtick-style fenced code blocks 
+     right within the Markdown is landed in Github Pages, 
+     From V1.6, There is no need for Highlight.js, 
+     so Huxblog drops it officially.
+
+     - https://github.com/blog/2100-github-pages-now-faster-and-simpler-with-jekyll-3-0  
+     - https://help.github.com/articles/creating-and-highlighting-code-blocks/    
+-->
+<!--
+    <script>
+        async("http://cdn.bootcss.com/highlight.js/8.6/highlight.min.js", function(){
+            hljs.initHighlightingOnLoad();
+        })
+    </script>
+    <link href="http://cdn.bootcss.com/highlight.js/8.6/styles/github.min.css" rel="stylesheet">
+-->
+
+
+<!-- jquery.tagcloud.js -->
+<script>
+    // only load tagcloud.js in tag.html
+    if($('#tag_cloud').length !== 0){
+        async("http://mio4kon.com/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                //size: {start: 1, end: 1, unit: 'em'},
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+<!--fastClick.js -->
+<script>
+    async("https://cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+<!-- Google Analytics -->
+
+
+
+
+<!-- Baidu Tongji -->
+
+
+<!-- Side Catalog -->
+
+
+
+
+
+<!-- Image to hack wechat -->
+<img src="http://mio4kon.com/img/icon_wechat.png" width="0" height="0" />
+<!-- Migrate from head to bottom, no longer block render and still work -->
+
+</body>
+
+</html>
