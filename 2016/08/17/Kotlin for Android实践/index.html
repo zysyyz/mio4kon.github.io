@@ -1,0 +1,611 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="android mio4kon mio">
+    <meta name="keyword"  content="">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>
+        
+          Kotlin for Android 实践 - Mio4kon的博客 | Mio4kon&#39;s Blog
+        
+    </title>
+
+    <link rel="canonical" href="http://mio4kon.com/2016/08/17/Kotlin for Android实践/">
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/hux-blog.min.css">
+
+    <!-- Pygments Highlight CSS -->
+    <link rel="stylesheet" href="/css/highlight.css">
+
+    <!-- Custom Fonts -->
+    <!-- <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"> -->
+    <!-- Hux change font-awesome CDN to qiniu -->
+    <link href="https://cdn.staticfile.org/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+
+    <!-- Hux Delete, sad but pending in China
+    <link href='http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/
+    css'>
+    -->
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+
+<!-- hack iOS CSS :active style -->
+<body ontouchstart="">
+
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">Mio4kon</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <!-- Known Issue, found by Hux:
+            <nav>'s height woule be hold on by its content.
+            so, when navbar scale out, the <nav> will cover tags.
+            also mask any touch event of tags, unfortunately.
+        -->
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+
+                    
+
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/about/">About</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/archives/">Archives</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/tags/">Tags</a>
+                        </li>
+                        
+                    
+                    
+                </ul>
+            </div>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+<script>
+    // Drop Bootstarp low-performance Navbar
+    // Use customize navbar with high-quality material design animation
+    // in high-perf jank-free CSS3 implementation
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        // CLOSE
+            $navbar.className = " ";
+            // wait until animation end.
+            setTimeout(function(){
+                // prevent frequently toggle
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        // OPEN
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+    <!-- Main Content -->
+    
+<!-- Image to hack wechat -->
+<!-- <img src="http://mio4kon.com/img/icon_wechat.png" width="0" height="0"> -->
+<!-- <img src="{{ site.baseurl }}/{% if page.header-img %}{{ page.header-img }}{% else %}{{ site.header-img }}{% endif %}" width="0" height="0"> -->
+
+<!-- Post Header -->
+<style type="text/css">
+    header.intro-header{
+        background-image: url('/img/home-bg.jpg')
+    }
+</style>
+<header class="intro-header" >
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+                        
+                          <a class="tag" href="/tags/#Kotlin" title="Kotlin">Kotlin</a>
+                        
+                    </div>
+                    <h1>Kotlin for Android 实践</h1>
+                    <h2 class="subheading">最先进的语言Kotlin</h2>
+                    <span class="meta">
+                        Posted by Mio4kon on
+                        2016-08-17
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+    <!-- Post Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                <h2 id="准备"><a href="#准备" class="headerlink" title="准备"></a>准备</h2><ol>
+<li>创建一个新工程</li>
+<li>Android Studio需要安装Kotlin插件(IDEA默认已经安装)</li>
+<li>command+shift+A在弹出框中输入<code>Convert Java File to Kotlin File</code></li>
+</ol>
+<p>做完这三步,你会发现原来生成的java代码转成了Kotlin代码:</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">class MainActivity : AppCompatActivity() &#123;</div><div class="line"></div><div class="line">    override fun onCreate(savedInstanceState: Bundle?) &#123;</div><div class="line">        super.onCreate(savedInstanceState)</div><div class="line">        setContentView(R.layout.activity_main)</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>现在就可以使用Kotlin作为Android开发的语言了.</p>
+<h2 id="配置Gradle"><a href="#配置Gradle" class="headerlink" title="配置Gradle"></a>配置Gradle</h2><p>准备工作的第三步,除了帮你将java转为Kotlin,还帮你配置了Gradle,如果不想转换原有的java代码,那么需要自己配置Gradle.除了<code>kotlin-stdlib</code>这个库,Android开发建议加上<strong>anko-common</strong>这个库.</p>
+ <a id="more"></a>
+<h3 id="关于Anko"><a href="#关于Anko" class="headerlink" title="关于Anko"></a>关于Anko</h3><p><a href="https://github.com/Kotlin/anko" target="_blank" rel="external">Anko</a>是一个用来简化一些Android任务的很强大的Kotlin库,如果不使用Anko的DSL功能,只需要使用<code>anko-common</code>库就行了,它是<code>Anko</code>的精简版.</p>
+<p> <code>Project-gradle:</code></p>
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"> buildscript &#123;</div><div class="line">    ext.kotlin_version = <span class="string">'1.0.3'</span></div><div class="line">    ext.anko_version = <span class="string">'0.8.2'</span></div><div class="line">    repositories &#123;</div><div class="line">        jcenter()</div><div class="line">    &#125;</div><div class="line">    dependencies &#123;</div><div class="line">        classpath <span class="string">'com.android.tools.build:gradle:2.1.2'</span></div><div class="line">        classpath <span class="string">"org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"</span></div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p><code>app-gradle:</code></p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div></pre></td><td class="code"><pre><div class="line">apply plugin: 'kotlin-android'</div><div class="line">apply plugin: 'kotlin-android-extensions'</div><div class="line">...</div><div class="line"></div><div class="line">dependencies &#123;</div><div class="line">    compile fileTree(dir: 'libs', include: ['*.jar'])</div><div class="line">    testCompile 'junit:junit:4.12'</div><div class="line">    compile 'com.android.support:appcompat-v7:24.1.1'</div><div class="line">    compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"</div><div class="line">    compile "org.jetbrains.anko:anko-common:$anko_version"</div><div class="line">&#125;</div><div class="line"></div><div class="line">```	</div><div class="line"></div><div class="line"></div><div class="line">## Hello Kotlin</div><div class="line"></div><div class="line">项目准备完成后,其实就可以运行了.我们先给布局文件中的TextView设置一个id</div><div class="line"></div><div class="line">```xml</div><div class="line">&lt;TextView</div><div class="line">        android:id="@+id/tv"</div><div class="line">        android:textSize="20dp"</div><div class="line">        android:layout_width="wrap_content"</div><div class="line">        android:layout_height="wrap_content"</div><div class="line">        android:text="Hello World!" /&gt;</div></pre></td></tr></table></figure>
+<p>在代码中对这个TextView操作有下面几种方法:</p>
+<p>第一种普通方法:</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> tv =findViewById(R.id.tv) <span class="keyword">as</span> TextView  </div><div class="line">tv.text = <span class="string">"Hollo Kotlin"</span></div></pre></td></tr></table></figure>
+<p>第二种:</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">val</span> tv = find&lt;TextView&gt;(R.id.tv)</div><div class="line">tv.text = <span class="string">"Hello kotlin"</span></div></pre></td></tr></table></figure>
+<p>第三种:</p>
+<p>甚至你可以直接使用<code>tv.text = &quot;Hello Kotlin&quot;</code><br>当你在打出tv的时候插件会自动导入<code>import kotlinx.android.synthetic.main.activity_main.*</code><br>如果没有,可以自行导入,它可以让你直接使用<code>activity_main</code>布局文件下的所以带id的控件.</p>
+<h2 id="编写一个Toast的工具类"><a href="#编写一个Toast的工具类" class="headerlink" title="编写一个Toast的工具类"></a>编写一个Toast的工具类</h2><p>在java中编写ToastUtil一般是下面写法:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ToastUtils</span> </span>&#123;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">show</span><span class="params">(Context ctx, String msg)</span> </span>&#123;</div><div class="line">        Toast.makeText(ctx, msg, Toast.LENGTH_SHORT).show();</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">show</span><span class="params">(Context ctx, String msg, <span class="keyword">int</span> duration)</span> </span>&#123;</div><div class="line">        Toast.makeText(ctx, msg, duration).show();</div><div class="line">    &#125;</div><div class="line">    </div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>用Kotlin可以用默认参数的写法:</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">fun</span> <span class="title">showToast</span><span class="params">(ctx: <span class="type">Context</span>, msg: <span class="type">String</span>, duration: <span class="type">Int</span> = Toast.LENGTH_SHORT)</span></span> &#123;</div><div class="line">    Toast.makeText(ctx, msg, duration)</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>这样就不需要在写重载函数了.你以为只有这么多?如果你用了<code>扩展函数</code>,其实还可以更简单!</p>
+<h3 id="扩展函数"><a href="#扩展函数" class="headerlink" title="扩展函数"></a>扩展函数</h3><blockquote>
+<p>1.扩展函数数能够扩展一个类的新功能，而无需继承类或使用任何类型的设计模式.<br>2.扩展不能真正的修改他们继承的类.它是以静态导入的方式来实现的.</p>
+</blockquote>
+<p>声明一个扩展函数，需要被扩展的类型来作为他的前缀,通过this关键字在扩展方法内接受对应的对象</p>
+<h3 id="重写Toast工具类"><a href="#重写Toast工具类" class="headerlink" title="重写Toast工具类"></a>重写Toast工具类</h3><figure class="highlight kotlin"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">fun</span> Context.<span class="title">showToast</span><span class="params">(msg: <span class="type">String</span>, duration: <span class="type">Int</span> = Toast.LENGTH_SHORT)</span></span> &#123;</div><div class="line">    Toast.makeText(<span class="keyword">this</span>, msg, duration).show()</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>这样只要在继承了Context的类下就可以直接使用 <code>showToast()</code>方法,方便,快捷,你值得拥有.<br>顺便说一下, <code>anko</code>已经实现好了,可以直接使用<code>toast()</code>方法.点源码发现其实和我们写的没太大区别,只是语法点区别罢了.</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">fun</span> Context.<span class="title">toast</span><span class="params">(text: <span class="type">CharSequence</span>)</span></span> = </div><div class="line">Toast.makeText(<span class="keyword">this</span>, text, Toast.LENGTH_SHORT).show()</div></pre></td></tr></table></figure>
+<h2 id="页面跳转"><a href="#页面跳转" class="headerlink" title="页面跳转"></a>页面跳转</h2><p>以前页面跳转的写法是这么写的:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">Intent intent = <span class="keyword">new</span> Intent(<span class="keyword">this</span>,RecyclerViewActivity.class);</div><div class="line"><span class="keyword">this</span>.startActivity(intent);</div></pre></td></tr></table></figure>
+<p>虽然代码只有两行,但是这么写还是不够优雅,为什么一定要传一个Class?我只给个泛型就就打开这个泛型的页面不行吗?</p>
+<p>我们知道在<code>java</code>中的泛型函数是没有办法获得该泛型类型的Class.只能通过参数传递这个Class.<br>而在<code>Kotlin</code>中,使用内联函数(<code>inline</code>)是可以被具体化(<code>reified</code>)的(后面会说).这就可以在函数中得到泛型的Class.</p>
+<p>先定义一个方法:</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">inline</span> <span class="function"><span class="keyword">fun</span> <span class="type">&lt;<span class="keyword">reified</span> T : Activity&gt;</span> Activity.<span class="title">gotoActivity</span><span class="params">()</span></span> &#123;</div><div class="line">    <span class="keyword">var</span> intent = Intent(<span class="keyword">this</span>, T::<span class="class"><span class="keyword">class</span>.<span class="title">java</span>)</span></div><div class="line">    <span class="keyword">this</span>.startActivity(intent)</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>这是一个扩展内联函数,通过<code>T::class.java</code>可以拿到泛型的Class<br>这时候跳转只需要这么写:</p>
+<p><code>gotoActivity&lt;RecyclerViewActivity&gt;()</code></p>
+<p>是不是非常的简单,而且可读性特别强.</p>
+<p>一般常用方法,<code>Anko</code>都帮我们实现了,页面跳转我们也可以直接使用<code>Anko</code>的<code>startActivity&lt;T&gt;()</code><br>方法.具体实现其实和上面写的类似.只是加了一下扩展.</p>
+<p><strong>PS:<code>Anko</code>的源码是非常有参考意义的.</strong></p>
+<h3 id="内联函数"><a href="#内联函数" class="headerlink" title="内联函数"></a>内联函数</h3><p>上面例子提到了内联函数(<code>inline</code>),它主要服务于高阶函数的,高阶函数就是可以将函数当做参数和返回值.<br>但是高阶函数,每一个函数是一个对象,包括函数内的对象都会捕获.这会导致内存开销和虚拟调用的时间开销.<br>而内联函数正是解决这个缺点的.它在编译的时候将方法体插入到每一个调用出.它的缺点是:有时会引起生成的代码数量增加,但只要不内联大的函数,是可以提高性能的.</p>
+<h3 id="Reified类型参数"><a href="#Reified类型参数" class="headerlink" title="Reified类型参数"></a>Reified类型参数</h3><p>如果是Reified类型的,它支持运行的时候将类型传入到方法(仅限内联函数)  </p>
+<p>示例:</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">inline</span> <span class="function"><span class="keyword">fun</span> <span class="type">&lt;<span class="keyword">reified</span> T&gt;</span> <span class="title">getClass</span><span class="params">()</span></span> = T::<span class="class"><span class="keyword">class</span></span></div><div class="line"><span class="function"><span class="keyword">fun</span> <span class="title">main</span><span class="params">(s: <span class="type">Array</span>&lt;<span class="type">String</span>&gt;)</span></span> &#123;</div><div class="line">    println(getClass&lt;<span class="built_in">Int</span>&gt;())    <span class="comment">//class kotlin.Int</span></div><div class="line">    println(getClass&lt;String&gt;()) <span class="comment">//class kotlin.String</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h2 id="实现一个Recyclerview"><a href="#实现一个Recyclerview" class="headerlink" title="实现一个Recyclerview"></a>实现一个Recyclerview</h2><p>添加Recyclerview的依赖</p>
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">compile <span class="string">"com.android.support:recyclerview-v7:$supportVersion"</span></div></pre></td></tr></table></figure>
+<p>设置LayoutManager</p>
+<p><code>recycler.layoutManager = LinearLayoutManager(this)</code></p>
+<p>创建Adapter</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">SimpleTextAdapter</span></span>(<span class="keyword">val</span> items: List&lt;String&gt;) : Adapter&lt;SimpleTextAdapter.ViewHolder&gt;() &#123;</div><div class="line"></div><div class="line">    <span class="keyword">override</span> <span class="function"><span class="keyword">fun</span> <span class="title">onCreateViewHolder</span><span class="params">(parent: <span class="type">ViewGroup</span>, viewType: <span class="type">Int</span>)</span></span>: SimpleTextAdapter.ViewHolder &#123;</div><div class="line">        <span class="keyword">return</span> ViewHolder(TextView(parent.context))</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="keyword">override</span> <span class="function"><span class="keyword">fun</span> <span class="title">onBindViewHolder</span><span class="params">(holder: <span class="type">SimpleTextAdapter</span>.<span class="type">ViewHolder</span>, position: <span class="type">Int</span>)</span></span> &#123;</div><div class="line">        holder.textView.text = items[position]</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="keyword">override</span> <span class="function"><span class="keyword">fun</span> <span class="title">getItemCount</span><span class="params">()</span></span> = items.count()</div><div class="line"></div><div class="line"></div><div class="line">    <span class="class"><span class="keyword">class</span> <span class="title">ViewHolder</span></span>(textView: TextView) : RecyclerView.ViewHolder(textView)</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>创建数据</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> items = listOf&lt;String&gt;(</div><div class="line">        <span class="string">"11111111111111111111"</span>,</div><div class="line">        <span class="string">"11111111111111111111"</span>,</div><div class="line">        <span class="string">"11111111111111111111"</span>,</div><div class="line">      	....</div><div class="line">)</div></pre></td></tr></table></figure>
+<p>最后在设置adapter: <code>recycler.adapter = SimpleTextAdapter(items)</code></p>
+<h2 id="访问网络数据"><a href="#访问网络数据" class="headerlink" title="访问网络数据"></a>访问网络数据</h2><p>这里我们使用<code>Retrofit</code>访问网路数据,数据源为:<code>GankIo</code>的图片,图片框架为<code>Glide</code>,并且使用了<code>RxKotlin</code>作为配合<code>Retrofit</code>的利器.</p>
+<p>首先先加入这些三方库的依赖:</p>
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">compile <span class="string">"com.squareup.retrofit2:retrofit:$retrofitVersion"</span></div><div class="line">compile <span class="string">"com.squareup.retrofit2:converter-gson:$retrofitVersion"</span></div><div class="line">compile <span class="string">"com.squareup.retrofit2:adapter-rxjava:$retrofitVersion"</span></div><div class="line"></div><div class="line">compile <span class="string">"com.github.bumptech.glide:glide:$glideVersion"</span></div><div class="line"></div><div class="line">compile <span class="string">"io.reactivex:rxkotlin:$rxKotlinVersion"</span></div><div class="line">compile <span class="string">"io.reactivex:rxandroid:$rxAndroidVersion"</span></div></pre></td></tr></table></figure>
+<p>创建<code>GankService</code>类和<code>Model</code>类:</p>
+<p>GankService:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div></pre></td><td class="code"><pre><div class="line">class GankService &#123;</div><div class="line">    companion object &#123;</div><div class="line">        val API_HOST_URL = &quot;http://gank.io/api/data/%E7%A6%8F%E5%88%A9/&quot;</div><div class="line"></div><div class="line">        val api :Apis</div><div class="line">        init &#123;</div><div class="line">            val restAdapter = Retrofit.Builder()</div><div class="line">                    .baseUrl(API_HOST_URL)</div><div class="line">                    .addConverterFactory(GsonConverterFactory.create())</div><div class="line">                    .addCallAdapterFactory(RxJavaCallAdapterFactory.create())</div><div class="line">                    .build()</div><div class="line"></div><div class="line">             api = restAdapter.create(Apis::class.java)</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line"></div><div class="line"></div><div class="line">    data class ResponseWrapper&lt;T&gt;(val error: Boolean, val results: List&lt;T&gt;)</div><div class="line"></div><div class="line">    interface Apis &#123;</div><div class="line">        @GET(&quot;&#123;count&#125;/&#123;pageNum&#125;&quot;)</div><div class="line">        fun getMeizi(@Path(&quot;count&quot;) count: Int, @Path(&quot;pageNum&quot;) pageNum: Int): Observable&lt;ResponseWrapper&lt;Meizi&gt;&gt;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>Meizi:</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">data</span> <span class="class"><span class="keyword">class</span> <span class="title">Meizi</span></span>(</div><div class="line">        <span class="keyword">val</span> url: String</div><div class="line">)</div></pre></td></tr></table></figure>
+<p>这里用到了<code>companion object</code>,<code>init</code>和<code>data</code>语法.</p>
+<h3 id="companion-object和init"><a href="#companion-object和init" class="headerlink" title="companion object和init"></a>companion object和init</h3><p><code>init</code>是初始化代码块,可以使用主构造的参数.如下:</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Customer</span></span>(name: String) &#123;</div><div class="line">    init &#123;</div><div class="line">        logger.info(<span class="string">"name = <span class="subst">$&#123;name&#125;</span>"</span>)</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p><code>object</code>关键字可以声明一个对象,从而通过它的名字来引用它.</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">object</span> Manager &#123;</div><div class="line">  <span class="function"><span class="keyword">fun</span> <span class="title">do</span><span class="params">()</span></span> &#123;</div><div class="line">    <span class="comment">// ...</span></div><div class="line">  &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line">Manager.<span class="keyword">do</span>()</div></pre></td></tr></table></figure>
+<p>一个对象声明在<strong>一个类里</strong>可以标志上<code>companion</code>这个关键字–伴生对象,这样直接通过类名就可以调用伴随对象的方法和引用.</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">MyClass</span> </span>&#123;</div><div class="line">  <span class="keyword">companion</span> <span class="keyword">object</span> Factory &#123;</div><div class="line">    <span class="function"><span class="keyword">fun</span> <span class="title">do</span><span class="params">()</span></span>&#123;</div><div class="line">    <span class="comment">//...</span></div><div class="line">    &#125;</div><div class="line">  &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">val</span> instance = MyClass.<span class="keyword">do</span>()</div></pre></td></tr></table></figure>
+<p>使用companion关键字时候，伴生对象的名称可以省略：</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">MyClass</span> </span>&#123;</div><div class="line">  <span class="keyword">companion</span> <span class="keyword">object</span> &#123;</div><div class="line">  </div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>关于<code>companion object</code>和<code>init</code>调用顺序的可参考-&gt;<a href="https://gist.github.com/mio4kon/13783f46e27fb8e16edf642c7cdbb782" target="_blank" rel="external">例子</a></p>
+<h3 id="数据类"><a href="#数据类" class="headerlink" title="数据类"></a>数据类</h3><p>类前用<code>data</code>关键字标记的为数据类.<br>特点是编译器会生成:<br>–equals()/hashCode()<br>–toString() 格式是 “User(name=John, age=42)”<br>–componentN() functions 对应按声明顺序出现的所有属性<br>–copy() 函数  </p>
+<p>更多请参考-&gt;<a href="https://kotlinlang.org/docs/reference/data-classes.html" target="_blank" rel="external">文档</a></p>
+<p><code>GankService</code>类和<code>Model</code>类创建完成后,最后需要在Activity里使用Service(这里只是简单的模拟访问网络,不去对项目进行过多的设计)</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">GankIoActivity</span> : <span class="type">AppCompatActivity</span></span>() &#123;</div><div class="line"></div><div class="line">    <span class="keyword">val</span> meiziList =ArrayList&lt;Meizi&gt;()</div><div class="line">    <span class="keyword">val</span> adapter = GankioAdapter(meiziList)</div><div class="line"></div><div class="line">    <span class="keyword">override</span> <span class="function"><span class="keyword">fun</span> <span class="title">onCreate</span><span class="params">(savedInstanceState: <span class="type">Bundle</span>?)</span></span> &#123;</div><div class="line">        <span class="keyword">super</span>.onCreate(savedInstanceState)</div><div class="line">        setContentView(R.layout.activity_gank_io)</div><div class="line">        GankService.api.getMeizi(<span class="number">50</span>, <span class="number">1</span>)</div><div class="line">                .subscribeOn(Schedulers.io())</div><div class="line">                .map &#123; it.results &#125;</div><div class="line">                .observeOn(AndroidSchedulers.mainThread())</div><div class="line">                .subscribe(&#123;</div><div class="line">                    meiziList.clear()</div><div class="line">                    meiziList.addAll(it)</div><div class="line">                    adapter.notifyDataSetChanged()</div><div class="line">                &#125;)</div><div class="line"></div><div class="line"></div><div class="line">        recycler.layoutManager = LinearLayoutManager(<span class="keyword">this</span>)</div><div class="line">        recycler.adapter = adapter</div><div class="line"></div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>对了,忘记附上Adapter的代码了,和之前的实现<code>RecylerView</code>中的Adapter区别不大:</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">GankioAdapter</span></span>(<span class="keyword">val</span> items: List&lt;Meizi&gt;) : Adapter&lt;GankioAdapter.ViewHolder&gt;() &#123;</div><div class="line"></div><div class="line">    <span class="keyword">override</span> <span class="function"><span class="keyword">fun</span> <span class="title">onCreateViewHolder</span><span class="params">(parent: <span class="type">ViewGroup</span>, viewType: <span class="type">Int</span>)</span></span>: GankioAdapter.ViewHolder &#123;</div><div class="line">        <span class="keyword">val</span> root = LayoutInflater.from(parent.context).inflate(R.layout.item_big_img, parent, <span class="literal">false</span>)</div><div class="line">        <span class="keyword">return</span> ViewHolder(root)</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="keyword">override</span> <span class="function"><span class="keyword">fun</span> <span class="title">onBindViewHolder</span><span class="params">(holder: <span class="type">GankioAdapter</span>.<span class="type">ViewHolder</span>, position: <span class="type">Int</span>)</span></span> &#123;</div><div class="line">        holder.setImage(items[position].url)</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="keyword">override</span> <span class="function"><span class="keyword">fun</span> <span class="title">getItemCount</span><span class="params">()</span></span> = items.count()</div><div class="line"></div><div class="line"></div><div class="line">    <span class="class"><span class="keyword">class</span> <span class="title">ViewHolder</span></span>(root: View) : RecyclerView.ViewHolder(root) &#123;</div><div class="line">        <span class="keyword">private</span> <span class="keyword">var</span> imageView: ImageView = root.find&lt;ImageView&gt;(R.id.iv_mio)</div><div class="line"></div><div class="line">        <span class="function"><span class="keyword">fun</span> <span class="title">setImage</span><span class="params">(url: <span class="type">String</span>)</span></span> &#123;</div><div class="line">            Glide.with(imageView.context).load(url).fitCenter().into(imageView)</div><div class="line">        &#125;</div><div class="line"></div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>效果图:</p>
+<p><img src="http://mio4kon.qiniudn.com/KotlinPractice.jpeg" alt=""></p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>至此,Kotlin的Android实践算是完篇了.其中有很多地方是可以改进的.比如:<br><code>val root = LayoutInflater.from(parent.context).inflate(R.layout.item_big_img, parent, false)</code></p>
+<p>其实可以变成:<br><code>val root = parent!!.context.layoutInflater.inflate(R.layout.item_big_img,parent,false)</code><br>等等.</p>
+<p>最近也在是在研究<code>kotlin</code>的语法,所以写了这篇文章.总体来说<code>kotlin</code>的语法还是非常优雅的.<br>很多语法糖使用起来非常的爽,尤其是工具类的使用.有一点不习惯的是<code>Kotlin</code>所有变量都默认的必须不为<code>null</code>,除非显式的在后面加<code>?</code>.而<code>java</code>却不是这样.但所带来的成本可能就是在<code>java</code>中需要经常做非空判断.尤其是上一层api的不透明性,导致这层判空必须要做.所以很多<code>java</code>框架也都用了注释<code>@Nullable</code>来解决这个问题.</p>
+<h2 id="源文件"><a href="#源文件" class="headerlink" title="源文件"></a>源文件</h2><p><a href="https://github.com/mio4kon/Kotlin-Android-Practice" target="_blank" rel="external">https://github.com/mio4kon/Kotlin-Android-Practice</a></p>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><p><a href="https://kotlinlang.org/docs/reference/" target="_blank" rel="external">https://kotlinlang.org/docs/reference/</a> </p>
+<p><a href="http://tanfujun.com/kotlin-web-site-cn/" target="_blank" rel="external">http://tanfujun.com/kotlin-web-site-cn/</a>  </p>
+<p><a href="https://wangjiegulu.gitbooks.io/kotlin-for-android-developers-zh/content/" target="_blank" rel="external">https://wangjiegulu.gitbooks.io/kotlin-for-android-developers-zh/content/</a></p>
+
+
+                <hr>
+
+                
+
+                <ul class="pager">
+                    
+                        <li class="previous">
+                            <a href="/2016/08/30/Why use Kotlin & Kotlin Use Case  /" data-toggle="tooltip" data-placement="top" title="Why use Kotlin & Kotlin Use Case ">&larr; Previous Post</a>
+                        </li>
+                    
+                    
+                        <li class="next">
+                            <a href="/2016/01/12/解决NestedScrollView中ViewPager不显示的问题/" data-toggle="tooltip" data-placement="top" title="解决NestedScrollView中ViewPager不显示的问题">Next Post &rarr;</a>
+                        </li>
+                    
+                </ul>
+
+                
+
+                
+                <!-- disqus 评论框 start -->
+                <div class="comment">
+                    <div id="disqus_thread" class="disqus-thread"></div>
+                </div>
+                <!-- disqus 评论框 end -->
+                
+
+            </div>
+    <!-- Side Catalog Container -->
+        
+            <div class="
+                col-lg-2 col-lg-offset-0
+                visible-lg-block
+                sidebar-container
+                catalog-container">
+                <div class="side-catalog">
+                    <hr class="hidden-sm hidden-xs">
+                    <h5>
+                        <a class="catalog-toggle" href="#">CATALOG</a>
+                    </h5>
+                    <ul class="catalog-body"></ul>
+                </div>
+            </div>
+        
+
+    <!-- Sidebar Container -->
+
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                <!-- Featured Tags -->
+                
+                <section>
+                    <!-- no hr -->
+                    <h5><a href="/tags/">FEATURED TAGS</a></h5>
+                    <div class="tags">
+                       
+                          <a class="tag" href="/tags/#Kotlin" title="Kotlin">Kotlin</a>
+                        
+                    </div>
+                </section>
+                
+
+                <!-- Friends Blog -->
+                
+                <hr>
+                <h5>FRIENDS</h5>
+                <ul class="list-inline">
+
+                    
+                        <li><a href="http://lrd.ele.me/" target="_blank">lrd ele&#39;s Blog</a></li>
+                    
+                </ul>
+                
+            </div>
+
+        </div>
+    </div>
+</article>
+
+
+
+
+<!-- disqus 公共JS代码 start (一个网页只需插入一次) -->
+<script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES * * */
+    var disqus_shortname = "hexo-theme-huxblog";
+    var disqus_identifier = "http://mio4kon.com/2016/08/17/Kotlin for Android实践/";
+    var disqus_url = "http://mio4kon.com/2016/08/17/Kotlin for Android实践/";
+
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<!-- disqus 公共JS代码 end -->
+
+
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+<!-- anchor-js, Doc:http://bryanbraun.github.io/anchorjs/ -->
+<script>
+    async("https://cdn.bootcss.com/anchor-js/1.1.1/anchor.min.js",function(){
+        anchors.options = {
+          visible: 'always',
+          placement: 'right',
+          icon: '#'
+        };
+        anchors.add().remove('.intro-header h1').remove('.subheading').remove('.sidebar-container h5');
+    })
+</script>
+<style>
+    /* place left on bigger screen */
+    @media all and (min-width: 800px) {
+        .anchorjs-link{
+            position: absolute;
+            left: -0.75em;
+            font-size: 1.1em;
+            margin-top : -0.1em;
+        }
+    }
+</style>
+
+
+
+    <!-- Footer -->
+    <!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                
+                
+                
+
+                
+                    <li>
+                        <a target="_blank" href="http://weibo.com/u/3198010790">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-weibo fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+
+                
+                    <li>
+                        <a target="_blank"  href="https://github.com/Mio4kon">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+
+                </ul>
+                <p class="copyright text-muted">
+                    Copyright &copy; Mio4kon 2017 
+                    <br>
+                    Theme by <a href="http://huangxuan.me">Hux</a> 
+                    <span style="display: inline-block; margin: 0 5px;">
+                        <i class="fa fa-heart"></i>
+                    </span> 
+                    Ported by <a href="http://blog.kaijun.rocks">Kaijun</a> | 
+                    <iframe
+                        style="margin-left: 2px; margin-bottom:-5px;"
+                        frameborder="0" scrolling="0" width="91px" height="20px"
+                        src="https://ghbtns.com/github-btn.html?user=kaijun&repo=hexo-theme-huxblog&type=star&count=true" >
+                    </iframe>
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+<script src="/js/jquery.min.js"></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="/js/bootstrap.min.js"></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/js/hux-blog.min.js"></script>
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!-- 
+     Because of the native support for backtick-style fenced code blocks 
+     right within the Markdown is landed in Github Pages, 
+     From V1.6, There is no need for Highlight.js, 
+     so Huxblog drops it officially.
+
+     - https://github.com/blog/2100-github-pages-now-faster-and-simpler-with-jekyll-3-0  
+     - https://help.github.com/articles/creating-and-highlighting-code-blocks/    
+-->
+<!--
+    <script>
+        async("http://cdn.bootcss.com/highlight.js/8.6/highlight.min.js", function(){
+            hljs.initHighlightingOnLoad();
+        })
+    </script>
+    <link href="http://cdn.bootcss.com/highlight.js/8.6/styles/github.min.css" rel="stylesheet">
+-->
+
+
+<!-- jquery.tagcloud.js -->
+<script>
+    // only load tagcloud.js in tag.html
+    if($('#tag_cloud').length !== 0){
+        async("http://mio4kon.com/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                //size: {start: 1, end: 1, unit: 'em'},
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+<!--fastClick.js -->
+<script>
+    async("https://cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+<!-- Google Analytics -->
+
+
+
+
+<!-- Baidu Tongji -->
+
+
+<!-- Side Catalog -->
+
+<script type="text/javascript">
+    function generateCatalog (selector) {
+        var P = $('div.post-container'),a,n,t,l,i,c;
+        a = P.find('h1,h2,h3,h4,h5,h6');
+        a.each(function () {
+            n = $(this).prop('tagName').toLowerCase();
+            i = "#"+$(this).prop('id');
+            t = $(this).text();
+            c = $('<a href="'+i+'" rel="nofollow">'+t+'</a>');
+            l = $('<li class="'+n+'_nav"></li>').append(c);
+            $(selector).append(l);
+        });
+        return true;    
+    }
+
+    generateCatalog(".catalog-body");
+
+    // toggle side catalog
+    $(".catalog-toggle").click((function(e){
+        e.preventDefault();
+        $('.side-catalog').toggleClass("fold")
+    }))
+
+    /*
+     * Doc: https://github.com/davist11/jQuery-One-Page-Nav
+     * Fork by Hux to support padding
+     */
+    async("/js/jquery.nav.js", function () {
+        $('.catalog-body').onePageNav({
+            currentClass: "active",
+            changeHash: !1,
+            easing: "swing",
+            filter: "",
+            scrollSpeed: 700,
+            scrollOffset: 0,
+            scrollThreshold: .2,
+            begin: null,
+            end: null,
+            scrollChange: null,
+            padding: 80
+        });
+    });
+</script>
+
+
+
+
+
+<!-- Image to hack wechat -->
+<img src="http://mio4kon.com/img/icon_wechat.png" width="0" height="0" />
+<!-- Migrate from head to bottom, no longer block render and still work -->
+
+</body>
+
+</html>

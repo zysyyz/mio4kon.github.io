@@ -1,0 +1,740 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="android mio4kon mio">
+    <meta name="keyword"  content="">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>
+        
+          Mio4kon的博客 | Mio4kon&#39;s Blog
+        
+    </title>
+
+    <link rel="canonical" href="http://mio4kon.com/">
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/hux-blog.min.css">
+
+    <!-- Pygments Highlight CSS -->
+    <link rel="stylesheet" href="/css/highlight.css">
+
+    <!-- Custom Fonts -->
+    <!-- <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"> -->
+    <!-- Hux change font-awesome CDN to qiniu -->
+    <link href="https://cdn.staticfile.org/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+
+    <!-- Hux Delete, sad but pending in China
+    <link href='http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/
+    css'>
+    -->
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+
+<!-- hack iOS CSS :active style -->
+<body ontouchstart="">
+
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">Mio4kon</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <!-- Known Issue, found by Hux:
+            <nav>'s height woule be hold on by its content.
+            so, when navbar scale out, the <nav> will cover tags.
+            also mask any touch event of tags, unfortunately.
+        -->
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+
+                    
+
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/about/">About</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/archives/">Archives</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/tags/">Tags</a>
+                        </li>
+                        
+                    
+                    
+                </ul>
+            </div>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+<script>
+    // Drop Bootstarp low-performance Navbar
+    // Use customize navbar with high-quality material design animation
+    // in high-perf jank-free CSS3 implementation
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        // CLOSE
+            $navbar.className = " ";
+            // wait until animation end.
+            setTimeout(function(){
+                // prevent frequently toggle
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        // OPEN
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+    <!-- Main Content -->
+    <!-- Page Header -->
+<header class="intro-header" style="background-image: url('/img/home-bg.jpg')">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1 ">
+                <div class="site-heading">
+                    <h1>Mio4kon</h1>
+                    <!--<hr class="small">-->
+                    <span class="subheading">扶我起来 我还能送!</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+
+
+<!-- Main Content -->
+<div class="container">
+    <div class="row">
+        
+
+<!-- USE SIDEBAR -->
+    <!-- Post Container -->
+            <div class="
+                col-lg-8 col-lg-offset-1
+                col-md-8 col-md-offset-1
+                col-sm-12
+                col-xs-12
+                post-container
+            ">
+            
+                <!-- Main Content -->
+
+
+<div class="post-preview">
+
+    <a href="/2017/02/13/自动化之旅--Appium/">
+        <h2 class="post-title">
+            自动化之旅--Appium
+        </h2>
+        <h3 class="post-subtitle">
+            走进自动化
+        </h3>
+        <div class="post-content-preview">
+            为了避免每次上线前重复的人工回归测试,保证每次上线的版本不会引起核心业务的不稳定,所以急需自动化测试来保证业务的稳定性.经过调研我尝试使用Appium进行自动化测试,原因是功能强大,跨平台而且社区也很活跃.
+主流框架对比
+Appium优点
+开源
+跨架构:Native App、Hybird App、Web App
+跨设备:Android、iOS、Firefox OS
+不依赖源码
+使用任何 We......
+        </div>
+    </a>
+    <p class="post-meta">
+        Posted by Mio4kon on
+        2017-02-13
+    </p>
+
+</div>
+<hr>
+
+<div class="post-preview">
+
+    <a href="/2016/10/14/Atom之React Native配置/">
+        <h2 class="post-title">
+            React Native 开发工具之 Atom 配置
+        </h2>
+        <h3 class="post-subtitle">
+            开发工具推荐
+        </h3>
+        <div class="post-content-preview">
+            React Native Atom 配置插件nuclide安装完成后,进入设置,勾选:  
+Install recommended packets on startup
+重启Atom
+
+js-hyperclick`hyperclick`在`nuclide`安装后会自动安装,但需要配合`js-hyperclick`才能进行**定义跳转**.
+Platformio Ide Terminal可以内......
+        </div>
+    </a>
+    <p class="post-meta">
+        Posted by Mio4kon on
+        2016-10-14
+    </p>
+
+</div>
+<hr>
+
+<div class="post-preview">
+
+    <a href="/2016/08/30/Why use Kotlin & Kotlin Use Case  /">
+        <h2 class="post-title">
+            Why use Kotlin & Kotlin Use Case 
+        </h2>
+        <h3 class="post-subtitle">
+            最先进的语言Kotlin
+        </h3>
+        <div class="post-content-preview">
+            为什么选择Kotlin而不是ScalaScala开源客户端:shadowsocks-android
+
+Kotlin 与 Scala 的方法大相径庭,那为什么选择Kotlin而不是Scala?
+
+
+没有太多的学习曲线,现学现用.
+与Java紧密结合.
+相对于Scala库小很多(小于7000个方法数)
+JetBrains家的东西,IDE完美支持.
+
+Kotlin相对于Java的优势
+case 1......
+        </div>
+    </a>
+    <p class="post-meta">
+        Posted by Mio4kon on
+        2016-08-30
+    </p>
+
+</div>
+<hr>
+
+<div class="post-preview">
+
+    <a href="/2016/08/17/Kotlin for Android实践/">
+        <h2 class="post-title">
+            Kotlin for Android 实践
+        </h2>
+        <h3 class="post-subtitle">
+            最先进的语言Kotlin
+        </h3>
+        <div class="post-content-preview">
+            准备
+创建一个新工程
+Android Studio需要安装Kotlin插件(IDEA默认已经安装)
+command+shift+A在弹出框中输入Convert Java File to Kotlin File
+
+做完这三步,你会发现原来生成的java代码转成了Kotlin代码:
+12345678class MainActivity : AppCompatActivity() &#123;  ......
+        </div>
+    </a>
+    <p class="post-meta">
+        Posted by Mio4kon on
+        2016-08-17
+    </p>
+
+</div>
+<hr>
+
+<div class="post-preview">
+
+    <a href="/2016/01/12/解决NestedScrollView中ViewPager不显示的问题/">
+        <h2 class="post-title">
+            解决NestedScrollView中ViewPager不显示的问题
+        </h2>
+        <h3 class="post-subtitle">
+            
+        </h3>
+        <div class="post-content-preview">
+            http://stackoverflow.com/a/33385207/4035627
+最近碰到一个问题,当NestedScrollView里面有ViewPager时,ViewPager不显示.代码如下:
+
+1234567891011121314151617&lt;android.support.v4.widget.NestedScrollViewxmlns:android="http://......
+        </div>
+    </a>
+    <p class="post-meta">
+        Posted by Mio4kon on
+        2016-01-12
+    </p>
+
+</div>
+<hr>
+
+<div class="post-preview">
+
+    <a href="/2015/09/28/Android Studio之NDK开发/">
+        <h2 class="post-title">
+            Android Studio之NDK开发 
+        </h2>
+        <h3 class="post-subtitle">
+            
+        </h3>
+        <div class="post-content-preview">
+            Android Studio 1.3 版本开始支持了NDK开发.试用了一下发现的确方便了许多,不再需要mk文件.
+准备工作1.在SDK-Tools中安装Android-Ndk‘
+2.修改工程目录下的build,gradle(不是Model下的文件)
+1234dependencies &#123;//classpath &apos;com.android.tools.build:gradle:......
+        </div>
+    </a>
+    <p class="post-meta">
+        Posted by Mio4kon on
+        2015-09-28
+    </p>
+
+</div>
+<hr>
+
+<div class="post-preview">
+
+    <a href="/2015/09/22/Touch事件模拟/">
+        <h2 class="post-title">
+            Touch模拟实例
+        </h2>
+        <h3 class="post-subtitle">
+            Touch事件传递
+        </h3>
+        <div class="post-content-preview">
+            Touch模拟实例关于Touch事件的几个模拟示例.如果对分发机制不是很了解的,又没有太多时间模拟实验的,可以参考.
+原流程例子有3个控件:
+
+GrandparentView extends ViewGroup (粉色)ParentView extends ViewGroup      (蓝色)ChildView extends View(棕色)
+其中GrandparentView是Pare......
+        </div>
+    </a>
+    <p class="post-meta">
+        Posted by Mio4kon on
+        2015-09-22
+    </p>
+
+</div>
+<hr>
+
+<div class="post-preview">
+
+    <a href="/2015/08/26/Picasso源码分析/">
+        <h2 class="post-title">
+            Picasso源码分析
+        </h2>
+        <h3 class="post-subtitle">
+            图片框架源码分析
+        </h3>
+        <div class="post-content-preview">
+            Picasso 简介
+Picasso 是一个强大的图片下载缓存库,是Square公司的一个开源项目.
+
+使用方法: 
+   Picasso.with(context).load(&quot;http://i.imgur.com/DvpvklR.png&quot;).into(imageView);
+即实现了图片的下载缓存展示.
+
+源码分析Picasso.with(context)入口分析
+1......
+        </div>
+    </a>
+    <p class="post-meta">
+        Posted by Mio4kon on
+        2015-08-26
+    </p>
+
+</div>
+<hr>
+
+<div class="post-preview">
+
+    <a href="/2015/08/22/换个主题,还不错/">
+        <h2 class="post-title">
+            换个主题,还不错
+        </h2>
+        <h3 class="post-subtitle">
+            
+        </h3>
+        <div class="post-content-preview">
+            换了个主题,挺好的..
+...
+        </div>
+    </a>
+    <p class="post-meta">
+        Posted by mio on
+        2015-08-22
+    </p>
+
+</div>
+<hr>
+
+<div class="post-preview">
+
+    <a href="/2015/06/01/Design Support Library轻松打造酷炫Android5.0风格/">
+        <h2 class="post-title">
+            Design Support Library 轻松打造酷炫Android5.0风格
+        </h2>
+        <h3 class="post-subtitle">
+            Material Design
+        </h3>
+        <div class="post-content-preview">
+            NavigationViewDrawerLayout已经流行了一段时间了,现在知乎,饿了么等几乎都是使用DrawerLayout,而NavigationView是在Design Support Library中推出,使得抽屉的实现更加简单.
+build.gradle 
+12345dependencies &#123;    compile fileTree(dir: &apos;libs&a......
+        </div>
+    </a>
+    <p class="post-meta">
+        Posted by Mio4kon on
+        2015-06-01
+    </p>
+
+</div>
+<hr>
+
+
+
+<!-- Pager -->
+
+<ul class="pager">
+    
+    
+        <li class="next">
+            <a href="/page/2/">Older Posts &rarr;</a>
+        </li>
+    
+</ul>
+
+
+
+                <!-- 如果开启评论功能 -->
+                
+
+            </div>
+    <!-- Sidebar Container -->
+            <div class="
+                col-lg-3 col-lg-offset-0
+                col-md-3 col-md-offset-0
+                col-sm-12
+                col-xs-12
+                sidebar-container
+            ">
+                <!-- Featured Tags -->
+                
+                <section>
+                    <!-- no hr -->
+                    <h5><a href="/tags/">FEATURED TAGS</a></h5>
+                    <div class="tags">
+                        
+                            
+                        
+                            
+                        
+                            
+                        
+                            
+                        
+                            
+                        
+                            
+                        
+                            
+                        
+                            
+                            <a href="/tags/#Material Design" title="Material Design" rel="3">Material Design</a>
+                            
+                        
+                            
+                            <a href="/tags/#Kotlin" title="Kotlin" rel="2">Kotlin</a>
+                            
+                        
+                            
+                        
+                            
+                        
+                            
+                        
+                            
+                        
+                            
+                        
+                            
+                        
+                            
+                        
+                            
+                        
+                            
+                        
+                            
+                        
+                            
+                        
+                            
+                        
+                            
+                            <a href="/tags/#Head First,设计模式" title="Head First,设计模式" rel="2">Head First,设计模式</a>
+                            
+                        
+                    </div>
+                </section>
+                
+
+                <!-- Short About -->
+                <section class="visible-md visible-lg">
+                    <hr><h5><a href="/about/">ABOUT ME</a></h5>
+                    <div class="short-about">
+
+                        
+                            <img src="/img/Mio-Akiyama.jpg" />
+                        
+
+                        
+                            <p>扶我起来,我还能送!</p>
+                        
+
+                        <!-- SNS Link -->
+                        <ul class="list-inline">
+                            
+                            
+                            
+
+                            
+                                <li>
+                                    <a target="_blank" href="http://weibo.com/u/3198010790">
+                                        <span class="fa-stack fa-lg">
+                                            <i class="fa fa-circle fa-stack-2x"></i>
+                                            <i class="fa fa-weibo fa-stack-1x fa-inverse"></i>
+                                        </span>
+                                    </a>
+                                </li>
+                            
+
+                            
+
+                            
+                                <li>
+                                    <a target="_blank"  href="https://github.com/Mio4kon">
+                                        <span class="fa-stack fa-lg">
+                                            <i class="fa fa-circle fa-stack-2x"></i>
+                                            <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                                        </span>
+                                    </a>
+                                </li>
+                            
+                            
+                            
+                            
+                        </ul>
+                    </div>
+                </section>
+                
+                <!-- Friends Blog -->
+                
+                <hr>
+                <h5>FRIENDS</h5>
+                <ul class="list-inline">
+
+                    
+                        <li><a href="http://lrd.ele.me/" target="_blank">lrd ele&#39;s Blog</a></li>
+                    
+                </ul>
+                
+            </div>
+        
+    </div>
+</div>
+
+
+    <!-- Footer -->
+    <!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                
+                
+                
+
+                
+                    <li>
+                        <a target="_blank" href="http://weibo.com/u/3198010790">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-weibo fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+
+                
+                    <li>
+                        <a target="_blank"  href="https://github.com/Mio4kon">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+
+                </ul>
+                <p class="copyright text-muted">
+                    Copyright &copy; Mio4kon 2017 
+                    <br>
+                    Theme by <a href="http://huangxuan.me">Hux</a> 
+                    <span style="display: inline-block; margin: 0 5px;">
+                        <i class="fa fa-heart"></i>
+                    </span> 
+                    Ported by <a href="http://blog.kaijun.rocks">Kaijun</a> | 
+                    <iframe
+                        style="margin-left: 2px; margin-bottom:-5px;"
+                        frameborder="0" scrolling="0" width="91px" height="20px"
+                        src="https://ghbtns.com/github-btn.html?user=kaijun&repo=hexo-theme-huxblog&type=star&count=true" >
+                    </iframe>
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+<script src="/js/jquery.min.js"></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="/js/bootstrap.min.js"></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/js/hux-blog.min.js"></script>
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!-- 
+     Because of the native support for backtick-style fenced code blocks 
+     right within the Markdown is landed in Github Pages, 
+     From V1.6, There is no need for Highlight.js, 
+     so Huxblog drops it officially.
+
+     - https://github.com/blog/2100-github-pages-now-faster-and-simpler-with-jekyll-3-0  
+     - https://help.github.com/articles/creating-and-highlighting-code-blocks/    
+-->
+<!--
+    <script>
+        async("http://cdn.bootcss.com/highlight.js/8.6/highlight.min.js", function(){
+            hljs.initHighlightingOnLoad();
+        })
+    </script>
+    <link href="http://cdn.bootcss.com/highlight.js/8.6/styles/github.min.css" rel="stylesheet">
+-->
+
+
+<!-- jquery.tagcloud.js -->
+<script>
+    // only load tagcloud.js in tag.html
+    if($('#tag_cloud').length !== 0){
+        async("http://mio4kon.com/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                //size: {start: 1, end: 1, unit: 'em'},
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+<!--fastClick.js -->
+<script>
+    async("https://cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+<!-- Google Analytics -->
+
+
+
+
+<!-- Baidu Tongji -->
+
+
+<!-- Side Catalog -->
+
+
+
+
+
+<!-- Image to hack wechat -->
+<img src="http://mio4kon.com/img/icon_wechat.png" width="0" height="0" />
+<!-- Migrate from head to bottom, no longer block render and still work -->
+
+</body>
+
+</html>

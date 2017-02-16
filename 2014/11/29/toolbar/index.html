@@ -1,0 +1,656 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="android mio4kon mio">
+    <meta name="keyword"  content="">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>
+        
+          ToolBar 打造MD TitleBar - Mio4kon的博客 | Mio4kon&#39;s Blog
+        
+    </title>
+
+    <link rel="canonical" href="http://mio4kon.com/2014/11/29/toolbar/">
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/hux-blog.min.css">
+
+    <!-- Pygments Highlight CSS -->
+    <link rel="stylesheet" href="/css/highlight.css">
+
+    <!-- Custom Fonts -->
+    <!-- <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"> -->
+    <!-- Hux change font-awesome CDN to qiniu -->
+    <link href="https://cdn.staticfile.org/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+
+    <!-- Hux Delete, sad but pending in China
+    <link href='http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/
+    css'>
+    -->
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+
+<!-- hack iOS CSS :active style -->
+<body ontouchstart="">
+
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">Mio4kon</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <!-- Known Issue, found by Hux:
+            <nav>'s height woule be hold on by its content.
+            so, when navbar scale out, the <nav> will cover tags.
+            also mask any touch event of tags, unfortunately.
+        -->
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+
+                    
+
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/about/">About</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/archives/">Archives</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/tags/">Tags</a>
+                        </li>
+                        
+                    
+                    
+                </ul>
+            </div>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+<script>
+    // Drop Bootstarp low-performance Navbar
+    // Use customize navbar with high-quality material design animation
+    // in high-perf jank-free CSS3 implementation
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        // CLOSE
+            $navbar.className = " ";
+            // wait until animation end.
+            setTimeout(function(){
+                // prevent frequently toggle
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        // OPEN
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+    <!-- Main Content -->
+    
+<!-- Image to hack wechat -->
+<!-- <img src="http://mio4kon.com/img/icon_wechat.png" width="0" height="0"> -->
+<!-- <img src="{{ site.baseurl }}/{% if page.header-img %}{{ page.header-img }}{% else %}{{ site.header-img }}{% endif %}" width="0" height="0"> -->
+
+<!-- Post Header -->
+<style type="text/css">
+    header.intro-header{
+        background-image: url('/img/home-bg.jpg')
+    }
+</style>
+<header class="intro-header" >
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+                        
+                          <a class="tag" href="/tags/#Material Design" title="Material Design">Material Design</a>
+                        
+                    </div>
+                    <h1>ToolBar 打造MD TitleBar</h1>
+                    <h2 class="subheading">取代ActionBar的控件,ToolBar!</h2>
+                    <span class="meta">
+                        Posted by Mio4kon on
+                        2014-11-29
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+    <!-- Post Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                <h1 id="ToolBar"><a href="#ToolBar" class="headerlink" title="ToolBar"></a>ToolBar</h1><blockquote>
+<p>参考链接:<a href="http://developer.android.com/intl/zh-cn/reference/android/support/v7/widget/Toolbar.html" target="_blank" rel="external">官方API</a> <a href="http://blog.mosil.biz/2014/10/android-toolbar/" target="_blank" rel="external">博客</a></p>
+</blockquote>
+<h2 id="使用方法"><a href="#使用方法" class="headerlink" title="使用方法"></a>使用方法</h2><ul>
+<li><strong>首先要禁用ActionBar,方法如下:</strong></li>
+</ul>
+<blockquote>
+<p>最简单的方式就说继承Theme.AppCompat.NoActionBar</p>
+<p>或者用下面的方式</p>
+</blockquote>
+<a id="more"></a>
+<pre><code>&lt;application
+        android:allowBackup=&quot;true&quot;
+        android:icon=&quot;@drawable/ic_launcher&quot;
+        android:label=&quot;@string/app_name&quot;
+        android:theme=&quot;@style/AppTheme&quot;&gt;
+</code></pre><p><code>res/values/styles.xml</code>      </p>
+<pre><code> &lt;!-- Base application theme. --&gt;
+  &lt;style name=&quot;AppTheme&quot; parent=&quot;AppTheme.Base&quot;&gt;
+ &lt;/style&gt;
+
+&lt;style name=&quot;AppTheme.Base&quot; parent=&quot;Theme.AppCompat&quot;&gt;
+  &lt;item name=&quot;windowActionBar&quot;&gt;false&lt;/item&gt;
+  &lt;item name=&quot;android:windowNoTitle&quot;&gt;true&lt;/item&gt;
+&lt;/style&gt;    
+</code></pre><ul>
+<li><p><strong>界面中加入ToolBar控件</strong></p>
+<pre><code>&lt;android.support.v7.widget.Toolbar
+        xmlns:app=&quot;http://schemas.android.com/apk/res-auto&quot;
+        android:id=&quot;@+id/toolbar&quot;
+        android:background=&quot;?attr/colorPrimary&quot;
+        android:layout_width=&quot;match_parent&quot;
+        android:layout_height=&quot;?android:attr/actionBarSize&quot;
+        android:elevation=&quot;6dp&quot;
+        app:theme=&quot;@style/ThemeOverlay.AppCompat.Dark.ActionBar&quot;
+        app:popupTheme=&quot;@style/ThemeOverlay.AppCompat.Light&quot;
+        android:transitionName=&quot;actionBar&quot;/&gt;
+</code></pre></li>
+<li><p><strong>代码中加入声明</strong></p>
+<pre><code> // Handle Toolbar  
+Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);  
+setSupportActionBar(toolbar);  
+</code></pre></li>
+</ul>
+<h2 id="个性化ToolBar"><a href="#个性化ToolBar" class="headerlink" title="个性化ToolBar"></a>个性化ToolBar</h2><p><img src="http://developer.android.com/training/material/images/ThemeColors.png" alt="Drawing" width="200px">  </p>
+<h3 id="Toolbar的颜色-colorPrimary"><a href="#Toolbar的颜色-colorPrimary" class="headerlink" title="Toolbar的颜色:colorPrimary"></a>Toolbar的颜色:colorPrimary</h3><blockquote>
+<p>如图,我们可以再之前的AppTheme.Base中加入一些属性</p>
+</blockquote>
+<pre><code>&lt;!-- ...and here we setting appcompat’s color theming attrs --&gt;
+&lt;item name=&quot;colorPrimary&quot;&gt;@color/theme_default_primary&lt;/item&gt;
+</code></pre><p><strong>但是</strong><br><em>若你的 android app 仍是使用 actionbar 实作，则直接在风格 (styles) 或是主题 (themes) 里进行设定 colorPrimary 参数即可；<br>可若是采用 toolbar 的话，则要在界面 (layout) 里面设定 toolbar 元件的 background 属性</em></p>
+<p><br><br></p>
+<h3 id="导航栏底色：navigationBarColor"><a href="#导航栏底色：navigationBarColor" class="headerlink" title="导航栏底色：navigationBarColor"></a>导航栏底色：navigationBarColor</h3><blockquote>
+<p>仅能设定在 API v21 也就是 Android 5 以后的版本， 因此要将之设定在 res/values-v21/styles.xml 里面。</p>
+</blockquote>
+<p><br><br></p>
+<h3 id="主视窗底色：windowBackground"><a href="#主视窗底色：windowBackground" class="headerlink" title="主视窗底色：windowBackground"></a>主视窗底色：windowBackground</h3><blockquote>
+<p>同样可以再AppTheme.Base中加入这一属性  </p>
+</blockquote>
+<pre><code>&lt;item name=&quot;android:windowBackground&quot;&gt;@color/theme_window_background&lt;/item&gt;
+</code></pre><h2 id="ToolBar元件"><a href="#ToolBar元件" class="headerlink" title="ToolBar元件"></a>ToolBar元件</h2><p><img src="http://www.jcodecraeer.com/uploads/20141118/1416285884351.png" alt="image"></p>
+<pre><code>Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+
+// App Logo
+toolbar.setLogo(R.drawable.ic_launcher);
+// Title 
+toolbar.setTitle(&quot;My Title&quot;);
+// Sub Title
+toolbar.setSubtitle(&quot;Sub title&quot;);
+
+setSupportActionBar(toolbar);
+
+// Navigation Icon 要設定在 setSupoortActionBar之后才有作用
+// 否則會出現 back button
+toolbar.setNavigationIcon(R.drawable.ab_android);
+</code></pre><p><strong>setTitle(“My Title”)需要在setSupportActionBar(toolbar)之前才有效</strong><br><strong>setNavigationIcon需要放在 setSupportActionBar之后才会生效。</strong><br><strong>菜单部分需要在xml文件中定义</strong>  </p>
+<p><code>res/menu/menu_main.xml</code></p>
+<pre><code>&lt;menu xmlns:android=&quot;http://schemas.android.com/apk/res/android&quot;
+      xmlns:app=&quot;http://schemas.android.com/apk/res-auto&quot;
+      xmlns:tools=&quot;http://schemas.android.com/tools&quot;
+      tools:context=&quot;.MainActivity&quot;&gt;
+
+  &lt;item android:id=&quot;@+id/action_edit&quot;
+        android:title=&quot;@string/action_edit&quot;
+        android:orderInCategory=&quot;80&quot;
+        android:icon=&quot;@drawable/ab_edit&quot;
+        app:showAsAction=&quot;ifRoom&quot; /&gt;
+
+  &lt;item android:id=&quot;@+id/action_share&quot;
+        android:title=&quot;@string/action_edit&quot;
+        android:orderInCategory=&quot;90&quot;
+        android:icon=&quot;@drawable/ab_share&quot;
+        app:showAsAction=&quot;ifRoom&quot; /&gt;
+
+  &lt;item android:id=&quot;@+id/action_settings&quot;
+        android:title=&quot;@string/action_settings&quot;
+        android:orderInCategory=&quot;100&quot;
+        app:showAsAction=&quot;never&quot;/&gt;
+&lt;/menu&gt;
+</code></pre><p><strong>注意:如果在Fragment中加入,需要在oncreat中写入<code>setHasOptionsMenu (true)</code>才有效</strong></p>
+<p><strong>菜单部分在代码中的监听  </strong></p>
+<pre><code>private Toolbar.OnMenuItemClickListener onMenuItemClick = new Toolbar.OnMenuItemClickListener() {
+  @Override
+  public boolean onMenuItemClick(MenuItem menuItem) {
+    String msg = &quot;&quot;;
+    switch (menuItem.getItemId()) {
+      case R.id.action_edit:
+        msg += &quot;Click edit&quot;;
+        break;
+      case R.id.action_share:
+        msg += &quot;Click share&quot;;
+        break;
+      case R.id.action_settings:
+        msg += &quot;Click setting&quot;;
+        break;
+    }
+
+    if(!msg.equals(&quot;&quot;)) {
+      Toast.makeText(MainActivity.this, msg, Toast.LENGTH_SHORT).show();
+    }
+    return true;
+  }
+};
+</code></pre><p><strong>将onMenuItemClick监听者设置给toolbar</strong>  </p>
+<pre><code>// Menu item click 的监听要设置在 setSupportActionBar 之后才有作用  
+toolbar.setOnMenuItemClickListener(onMenuItemClick);
+</code></pre><p><strong>给ToolBar添加返回键</strong></p>
+<pre><code>setSupportActionBar(toolbar);
+//写在setSupportActionBar(toolbar)后面
+ getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+toolbar.setNavigationOnClickListener (new OnClickListener () {
+    @Override
+    public void onClick(View v) {
+        finish ();
+    }
+});
+</code></pre>
+
+                <hr>
+
+                
+
+                <ul class="pager">
+                    
+                        <li class="previous">
+                            <a href="/2014/11/29/navigation_drawer/" data-toggle="tooltip" data-placement="top" title="Navigation Drawer 打造MD侧边栏">&larr; Previous Post</a>
+                        </li>
+                    
+                    
+                        <li class="next">
+                            <a href="/2014/11/28/Gradle语法总结/" data-toggle="tooltip" data-placement="top" title="Gradle语法总结">Next Post &rarr;</a>
+                        </li>
+                    
+                </ul>
+
+                
+
+                
+                <!-- disqus 评论框 start -->
+                <div class="comment">
+                    <div id="disqus_thread" class="disqus-thread"></div>
+                </div>
+                <!-- disqus 评论框 end -->
+                
+
+            </div>
+    <!-- Side Catalog Container -->
+        
+            <div class="
+                col-lg-2 col-lg-offset-0
+                visible-lg-block
+                sidebar-container
+                catalog-container">
+                <div class="side-catalog">
+                    <hr class="hidden-sm hidden-xs">
+                    <h5>
+                        <a class="catalog-toggle" href="#">CATALOG</a>
+                    </h5>
+                    <ul class="catalog-body"></ul>
+                </div>
+            </div>
+        
+
+    <!-- Sidebar Container -->
+
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                <!-- Featured Tags -->
+                
+                <section>
+                    <!-- no hr -->
+                    <h5><a href="/tags/">FEATURED TAGS</a></h5>
+                    <div class="tags">
+                       
+                          <a class="tag" href="/tags/#Material Design" title="Material Design">Material Design</a>
+                        
+                    </div>
+                </section>
+                
+
+                <!-- Friends Blog -->
+                
+                <hr>
+                <h5>FRIENDS</h5>
+                <ul class="list-inline">
+
+                    
+                        <li><a href="http://lrd.ele.me/" target="_blank">lrd ele&#39;s Blog</a></li>
+                    
+                </ul>
+                
+            </div>
+
+        </div>
+    </div>
+</article>
+
+
+
+
+<!-- disqus 公共JS代码 start (一个网页只需插入一次) -->
+<script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES * * */
+    var disqus_shortname = "hexo-theme-huxblog";
+    var disqus_identifier = "http://mio4kon.com/2014/11/29/toolbar/";
+    var disqus_url = "http://mio4kon.com/2014/11/29/toolbar/";
+
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<!-- disqus 公共JS代码 end -->
+
+
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+<!-- anchor-js, Doc:http://bryanbraun.github.io/anchorjs/ -->
+<script>
+    async("https://cdn.bootcss.com/anchor-js/1.1.1/anchor.min.js",function(){
+        anchors.options = {
+          visible: 'always',
+          placement: 'right',
+          icon: '#'
+        };
+        anchors.add().remove('.intro-header h1').remove('.subheading').remove('.sidebar-container h5');
+    })
+</script>
+<style>
+    /* place left on bigger screen */
+    @media all and (min-width: 800px) {
+        .anchorjs-link{
+            position: absolute;
+            left: -0.75em;
+            font-size: 1.1em;
+            margin-top : -0.1em;
+        }
+    }
+</style>
+
+
+
+    <!-- Footer -->
+    <!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                
+                
+                
+
+                
+                    <li>
+                        <a target="_blank" href="http://weibo.com/u/3198010790">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-weibo fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+
+                
+                    <li>
+                        <a target="_blank"  href="https://github.com/Mio4kon">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+
+                </ul>
+                <p class="copyright text-muted">
+                    Copyright &copy; Mio4kon 2017 
+                    <br>
+                    Theme by <a href="http://huangxuan.me">Hux</a> 
+                    <span style="display: inline-block; margin: 0 5px;">
+                        <i class="fa fa-heart"></i>
+                    </span> 
+                    Ported by <a href="http://blog.kaijun.rocks">Kaijun</a> | 
+                    <iframe
+                        style="margin-left: 2px; margin-bottom:-5px;"
+                        frameborder="0" scrolling="0" width="91px" height="20px"
+                        src="https://ghbtns.com/github-btn.html?user=kaijun&repo=hexo-theme-huxblog&type=star&count=true" >
+                    </iframe>
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+<script src="/js/jquery.min.js"></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="/js/bootstrap.min.js"></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/js/hux-blog.min.js"></script>
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!-- 
+     Because of the native support for backtick-style fenced code blocks 
+     right within the Markdown is landed in Github Pages, 
+     From V1.6, There is no need for Highlight.js, 
+     so Huxblog drops it officially.
+
+     - https://github.com/blog/2100-github-pages-now-faster-and-simpler-with-jekyll-3-0  
+     - https://help.github.com/articles/creating-and-highlighting-code-blocks/    
+-->
+<!--
+    <script>
+        async("http://cdn.bootcss.com/highlight.js/8.6/highlight.min.js", function(){
+            hljs.initHighlightingOnLoad();
+        })
+    </script>
+    <link href="http://cdn.bootcss.com/highlight.js/8.6/styles/github.min.css" rel="stylesheet">
+-->
+
+
+<!-- jquery.tagcloud.js -->
+<script>
+    // only load tagcloud.js in tag.html
+    if($('#tag_cloud').length !== 0){
+        async("http://mio4kon.com/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                //size: {start: 1, end: 1, unit: 'em'},
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+<!--fastClick.js -->
+<script>
+    async("https://cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+<!-- Google Analytics -->
+
+
+
+
+<!-- Baidu Tongji -->
+
+
+<!-- Side Catalog -->
+
+<script type="text/javascript">
+    function generateCatalog (selector) {
+        var P = $('div.post-container'),a,n,t,l,i,c;
+        a = P.find('h1,h2,h3,h4,h5,h6');
+        a.each(function () {
+            n = $(this).prop('tagName').toLowerCase();
+            i = "#"+$(this).prop('id');
+            t = $(this).text();
+            c = $('<a href="'+i+'" rel="nofollow">'+t+'</a>');
+            l = $('<li class="'+n+'_nav"></li>').append(c);
+            $(selector).append(l);
+        });
+        return true;    
+    }
+
+    generateCatalog(".catalog-body");
+
+    // toggle side catalog
+    $(".catalog-toggle").click((function(e){
+        e.preventDefault();
+        $('.side-catalog').toggleClass("fold")
+    }))
+
+    /*
+     * Doc: https://github.com/davist11/jQuery-One-Page-Nav
+     * Fork by Hux to support padding
+     */
+    async("/js/jquery.nav.js", function () {
+        $('.catalog-body').onePageNav({
+            currentClass: "active",
+            changeHash: !1,
+            easing: "swing",
+            filter: "",
+            scrollSpeed: 700,
+            scrollOffset: 0,
+            scrollThreshold: .2,
+            begin: null,
+            end: null,
+            scrollChange: null,
+            padding: 80
+        });
+    });
+</script>
+
+
+
+
+
+<!-- Image to hack wechat -->
+<img src="http://mio4kon.com/img/icon_wechat.png" width="0" height="0" />
+<!-- Migrate from head to bottom, no longer block render and still work -->
+
+</body>
+
+</html>
