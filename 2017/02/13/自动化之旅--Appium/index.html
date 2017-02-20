@@ -278,7 +278,8 @@ appium.log&quot; --log-timestamp --local-timezone --session-override
 <p> 其实就是用如果用uiautomator来写:</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">new</span> UiScrollable(<span class="keyword">new</span> UiSelector().scrollable(<span class="keyword">true</span>)).scrollIntoView(<span class="keyword">new</span> UiSelector().textContains(value));</div></pre></td></tr></table></figure>
 <p><a href="https://developer.android.com/reference/android/support/test/uiautomator/package-summary.html" target="_blank" rel="external">uiautomator API</a></p>
-<h3 id="元素管理"><a href="#元素管理" class="headerlink" title="元素管理"></a>元素管理</h3><p>为了让测试用例能够方便复用,简化写用例的时间,必要的封装是不可少的.<br>利用 <strong>Page Object</strong> 模式将页面上的元素进行封装.这样所有 Test 只需要简单的控制页面元素即可.</p>
+<pre><code>### 元素管理
+</code></pre><p>为了让测试用例能够方便复用,简化写用例的时间,必要的封装是不可少的.<br>利用 <strong>Page Object</strong> 模式将页面上的元素进行封装.这样所有 Test 只需要简单的控制页面元素即可.</p>
 <ul>
 <li>可以使用yaml文件进行管理页面元素:</li>
 </ul>
@@ -325,6 +326,10 @@ appium.log&quot; --log-timestamp --local-timezone --session-override
 
                 <ul class="pager">
                     
+                        <li class="previous">
+                            <a href="/2017/02/20/利用 jEnv 管理 Mac OS 多java版本/" data-toggle="tooltip" data-placement="top" title="利用 jEnv 管理 Mac OS 多java版本">&larr; Previous Post</a>
+                        </li>
+                    
                     
                         <li class="next">
                             <a href="/2016/10/14/Atom之React Native配置/" data-toggle="tooltip" data-placement="top" title="React Native 开发工具之 Atom 配置">Next Post &rarr;</a>
@@ -344,20 +349,6 @@ appium.log&quot; --log-timestamp --local-timezone --session-override
 
             </div>
     <!-- Side Catalog Container -->
-        
-            <div class="
-                col-lg-2 col-lg-offset-0
-                visible-lg-block
-                sidebar-container
-                catalog-container">
-                <div class="side-catalog">
-                    <hr class="hidden-sm hidden-xs">
-                    <h5>
-                        <a class="catalog-toggle" href="#">CATALOG</a>
-                    </h5>
-                    <ul class="catalog-body"></ul>
-                </div>
-            </div>
         
 
     <!-- Sidebar Container -->
@@ -584,50 +575,6 @@ appium.log&quot; --log-timestamp --local-timezone --session-override
 
 
 <!-- Side Catalog -->
-
-<script type="text/javascript">
-    function generateCatalog (selector) {
-        var P = $('div.post-container'),a,n,t,l,i,c;
-        a = P.find('h1,h2,h3,h4,h5,h6');
-        a.each(function () {
-            n = $(this).prop('tagName').toLowerCase();
-            i = "#"+$(this).prop('id');
-            t = $(this).text();
-            c = $('<a href="'+i+'" rel="nofollow">'+t+'</a>');
-            l = $('<li class="'+n+'_nav"></li>').append(c);
-            $(selector).append(l);
-        });
-        return true;    
-    }
-
-    generateCatalog(".catalog-body");
-
-    // toggle side catalog
-    $(".catalog-toggle").click((function(e){
-        e.preventDefault();
-        $('.side-catalog').toggleClass("fold")
-    }))
-
-    /*
-     * Doc: https://github.com/davist11/jQuery-One-Page-Nav
-     * Fork by Hux to support padding
-     */
-    async("/js/jquery.nav.js", function () {
-        $('.catalog-body').onePageNav({
-            currentClass: "active",
-            changeHash: !1,
-            easing: "swing",
-            filter: "",
-            scrollSpeed: 700,
-            scrollOffset: 0,
-            scrollThreshold: .2,
-            begin: null,
-            end: null,
-            scrollChange: null,
-            padding: 80
-        });
-    });
-</script>
 
 
 

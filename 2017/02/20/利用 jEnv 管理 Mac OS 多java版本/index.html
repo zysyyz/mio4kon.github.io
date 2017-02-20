@@ -13,11 +13,11 @@
 
     <title>
         
-          ToolBar 打造MD TitleBar - Mio4kon的博客 | Mio4kon&#39;s Blog
+          利用 jEnv 管理 Mac OS 多java版本 - Mio4kon的博客 | Mio4kon&#39;s Blog
         
     </title>
 
-    <link rel="canonical" href="http://mio4kon.com/2014/11/29/toolbar/">
+    <link rel="canonical" href="http://mio4kon.com/2017/02/20/利用 jEnv 管理 Mac OS 多java版本/">
 
     <!-- Bootstrap Core CSS -->
     <link rel="stylesheet" href="/css/bootstrap.min.css">
@@ -165,14 +165,14 @@
                 <div class="post-heading">
                     <div class="tags">
                         
-                          <a class="tag" href="/tags/#Material Design" title="Material Design">Material Design</a>
+                          <a class="tag" href="/tags/#开发工具" title="开发工具">开发工具</a>
                         
                     </div>
-                    <h1>ToolBar 打造MD TitleBar</h1>
-                    <h2 class="subheading">取代ActionBar的控件,ToolBar!</h2>
+                    <h1>利用 jEnv 管理 Mac OS 多java版本</h1>
+                    <h2 class="subheading">开发工具推荐</h2>
                     <span class="meta">
                         Posted by Mio4kon on
-                        2014-11-29
+                        2017-02-20
                     </span>
                 </div>
             </div>
@@ -191,143 +191,32 @@
                 col-md-10 col-md-offset-1
                 post-container">
 
-                <h1 id="ToolBar"><a href="#ToolBar" class="headerlink" title="ToolBar"></a>ToolBar</h1><blockquote>
-<p>参考链接:<a href="http://developer.android.com/intl/zh-cn/reference/android/support/v7/widget/Toolbar.html" target="_blank" rel="external">官方API</a> <a href="http://blog.mosil.biz/2014/10/android-toolbar/" target="_blank" rel="external">博客</a></p>
-</blockquote>
-<h2 id="使用方法"><a href="#使用方法" class="headerlink" title="使用方法"></a>使用方法</h2><ul>
-<li><strong>首先要禁用ActionBar,方法如下:</strong></li>
-</ul>
-<blockquote>
-<p>最简单的方式就说继承Theme.AppCompat.NoActionBar</p>
-<p>或者用下面的方式</p>
-</blockquote>
-<a id="more"></a>
-<pre><code>&lt;application
-        android:allowBackup=&quot;true&quot;
-        android:icon=&quot;@drawable/ic_launcher&quot;
-        android:label=&quot;@string/app_name&quot;
-        android:theme=&quot;@style/AppTheme&quot;&gt;
-</code></pre><p><code>res/values/styles.xml</code>      </p>
-<pre><code> &lt;!-- Base application theme. --&gt;
-  &lt;style name=&quot;AppTheme&quot; parent=&quot;AppTheme.Base&quot;&gt;
- &lt;/style&gt;
-
-&lt;style name=&quot;AppTheme.Base&quot; parent=&quot;Theme.AppCompat&quot;&gt;
-  &lt;item name=&quot;windowActionBar&quot;&gt;false&lt;/item&gt;
-  &lt;item name=&quot;android:windowNoTitle&quot;&gt;true&lt;/item&gt;
-&lt;/style&gt;    
-</code></pre><ul>
-<li><p><strong>界面中加入ToolBar控件</strong></p>
-<pre><code>&lt;android.support.v7.widget.Toolbar
-        xmlns:app=&quot;http://schemas.android.com/apk/res-auto&quot;
-        android:id=&quot;@+id/toolbar&quot;
-        android:background=&quot;?attr/colorPrimary&quot;
-        android:layout_width=&quot;match_parent&quot;
-        android:layout_height=&quot;?android:attr/actionBarSize&quot;
-        android:elevation=&quot;6dp&quot;
-        app:theme=&quot;@style/ThemeOverlay.AppCompat.Dark.ActionBar&quot;
-        app:popupTheme=&quot;@style/ThemeOverlay.AppCompat.Light&quot;
-        android:transitionName=&quot;actionBar&quot;/&gt;
+                <p>以前管理java分支用的是<code>alias</code>的方式,最近发现一个工具<code>jEnv</code>也非常好用,不只可以管理java版本,还可管理maven,tomcat等等的版本控制.</p>
+<p>使用如下:</p>
+<ul>
+<li><p>安装 jEnv</p>
+<pre><code>curl -L -s get.jenv.io | bash
 </code></pre></li>
-<li><p><strong>代码中加入声明</strong></p>
-<pre><code> // Handle Toolbar  
-Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);  
-setSupportActionBar(toolbar);  
+<li><p>创建对应文件夹</p>
+<pre><code>mkdir -p $HOME/.jenv/candidates/java
+cd ~/.jenv/candidates/java
+mkdir 1.7
+mkdir 1.8
+</code></pre></li>
+<li><p>指定映射</p>
+<pre><code>ln -s /Library/Java/JavaVirtualMachines/jdk1.7.0_80.jdk/Contents/Home/bin ~/.jenv/candidates/java/1.7
+ln -s /Library/Java/JavaVirtualMachines/jdk1.8.0_25.jdk/Contents/Home/bin ~/.jenv/candidates/java/1.8 
 </code></pre></li>
 </ul>
-<h2 id="个性化ToolBar"><a href="#个性化ToolBar" class="headerlink" title="个性化ToolBar"></a>个性化ToolBar</h2><p><img src="http://developer.android.com/training/material/images/ThemeColors.png" alt="Drawing" width="200px">  </p>
-<h3 id="Toolbar的颜色-colorPrimary"><a href="#Toolbar的颜色-colorPrimary" class="headerlink" title="Toolbar的颜色:colorPrimary"></a>Toolbar的颜色:colorPrimary</h3><blockquote>
-<p>如图,我们可以再之前的AppTheme.Base中加入一些属性</p>
-</blockquote>
-<pre><code>&lt;!-- ...and here we setting appcompat’s color theming attrs --&gt;
-&lt;item name=&quot;colorPrimary&quot;&gt;@color/theme_default_primary&lt;/item&gt;
-</code></pre><p><strong>但是</strong><br><em>若你的 android app 仍是使用 actionbar 实作，则直接在风格 (styles) 或是主题 (themes) 里进行设定 colorPrimary 参数即可；<br>可若是采用 toolbar 的话，则要在界面 (layout) 里面设定 toolbar 元件的 background 属性</em></p>
-<p><br><br></p>
-<h3 id="导航栏底色：navigationBarColor"><a href="#导航栏底色：navigationBarColor" class="headerlink" title="导航栏底色：navigationBarColor"></a>导航栏底色：navigationBarColor</h3><blockquote>
-<p>仅能设定在 API v21 也就是 Android 5 以后的版本， 因此要将之设定在 res/values-v21/styles.xml 里面。</p>
-</blockquote>
-<p><br><br></p>
-<h3 id="主视窗底色：windowBackground"><a href="#主视窗底色：windowBackground" class="headerlink" title="主视窗底色：windowBackground"></a>主视窗底色：windowBackground</h3><blockquote>
-<p>同样可以再AppTheme.Base中加入这一属性  </p>
-</blockquote>
-<pre><code>&lt;item name=&quot;android:windowBackground&quot;&gt;@color/theme_window_background&lt;/item&gt;
-</code></pre><h2 id="ToolBar元件"><a href="#ToolBar元件" class="headerlink" title="ToolBar元件"></a>ToolBar元件</h2><p><img src="http://www.jcodecraeer.com/uploads/20141118/1416285884351.png" alt="image"></p>
-<pre><code>Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+<p>上面映射的具体版本要根据自己电脑装的来,别直接复制用了.</p>
+<ul>
+<li><p>切换环境</p>
+<pre><code>jenv use java 1.8
+</code></pre></li>
+</ul>
+<p>更多用法参见:</p>
+<p><a href="https://github.com/linux-china/jenv" target="_blank" rel="external">https://github.com/linux-china/jenv</a></p>
 
-// App Logo
-toolbar.setLogo(R.drawable.ic_launcher);
-// Title 
-toolbar.setTitle(&quot;My Title&quot;);
-// Sub Title
-toolbar.setSubtitle(&quot;Sub title&quot;);
-
-setSupportActionBar(toolbar);
-
-// Navigation Icon 要設定在 setSupoortActionBar之后才有作用
-// 否則會出現 back button
-toolbar.setNavigationIcon(R.drawable.ab_android);
-</code></pre><p><strong>setTitle(“My Title”)需要在setSupportActionBar(toolbar)之前才有效</strong><br><strong>setNavigationIcon需要放在 setSupportActionBar之后才会生效。</strong><br><strong>菜单部分需要在xml文件中定义</strong>  </p>
-<p><code>res/menu/menu_main.xml</code></p>
-<pre><code>&lt;menu xmlns:android=&quot;http://schemas.android.com/apk/res/android&quot;
-      xmlns:app=&quot;http://schemas.android.com/apk/res-auto&quot;
-      xmlns:tools=&quot;http://schemas.android.com/tools&quot;
-      tools:context=&quot;.MainActivity&quot;&gt;
-
-  &lt;item android:id=&quot;@+id/action_edit&quot;
-        android:title=&quot;@string/action_edit&quot;
-        android:orderInCategory=&quot;80&quot;
-        android:icon=&quot;@drawable/ab_edit&quot;
-        app:showAsAction=&quot;ifRoom&quot; /&gt;
-
-  &lt;item android:id=&quot;@+id/action_share&quot;
-        android:title=&quot;@string/action_edit&quot;
-        android:orderInCategory=&quot;90&quot;
-        android:icon=&quot;@drawable/ab_share&quot;
-        app:showAsAction=&quot;ifRoom&quot; /&gt;
-
-  &lt;item android:id=&quot;@+id/action_settings&quot;
-        android:title=&quot;@string/action_settings&quot;
-        android:orderInCategory=&quot;100&quot;
-        app:showAsAction=&quot;never&quot;/&gt;
-&lt;/menu&gt;
-</code></pre><p><strong>注意:如果在Fragment中加入,需要在oncreat中写入<code>setHasOptionsMenu (true)</code>才有效</strong></p>
-<p><strong>菜单部分在代码中的监听  </strong></p>
-<pre><code>private Toolbar.OnMenuItemClickListener onMenuItemClick = new Toolbar.OnMenuItemClickListener() {
-  @Override
-  public boolean onMenuItemClick(MenuItem menuItem) {
-    String msg = &quot;&quot;;
-    switch (menuItem.getItemId()) {
-      case R.id.action_edit:
-        msg += &quot;Click edit&quot;;
-        break;
-      case R.id.action_share:
-        msg += &quot;Click share&quot;;
-        break;
-      case R.id.action_settings:
-        msg += &quot;Click setting&quot;;
-        break;
-    }
-
-    if(!msg.equals(&quot;&quot;)) {
-      Toast.makeText(MainActivity.this, msg, Toast.LENGTH_SHORT).show();
-    }
-    return true;
-  }
-};
-</code></pre><p><strong>将onMenuItemClick监听者设置给toolbar</strong>  </p>
-<pre><code>// Menu item click 的监听要设置在 setSupportActionBar 之后才有作用  
-toolbar.setOnMenuItemClickListener(onMenuItemClick);
-</code></pre><p><strong>给ToolBar添加返回键</strong></p>
-<pre><code>setSupportActionBar(toolbar);
-//写在setSupportActionBar(toolbar)后面
- getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-toolbar.setNavigationOnClickListener (new OnClickListener () {
-    @Override
-    public void onClick(View v) {
-        finish ();
-    }
-});
-</code></pre>
 
                 <hr>
 
@@ -335,13 +224,9 @@ toolbar.setNavigationOnClickListener (new OnClickListener () {
 
                 <ul class="pager">
                     
-                        <li class="previous">
-                            <a href="/2014/11/29/navigation_drawer/" data-toggle="tooltip" data-placement="top" title="Navigation Drawer 打造MD侧边栏">&larr; Previous Post</a>
-                        </li>
-                    
                     
                         <li class="next">
-                            <a href="/2014/11/28/Gradle语法总结/" data-toggle="tooltip" data-placement="top" title="Gradle语法总结">Next Post &rarr;</a>
+                            <a href="/2017/02/13/自动化之旅--Appium/" data-toggle="tooltip" data-placement="top" title="自动化之旅--Appium">Next Post &rarr;</a>
                         </li>
                     
                 </ul>
@@ -388,7 +273,7 @@ toolbar.setNavigationOnClickListener (new OnClickListener () {
                     <h5><a href="/tags/">FEATURED TAGS</a></h5>
                     <div class="tags">
                        
-                          <a class="tag" href="/tags/#Material Design" title="Material Design">Material Design</a>
+                          <a class="tag" href="/tags/#开发工具" title="开发工具">开发工具</a>
                         
                     </div>
                 </section>
@@ -418,8 +303,8 @@ toolbar.setNavigationOnClickListener (new OnClickListener () {
 <script type="text/javascript">
     /* * * CONFIGURATION VARIABLES * * */
     var disqus_shortname = "hexo-theme-huxblog";
-    var disqus_identifier = "http://mio4kon.com/2014/11/29/toolbar/";
-    var disqus_url = "http://mio4kon.com/2014/11/29/toolbar/";
+    var disqus_identifier = "http://mio4kon.com/2017/02/20/利用 jEnv 管理 Mac OS 多java版本/";
+    var disqus_url = "http://mio4kon.com/2017/02/20/利用 jEnv 管理 Mac OS 多java版本/";
 
     (function() {
         var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
