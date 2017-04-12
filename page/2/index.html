@@ -184,6 +184,60 @@
 
 <div class="post-preview">
 
+    <a href="/2015/09/22/Touch事件模拟/">
+        <h2 class="post-title">
+            Touch模拟实例
+        </h2>
+        <h3 class="post-subtitle">
+            Touch事件传递
+        </h3>
+        <div class="post-content-preview">
+            Touch模拟实例关于Touch事件的几个模拟示例.如果对分发机制不是很了解的,又没有太多时间模拟实验的,可以参考.
+原流程例子有3个控件:
+
+GrandparentView extends ViewGroup (粉色)ParentView extends ViewGroup      (蓝色)ChildView extends View(棕色)
+其中GrandparentView是Pare......
+        </div>
+    </a>
+    <p class="post-meta">
+        Posted by Mio4kon on
+        2015-09-22
+    </p>
+
+</div>
+<hr>
+
+<div class="post-preview">
+
+    <a href="/2015/08/26/Picasso源码分析/">
+        <h2 class="post-title">
+            Picasso源码分析
+        </h2>
+        <h3 class="post-subtitle">
+            图片框架源码分析
+        </h3>
+        <div class="post-content-preview">
+            Picasso 简介
+Picasso 是一个强大的图片下载缓存库,是Square公司的一个开源项目.
+
+使用方法: 
+   Picasso.with(context).load(&quot;http://i.imgur.com/DvpvklR.png&quot;).into(imageView);
+即实现了图片的下载缓存展示.
+
+源码分析Picasso.with(context)入口分析
+1......
+        </div>
+    </a>
+    <p class="post-meta">
+        Posted by Mio4kon on
+        2015-08-26
+    </p>
+
+</div>
+<hr>
+
+<div class="post-preview">
+
     <a href="/2015/08/22/换个主题,还不错/">
         <h2 class="post-title">
             换个主题,还不错
@@ -255,6 +309,27 @@ build.gradle
 
 <div class="post-preview">
 
+    <a href="/2015/04/16/Android webview之java与js交互/">
+        <h2 class="post-title">
+            Android Hybrid app开发之java与js交互
+        </h2>
+        <h3 class="post-subtitle">
+            Hybrid app开发
+        </h3>
+        <div class="post-content-preview">
+            js调用java代码android代码123456789101112131415161718192021...&#123;    webView = (WebView) findViewById (R.id.webview);    webView.getSettings ().setJavaScriptEnabled (true);    webView.addJavascriptInte......
+        </div>
+    </a>
+    <p class="post-meta">
+        Posted by Mio4kon on
+        2015-04-16
+    </p>
+
+</div>
+<hr>
+
+<div class="post-preview">
+
     <a href="/2015/04/16/设计模式系列-观察者设计模式/">
         <h2 class="post-title">
             设计模式系列-观察者设计模式
@@ -268,27 +343,6 @@ build.gradle
 
 来看一个例子:
 中国气象局提供一组API用来实时的提供温度压强的变化.我们要开发一个展示板用来展示......
-        </div>
-    </a>
-    <p class="post-meta">
-        Posted by Mio4kon on
-        2015-04-16
-    </p>
-
-</div>
-<hr>
-
-<div class="post-preview">
-
-    <a href="/2015/04/16/Android webview之java与js交互/">
-        <h2 class="post-title">
-            Android Hybrid app开发之java与js交互
-        </h2>
-        <h3 class="post-subtitle">
-            Hybrid app开发
-        </h3>
-        <div class="post-content-preview">
-            js调用java代码android代码123456789101112131415161718192021...&#123;    webView = (WebView) findViewById (R.id.webview);    webView.getSettings ().setJavaScriptEnabled (true);    webView.addJavascriptInte......
         </div>
     </a>
     <p class="post-meta">
@@ -376,61 +430,6 @@ public void setViewPager(ViewPager viewPager){
 </div>
 <hr>
 
-<div class="post-preview">
-
-    <a href="/2014/12/19/一步步撸出图片加载框架ImageLoader /">
-        <h2 class="post-title">
-            一步步撸出图片加载框架
-        </h2>
-        <h3 class="post-subtitle">
-            超实用,超轻量的图片框架
-        </h3>
-        <div class="post-content-preview">
-            难得空闲,看了鸿洋大神的博客,将代码整合了一下撸出一个简单的图片加载框架,超实用,超轻量,只有2个类(≖ ‿ ≖)✧
-
-参考链接:  鸿洋大神的博客
-
-效果和代码与鸿洋大神博客所写的差不多,主要是加强对这种图片加载框架的理解.
-准备工作:图片工具类压缩图片 
-/**
- * 计算图片相对于ImageView控件的压缩比例
- *
- * @param options
- * @param reqWi......
-        </div>
-    </a>
-    <p class="post-meta">
-        Posted by Mio4kon on
-        2014-12-19
-    </p>
-
-</div>
-<hr>
-
-<div class="post-preview">
-
-    <a href="/2014/12/01/Wiki/">
-        <h2 class="post-title">
-            Android wiki
-        </h2>
-        <h3 class="post-subtitle">
-            
-        </h3>
-        <div class="post-content-preview">
-            Wiki不定时更新(深坑,太监)
-Paint抗锯齿Paint paint = new Paint (Paint.ANTI_ALIAS_FLAG);只画边框paint.setStyle(Paint.Style.STROKE); 
-Canvastranslate
-移动原点，默认的原点(0,0)是在屏幕左上角的,通过translate（x，y）把点（x，y）作为原点.canvas.translat......
-        </div>
-    </a>
-    <p class="post-meta">
-        Posted by Mio4kon on
-        2014-12-01
-    </p>
-
-</div>
-<hr>
-
 
 
 <!-- Pager -->
@@ -476,15 +475,19 @@ Canvastranslate
                             
                         
                             
-                        
-                            
-                        
-                            
-                        
-                            
-                        
-                            
                             <a href="/tags/#Material Design" title="Material Design" rel="3">Material Design</a>
+                            
+                        
+                            
+                        
+                            
+                        
+                            
+                        
+                            
+                        
+                            
+                        
                             
                         
                             
@@ -506,9 +509,7 @@ Canvastranslate
                             
                         
                             
-                        
-                            
-                        
+                            <a href="/tags/#移动自动化测试" title="移动自动化测试" rel="3">移动自动化测试</a>
                             
                         
                             

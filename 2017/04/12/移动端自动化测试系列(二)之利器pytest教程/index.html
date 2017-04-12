@@ -13,11 +13,11 @@
 
     <title>
         
-          python 语法总结 - Mio4kon的博客 | Mio4kon&#39;s Blog
+          移动端自动化测试系列(二)之利器pytest教程 - Mio4kon的博客 | Mio4kon&#39;s Blog
         
     </title>
 
-    <link rel="canonical" href="http://mio4kon.com/2015/04/16/python 语法总结/">
+    <link rel="canonical" href="http://mio4kon.com/2017/04/12/移动端自动化测试系列(二)之利器pytest教程/">
 
     <!-- Bootstrap Core CSS -->
     <link rel="stylesheet" href="/css/bootstrap.min.css">
@@ -165,14 +165,14 @@
                 <div class="post-heading">
                     <div class="tags">
                         
-                          <a class="tag" href="/tags/#python" title="python">python</a>
+                          <a class="tag" href="/tags/#移动自动化测试" title="移动自动化测试">移动自动化测试</a>
                         
                     </div>
-                    <h1>python 语法总结</h1>
-                    <h2 class="subheading">python 入门 </h2>
+                    <h1>移动端自动化测试系列(二)之利器pytest教程</h1>
+                    <h2 class="subheading">pytest教程</h2>
                     <span class="meta">
                         Posted by Mio4kon on
-                        2015-04-16
+                        2017-04-12
                     </span>
                 </div>
             </div>
@@ -191,31 +191,74 @@
                 col-md-10 col-md-offset-1
                 post-container">
 
-                <h1 id="基本语法"><a href="#基本语法" class="headerlink" title="基本语法"></a>基本语法</h1><p>等待用户输入,保存至name<br><code>name=raw_input(&#39;what your name:&#39;)</code><br>注:得到的内容永远是字符串的形式.如果想要整数<br><code>age=int(raw_input(&#39;age:&#39;))</code></p>
-<p>注释:<br><code>#这是注释</code> </p>
-<p>条件语句: </p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">a = 100</div><div class="line">if a &gt;= 0:</div><div class="line">    print a</div><div class="line">else:</div><div class="line">    print -a</div><div class="line">    </div><div class="line">#elif可以代表else if</div></pre></td></tr></table></figure>
-<a id="more"></a>
-<p>循环:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line">#for each循环</div><div class="line">&gt;&gt;&gt; arrs = [1,2,3,4,5]</div><div class="line">&gt;&gt;&gt; for arr in arrs:</div><div class="line">...     print arr</div><div class="line">...</div><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line"></div><div class="line">#while循环</div><div class="line">sum = 0</div><div class="line">n = 99</div><div class="line">while n &gt; 0:</div><div class="line">    sum = sum + n</div><div class="line">    n = n - 2</div><div class="line">print sum</div></pre></td></tr></table></figure>
-<p>不转义:</p>
-<p><code>print r&#39;\\\\&#39;</code> 结果为:<code>\\\\</code></p>
-<p>空值(null):</p>
-<p><code>none</code></p>
-<p>ASCII编码转换:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">ord(&apos;A&apos;)</div><div class="line">65</div><div class="line">chr(65)</div><div class="line">&apos;A&apos;</div></pre></td></tr></table></figure></p>
-<p>Unicode编码:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">&gt;&gt;&gt; print u&apos;中文&apos;</div><div class="line">中文</div><div class="line">&gt;&gt;&gt; u&apos;中&apos;</div><div class="line">u&apos;\u4e2d</div></pre></td></tr></table></figure>
-<p>Unicode编码与UTF-8互转:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">&gt;&gt;&gt; u&apos;ABC&apos;.encode(&apos;utf-8&apos;)</div><div class="line">&apos;ABC&apos;</div><div class="line">&gt;&gt;&gt; u&apos;中文&apos;.encode(&apos;utf-8&apos;)</div><div class="line">&apos;\xe4\xb8\xad\xe6\x96\x87&apos;</div><div class="line"></div><div class="line">&gt;&gt;&gt; &apos;\xe4\xb8\xad\xe6\x96\x87&apos;.decode(&apos;utf-8&apos;)</div><div class="line">u&apos;\u4e2d\u6587&apos;</div><div class="line">&gt;&gt;&gt; print &apos;\xe4\xb8\xad\xe6\x96\x87&apos;.decode(&apos;utf-8&apos;)</div><div class="line">中文</div></pre></td></tr></table></figure>
-<p>文本头:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">#!/usr/bin/env python </div><div class="line">(告诉Linux/OS X系统，这是一个Python可执行程序，Windows系统会忽略这个注释)</div><div class="line"># -*- coding: utf-8 -*-</div><div class="line">(告诉Python解释器，按照UTF-8编码读取源代码)</div></pre></td></tr></table></figure></p>
-<p>占位符(和c一样):<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">&gt;&gt;&gt; &apos;hi,my name is %s , i have %d money.&apos; %(&apos;mio4kon&apos;,1000)</div><div class="line">&apos;hi,my name is mio4kon , i have 1000 money.&apos;</div></pre></td></tr></table></figure></p>
-<p>List:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div></pre></td><td class="code"><pre><div class="line">&gt;&gt;&gt; arrs= [&apos;a&apos;,&apos;b&apos;,&apos;c&apos;]</div><div class="line">&gt;&gt;&gt; arrs</div><div class="line">[&apos;a&apos;, &apos;b&apos;, &apos;c&apos;]</div><div class="line"></div><div class="line">&gt;&gt;&gt; len(arrs)</div><div class="line">3</div><div class="line"></div><div class="line">&gt;&gt;&gt; arrs[0]</div><div class="line">&apos;a&apos;</div><div class="line"></div><div class="line">#反向索引(倒数第一个元素)</div><div class="line">&gt;&gt;&gt; arrs[-1]</div><div class="line">&apos;c&apos;</div><div class="line"></div><div class="line">#添加元素</div><div class="line">&gt;&gt;&gt; arrs.append(&apos;d&apos;)</div><div class="line">&gt;&gt;&gt; arrs[-1]</div><div class="line">&apos;d&apos;</div><div class="line"></div><div class="line">#插入元素</div><div class="line">&gt;&gt;&gt; arrs.insert(1,&apos;h&apos;)</div><div class="line">&gt;&gt;&gt; arrs</div><div class="line">[&apos;a&apos;, &apos;h&apos;, &apos;b&apos;, &apos;c&apos;, &apos;d&apos;]</div><div class="line"></div><div class="line">#删除元素</div><div class="line">&gt;&gt;&gt; arrs.pop(1)</div><div class="line">&apos;h&apos;</div><div class="line">&gt;&gt;&gt; arrs</div><div class="line">[&apos;a&apos;, &apos;b&apos;, &apos;c&apos;, &apos;d&apos;]</div><div class="line"></div><div class="line">#修改元素</div><div class="line">&gt;&gt;&gt; arrs[0] = 1</div><div class="line">&gt;&gt;&gt; arrs</div><div class="line">[1, &apos;b&apos;, &apos;c&apos;, &apos;d&apos;]</div><div class="line">#(注意,list元素类型可以不一样!)</div><div class="line"></div><div class="line">#range()函数可以生成一个整数序列</div><div class="line">#range(5)生成的序列是从0开始小于5的整数</div></pre></td></tr></table></figure></p>
-<p>不可变的list(tuple,元祖)<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">&gt;&gt;&gt; arrs = (&apos;a&apos;,&apos;b&apos;,&apos;c&apos;)</div><div class="line">&gt;&gt;&gt; arrs</div><div class="line">(&apos;a&apos;, &apos;b&apos;, &apos;c&apos;)</div></pre></td></tr></table></figure></p>
-<p>Map字典(dict)</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">&gt;&gt;&gt; d = &#123;&apos;Michael&apos;: 95, &apos;Bob&apos;: 75, &apos;Tracy&apos;: 85&#125;</div><div class="line">&gt;&gt;&gt; d[&apos;Michael&apos;]</div><div class="line">95</div><div class="line">#把数据放入dict的方法，除了初始化时指定外，还可以通过key放入：</div><div class="line">&gt;&gt;&gt; d[&apos;Adam&apos;] = 67</div><div class="line">&gt;&gt;&gt; d[&apos;Adam&apos;]</div><div class="line">67</div><div class="line">#如果key不存在，dict就会报错：</div><div class="line">#要避免key不存在的错误，有两种办法，一是通过in判断key是否存在：</div><div class="line">&gt;&gt;&gt; &apos;Thomas&apos; in d</div><div class="line">False</div><div class="line">#二是通过dict提供的get方法，如果key不存在，可以返回None，或者自己指定的value：</div><div class="line">&gt;&gt;&gt; d.get(&apos;Thomas&apos;)</div><div class="line">&gt;&gt;&gt; d.get(&apos;Thomas&apos;, -1)</div><div class="line">-1</div></pre></td></tr></table></figure>
-<p>set</p>
-<p>set和dict类似，也是一组key的集合，但不存储value。由于key不能重复，所以，在set中，没有重复的key。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line">&gt;&gt;&gt; s = set([1, 2, 3])</div><div class="line">&gt;&gt;&gt; s</div><div class="line">set([1, 2, 3])</div><div class="line">#重复元素在set中自动被过滤：</div><div class="line">&gt;&gt;&gt; s = set([1, 1, 2, 2, 3, 3])</div><div class="line">&gt;&gt;&gt; s</div><div class="line">set([1, 2, 3])</div><div class="line">&gt;&gt;&gt; s.add(4)</div><div class="line">&gt;&gt;&gt; s</div><div class="line">#通过add(key)方法可以添加元素到set中</div><div class="line">set([1, 2, 3, 4])</div><div class="line">#两个set可以做数学意义上的交集、并集等操作</div><div class="line">&gt;&gt;&gt; s1 = set([1, 2, 3])</div><div class="line">&gt;&gt;&gt; s2 = set([2, 3, 4])</div><div class="line">&gt;&gt;&gt; s1 &amp; s2</div><div class="line">set([2, 3])</div></pre></td></tr></table></figure>
+                <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p><code>pytest</code>是一个方便去写测试用例的测试框架.由于一开始我也不太清楚python有哪些比较好的测试框架,所以在写框架之前先调研了一些常见的测试框架.</p>
+<ul>
+<li>Unittest</li>
+<li>Doctest</li>
+<li>pytest</li>
+<li>nose</li>
+</ul>
+<p>最终我倾向于<code>nose</code>和<code>pytest</code>,在进一步的了解这两款测试框架的api之后,最终选用了<code>pytest</code>,原因是使用起来真的非常简单.而且对<code>Allure</code>支持的非常好,这是后话了.我们先来看看<code>pytest</code>到底怎么使用吧.</p>
+<p>这里我使用的IDE是:<a href="https://www.jetbrains.com/pycharm/" target="_blank" rel="external">pycharm</a>,非常好用.建议下载一个使用.尤其是对应python新手.</p>
+<h1 id="pytest-安装"><a href="#pytest-安装" class="headerlink" title="pytest 安装"></a>pytest 安装</h1><pre><code>pip3 install pytest
+</code></pre><p>或者设置Pycharm的工程解释器来安装</p>
+<p>进入Preferences:</p>
+<p><img src="http://mio4kon.qiniudn.com/14919750356253.jpg" alt=""></p>
+<h1 id="pytest-使用"><a href="#pytest-使用" class="headerlink" title="pytest 使用"></a>pytest 使用</h1><h2 id="sample-run"><a href="#sample-run" class="headerlink" title="sample-run"></a>sample-run</h2><p>创建一个 sample.py 文件</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># content of sample.py</span></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">test_answer</span><span class="params">()</span>:</span></div><div class="line">   <span class="keyword">assert</span> <span class="number">1</span> + <span class="number">2</span> == <span class="number">3</span></div></pre></td></tr></table></figure>
+<p>执行</p>
+<pre><code>py.test sample.py
+或者
+pytest sample.py
+</code></pre><p><img src="http://mio4kon.qiniudn.com/14919755120813.jpg" alt=""></p>
+<p>可以发现用例执行成功.</p>
+<p>上述命令可以使pytest自动查找 sample.py 文件下所有的格式为:<code>test_*</code>的方法,然后执行用例.执行顺序为方法的顺序.</p>
+<p>如果有多个py文件,可以直接使用下面命令</p>
+<pre><code>pytest
+</code></pre><p>这个命令会找出当前目录下所有格式为<code>test_*.py</code> 或 <code>*_test.py</code>的文件然后执行用例.上面我们定义的文件名为<code>sample.py</code>,所以如果使用<code>pytest</code>是找不到用例的,我们需要把名称改成<code>test_sample.py</code>或者<code>sample_test.py</code></p>
+<p>注意文件内的方法名必须是<code>test_*</code>这种类型.如果写成<code>def answer_test()</code> 也是找不到的.<br>查找规则见文档: <a href="https://docs.pytest.org/en/latest/goodpractices.html#test-discovery" target="_blank" rel="external">test-discovery</a></p>
+<h2 id="输出日志"><a href="#输出日志" class="headerlink" title="输出日志"></a>输出日志</h2><p>在测试用例中输出日志,是常见的场景,如下</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># content of test_sample.py</span></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">TestSample</span>:</span></div><div class="line">   <span class="function"><span class="keyword">def</span> <span class="title">test_answer</span><span class="params">(self)</span>:</span></div><div class="line">       print(<span class="string">'this is a log'</span>)</div><div class="line">       <span class="keyword">assert</span> <span class="number">1</span> + <span class="number">2</span> == <span class="number">3</span></div></pre></td></tr></table></figure>
+<p>然后执行<code>py.test sample.py</code>是不会输出日志的.需要加上<code>-s</code>参数.同时建议也加上<code>-q</code>参数.即<code>quiet</code> 报道模式,这样输出会好看点.</p>
+<pre><code>pytest test_sample.py -s -q
+</code></pre><p><img src="http://mio4kon.qiniudn.com/14919772053536.jpg" alt=""></p>
+<h2 id="fixtures"><a href="#fixtures" class="headerlink" title="fixtures"></a>fixtures</h2><p>说到测试框架自然要说到<code>setup和teardown</code>两个方法.</p>
+<ul>
+<li><code>setup</code>是用来做准备操作.一般用来初始化资源.</li>
+<li><code>teardown</code>是用来做收尾操作.一般用了关闭资源.</li>
+</ul>
+<p>pytest的<code>setup</code>和<code>teardown</code>是利用<code>@pytest.fixture</code>这个注释来完成的.不仅可以完成初始化操作,初始化后如果有数据需要给用例使用也是非常方便!</p>
+<h3 id="setup"><a href="#setup" class="headerlink" title="setup"></a>setup</h3><p>直接来看下面代码.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># content of test_sample.py</span></div><div class="line"><span class="keyword">import</span> pytest</div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">TestSample</span>:</span></div><div class="line"><span class="meta">   @pytest.fixture()</span></div><div class="line">   <span class="function"><span class="keyword">def</span> <span class="title">count</span><span class="params">(self)</span>:</span></div><div class="line">       print(<span class="string">'init count'</span>)</div><div class="line">       <span class="keyword">return</span> <span class="number">10</span></div><div class="line"></div><div class="line">   <span class="function"><span class="keyword">def</span> <span class="title">test_answer</span><span class="params">(self, count)</span>:</span></div><div class="line">       print(<span class="string">'get count %s'</span> % count)</div><div class="line">       <span class="keyword">assert</span> count == <span class="number">10</span></div></pre></td></tr></table></figure>
+<p>执行结果:</p>
+<p><img src="http://mio4kon.qiniudn.com/14919815950749.jpg" alt=""></p>
+<p>通过<code>@pytest.fixture()</code> 注释会在执行测试用例之前初始化操作.然后直接在测试用例的方法中就可以拿到初始化返回的参数(参数名要和初始化的方法名一样)</p>
+<p>OK,假如我们新增一个方法会怎么样?</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># content of test_sample.py</span></div><div class="line"><span class="keyword">import</span> pytest</div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">TestSample</span>:</span></div><div class="line"><span class="meta">   @pytest.fixture()</span></div><div class="line">   <span class="function"><span class="keyword">def</span> <span class="title">count</span><span class="params">(self)</span>:</span></div><div class="line">       print(<span class="string">'init count'</span>)</div><div class="line">       <span class="keyword">return</span> <span class="number">10</span></div><div class="line"></div><div class="line">   <span class="function"><span class="keyword">def</span> <span class="title">test_answer</span><span class="params">(self, count)</span>:</span></div><div class="line">       print(<span class="string">'test_answer get count %s'</span> % count)</div><div class="line">       <span class="keyword">assert</span> count == <span class="number">10</span></div><div class="line"></div><div class="line">   <span class="function"><span class="keyword">def</span> <span class="title">test_answer_2</span><span class="params">(self, count)</span>:</span></div><div class="line">       print(<span class="string">'test_answer_2 get count %s'</span> % count)</div><div class="line">       <span class="keyword">assert</span> count == <span class="number">10</span></div></pre></td></tr></table></figure>
+<p><img src="http://mio4kon.qiniudn.com/14919822617181.jpg" alt=""></p>
+<p>可以发现 init count 这条日志输出两遍,也就是执行了两次初始化.这并没有什么问题.但是有时候我们希望的一个全局的初始化,既我们希望在这个类中只会执行一次这个初始化该怎么做?</p>
+<p><code>fixture</code> 有一个域(<code>scope</code>)的概念,用来指定该 <code>fixture</code> 的使用范围.</p>
+<p>这里有五种域: module/class/session/invocation/function(default).</p>
+<p>为了简单测试,这里我们修改一下工程目录结构,并且把<code>fixture</code>专门放到一个文件中方便使用:</p>
+<p><img src="http://mio4kon.qiniudn.com/14919841909345.jpg" alt=""></p>
+<p>通过下面命令可以列出当前目录中查找出来的所有 <code>fixture</code></p>
+<pre><code>pytest --fixtures
+或者
+pytest --fixtures [目录]
+</code></pre><p><img src="http://mio4kon.qiniudn.com/14919844939532.jpg" alt=""></p>
+<p><strong>这里有个坑,就是虽然这里发现了 count 这个fixture,但在跑case的时候会报错说找不到!</strong></p>
+<p>原因是写 <code>fixture</code> 的文件的文件名不能瞎比写啊(捂脸),必须叫做 <code>conftest.py</code></p>
+<p>改完文件名后我们在运行:<br><img src="http://mio4kon.qiniudn.com/14919867288333.jpg" alt=""></p>
+<p>这是在使用 seesion 域的情况下,可以发现init只执行一次.假如我们需要这种情况,每一个类都执行一次init,那么很简单直接把域改成 class 即可,同理 module 是基于模块的.有兴趣可以都去尝试一下.这里就不细说了.</p>
+<h3 id="teardown"><a href="#teardown" class="headerlink" title="teardown"></a>teardown</h3><p>利用python 的语法 <code>yield</code> 即可.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># content of conftest.py</span></div><div class="line"><span class="keyword">import</span> pytest</div><div class="line"><span class="meta">@pytest.fixture(scope="session")</span></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">count</span><span class="params">()</span>:</span></div><div class="line">   	print(<span class="string">'init count'</span>)</div><div class="line">   	<span class="keyword">yield</span> <span class="number">10</span></div><div class="line">   	print(<span class="string">'teardown count'</span>)</div></pre></td></tr></table></figure>
+<p>执行结果</p>
+<p><img src="http://mio4kon.qiniudn.com/14919873459595.jpg" alt=""></p>
+<h2 id="代码中执行用例"><a href="#代码中执行用例" class="headerlink" title="代码中执行用例"></a>代码中执行用例</h2><p>有些时候需要在代码中调用执行case的方法.而不是通过command的方式.我们可以在python代码中加入下面代码即可:</p>
+<pre><code>args = [&apos;-s&apos;, &apos;-q&apos;]
+pytest.main(args)
+</code></pre><h1 id="参考文档"><a href="#参考文档" class="headerlink" title="参考文档"></a>参考文档</h1><p>如果上述内容消化完后,那么测试框架的使用已经没有什么问题了.如果还需要了解其他的特性,可以参考官网文档.</p>
+<p><a href="https://docs.pytest.org/en/latest/contents.html" target="_blank" rel="external">https://docs.pytest.org/en/latest/contents.html</a></p>
 
 
                 <hr>
@@ -224,13 +267,9 @@
 
                 <ul class="pager">
                     
-                        <li class="previous">
-                            <a href="/2015/04/16/设计模式系列-观察者设计模式/" data-toggle="tooltip" data-placement="top" title="设计模式系列-观察者设计模式">&larr; Previous Post</a>
-                        </li>
-                    
                     
                         <li class="next">
-                            <a href="/2015/04/15/设计模式-策略设计模式/" data-toggle="tooltip" data-placement="top" title="设计模式系列-策略设计模式">Next Post &rarr;</a>
+                            <a href="/2017/04/12/移动端自动化测试系列(一)之环境搭建/" data-toggle="tooltip" data-placement="top" title="移动端自动化测试系列(一)之环境搭建">Next Post &rarr;</a>
                         </li>
                     
                 </ul>
@@ -277,7 +316,7 @@
                     <h5><a href="/tags/">FEATURED TAGS</a></h5>
                     <div class="tags">
                        
-                          <a class="tag" href="/tags/#python" title="python">python</a>
+                          <a class="tag" href="/tags/#移动自动化测试" title="移动自动化测试">移动自动化测试</a>
                         
                     </div>
                 </section>
@@ -307,8 +346,8 @@
 <script type="text/javascript">
     /* * * CONFIGURATION VARIABLES * * */
     var disqus_shortname = "hexo-theme-huxblog";
-    var disqus_identifier = "http://mio4kon.com/2015/04/16/python 语法总结/";
-    var disqus_url = "http://mio4kon.com/2015/04/16/python 语法总结/";
+    var disqus_identifier = "http://mio4kon.com/2017/04/12/移动端自动化测试系列(二)之利器pytest教程/";
+    var disqus_url = "http://mio4kon.com/2017/04/12/移动端自动化测试系列(二)之利器pytest教程/";
 
     (function() {
         var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
