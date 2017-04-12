@@ -90,14 +90,14 @@
 
                         
                         <li>
-                            <a href="/archives/">Archives</a>
+                            <a href="/about/">About</a>
                         </li>
                         
                     
 
                         
                         <li>
-                            <a href="/about/">About</a>
+                            <a href="/archives/">Archives</a>
                         </li>
                         
                     
@@ -202,11 +202,11 @@
 </code></pre><p>检查 <code>Appium</code> 是否安装成功:</p>
 <pre><code>appium -v
 </code></pre><p>执行后会显示<code>appium</code>的版本号,我现在使用的是 1.6.4 版本.</p>
-<p><img src="media/14919686483120.jpg" alt=""></p>
+<p><img src="http://mio4kon.qiniudn.com/14919686483120.jpg" alt=""></p>
 <p>安装<code>appium-doctor</code>,用于检查系统环境是否支持后续测试:</p>
 <pre><code>npm install -g appium-doctor
 appium-doctor
-</code></pre><p><img src="media/14919690240687.jpg" alt=""></p>
+</code></pre><p><img src="http://mio4kon.qiniudn.com/14919690240687.jpg" alt=""></p>
 <p>这里需要安装一些测试相关的依赖:<code>xcode</code>, <code>android SDK</code> 等,还要配置 <code>JAVA_HOME</code>, <code>ANDROID_HOME</code>等等.</p>
 <p>关于 <code>android SDK</code> 相关配置可以参考 <a href="https://gist.github.com/Erichain/0ac3a6aaca0c28ad6551" target="_blank" rel="external">Android SDK 和 Android HOME 配置</a></p>
 <p>其他一些配置依赖可以google一下.基本都有详细配置教程.</p>
@@ -219,8 +219,8 @@ appium-doctor
 </code></pre><p>这里有一个坑,安装 <code>Appium-Python-Client</code> 的同时会安装一个<code>selenium</code>模块.试着进入python3交互命令行,然后执行下面命令:</p>
 <pre><code>import selenium
 selenium.__version__
-</code></pre><p><img src="media/14919722593823.jpg" alt=""></p>
-<p>如果你显示的 <code>selenium</code> 版本是当前最新版本<code>3.3.3</code>的话,那么最好使用下面命令将版本装成<code>3.0.2</code></p>
+</code></pre><p>结果</p>
+<p><img src="http://mio4kon.qiniudn.com/14919722593823.jpg" alt=""><br>如果你显示的 <code>selenium</code> 版本是当前最新版本<code>3.3.3</code>的话,那么最好使用下面命令将版本装成<code>3.0.2</code></p>
 <pre><code>pip3 install -I selenium==3.0.2
 </code></pre><p>否则的话,在使用<code>Appium-Python-Client</code>的某些Api的话会报错.应该是版本兼容性的问题.以后应该会修复的.</p>
 <p>至此,与 <code>Appium</code> 相关的环境都已经搭建完毕了,下一章会先脱离 <code>Appium</code> 主要讲解 <code>pytest</code> 的使用.</p>
