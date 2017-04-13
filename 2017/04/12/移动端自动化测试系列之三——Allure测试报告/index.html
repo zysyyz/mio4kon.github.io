@@ -13,11 +13,11 @@
 
     <title>
         
-          Android如何使用JAVA8新特性--lambda表达式 - Mio4kon的博客 | Mio4kon&#39;s Blog
+          移动端自动化测试系列之三——Allure测试报告 - Mio4kon的博客 | Mio4kon&#39;s Blog
         
     </title>
 
-    <link rel="canonical" href="http://mio4kon.com/2015/06/01/Android使用JAVA8新特性/">
+    <link rel="canonical" href="http://mio4kon.com/2017/04/12/移动端自动化测试系列之三——Allure测试报告/">
 
     <!-- Bootstrap Core CSS -->
     <link rel="stylesheet" href="/css/bootstrap.min.css">
@@ -165,14 +165,14 @@
                 <div class="post-heading">
                     <div class="tags">
                         
-                          <a class="tag" href="/tags/#java8" title="java8">java8</a>
+                          <a class="tag" href="/tags/#移动自动化测试" title="移动自动化测试">移动自动化测试</a>
                         
                     </div>
-                    <h1>Android如何使用JAVA8新特性--lambda表达式</h1>
-                    <h2 class="subheading">lambda表达式</h2>
+                    <h1>移动端自动化测试系列之三——Allure测试报告</h1>
+                    <h2 class="subheading">生成美观实用的测试报告</h2>
                     <span class="meta">
                         Posted by Mio4kon on
-                        2015-06-01
+                        2017-04-12
                     </span>
                 </div>
             </div>
@@ -191,30 +191,80 @@
                 col-md-10 col-md-offset-1
                 post-container">
 
-                <h1 id="准备工作"><a href="#准备工作" class="headerlink" title="准备工作"></a>准备工作</h1><p>1.下载java8,并配置java8环境变量.</p>
-<p>2.配置参数可以自由切换java7,java8 (mac 环境)</p>
-<blockquote>
-<p>在.bash_profile下添加</p>
-</blockquote>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">export JAVA7_HOME=/Library/Java/JavaVirtualMachines/jdk1.7.0_71.jdk/Contents/Home</div><div class="line">export JAVA8_HOME=/Library/Java/JavaVirtualMachines/jdk1.8.0_45.jdk/Contents/Home</div><div class="line">export JAVA_HOME=$JAVA7_HOME</div></pre></td></tr></table></figure>
-<blockquote>
-<p>在终端执行</p>
-</blockquote>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">alias jdk8=&apos;export JAVA_HOME=$JAVA_8_HOME&apos;  </div><div class="line">alias jdk7=&apos;export JAVA_HOME=$JAVA_7_HOME&apos;</div></pre></td></tr></table></figure>
-<p>以后就可以在终端通过<code>jdk8</code>,<code>jdk7</code>来切换java环境.</p>
-<a id="more"></a>
-<h1 id="使用gradle-retrolambda库"><a href="#使用gradle-retrolambda库" class="headerlink" title="使用gradle-retrolambda库"></a>使用gradle-retrolambda库</h1><p><a href="https://github.com/evant/gradle-retrolambda" target="_blank" rel="external">gradle-retrolambda</a>库可以使android使用lambda表达式,如果不懂lambda表达式可以自行谷歌~</p>
-<p>具体配置过程:</p>
+                <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>一个好的测试报告在整个测试框架起到至关重要的部分.最早之前使用Java写 <code>Appium</code> 框架的时候是用<a href="http://extentreports.com/" target="_blank" rel="external">extentreports</a> 做为测试报告的框架.</p>
+<p>但是  <a href="http://extentreports.com/" target="_blank" rel="external">extentreports</a> 没有 python 版本.于是在网上搜寻了好久,发现很多人提到了 <code>HTMLTestRunner</code> 这个框架.自己试用了一下,发现生成的测试报告实在是太丑了.而且对 python3 的支持也不是很好.最终发现一个超好用的报告框架,不仅报告美观,而且方便CI集成.</p>
+<p>那就是 <a href="http://allure.qatools.ru/" target="_blank" rel="external">Allure Test Report</a></p>
+<p>我们来看一下最后的报告图:</p>
+<p><img src="http://mio4kon.qiniudn.com/14919905729483.jpg" alt=""></p>
+<p>是不是很赞? 这里有个网页demo,可以去试一试效果:</p>
+<p><a href="http://ci.qatools.ru/job/allure1_master-deploy/lastSuccessfulBuild/Allure_report/" target="_blank" rel="external">Demo</a></p>
+<p>现在就让我们使用这个强大框架来生成测试报告吧.本教程基于测试框架 <strong>pytest</strong>,如果对于这个框架不太熟悉的可以参考之前写的一篇博客</p>
+<p><a href="http://mio4kon.com/2017/04/12/%E7%A7%BB%E5%8A%A8%E7%AB%AF%E8%87%AA%E5%8A%A8%E5%8C%96%E6%B5%8B%E8%AF%95%E7%B3%BB%E5%88%97%E4%B9%8B%E4%BA%8C%E2%80%94%E2%80%94%E5%88%A9%E5%99%A8pytest%E6%95%99%E7%A8%8B/">移动端自动化测试系列之二——利器pytest教程</a></p>
+<h1 id="Allure-使用"><a href="#Allure-使用" class="headerlink" title="Allure 使用"></a>Allure 使用</h1><h2 id="安装-adapter"><a href="#安装-adapter" class="headerlink" title="安装 adapter"></a>安装 adapter</h2><p>如果要在 <code>pytest</code> 中使用 <code>Allure</code>,需要使用一个 <code>Adaptor</code></p>
+<p><a href="https://github.com/allure-framework/allure-pytest" target="_blank" rel="external">Allure Pytest Adaptor</a></p>
+<p>安装 <code>pytest-allure-adaptor</code></p>
+<pre><code>pip3 install pytest-allure-adaptor
+</code></pre><h2 id="生成报告"><a href="#生成报告" class="headerlink" title="生成报告"></a>生成报告</h2><p>还是基于我们上一篇讲解 pytest 所写的代码</p>
+<p>现在我们需要做的只是一行命令!在执行原先的命令之后加一句配置即可</p>
+<pre><code>pytest -s -q --alluredir report
+或者
+pytest -s -q --alluredir [path_to_report_dir]    
+</code></pre><p>这时候你就会发现用例执行完成之后会在当前目录下生成了一个report文件</p>
+<p><img src="http://mio4kon.qiniudn.com/14919921663000.jpg" alt=""></p>
+<p>打开xml会发现一堆乱七八糟的东西.坑爹呢.说好的报告美观呢?(掀桌</p>
+<p>这个文件夹的东西很重要,最终生成好看的报告就是靠他们.但再生成之前需要先装一个生成工具.</p>
+<h2 id="生成好看的报告"><a href="#生成好看的报告" class="headerlink" title="生成好看的报告"></a>生成好看的报告</h2><p>生成工具有很多种,相关文档可以参考下面</p>
+<p><a href="https://github.com/allure-framework/allure1/wiki#generating-a-report" target="_blank" rel="external">Generating a report</a></p>
+<p>它支持 <code>gradle Plugin</code> ,<code>Jenkins Plugin</code>等等.这里我们简单的使用 <a href="http://wiki.qatools.ru/display/AL/Allure+Commandline" target="_blank" rel="external">Command</a> 的方式生成报告.</p>
+<p>安装 Command Tool</p>
+<pre><code>brew tap qatools/formulas 
+brew install allure-commandline
+</code></pre><p>生成 Report    </p>
+<pre><code>allure generate directory-with-results/ -o directory-with-report
+这里我们的命令是
+allure generate report/ -o report/html
+</code></pre><p>最终报告会生成在 <code>report/html</code> 目录下</p>
+<p><img src="http://mio4kon.qiniudn.com/14919929175351.jpg" alt=""></p>
+<p>打开 <code>index.html</code>,之前写的 case 报告就会呈现在你面前.</p>
+<p>注: 如果打开一直在转圈圈,可以换个浏览器打开.</p>
+<p>这里有个弊端,每次xml报告生成完了,都要调用命令转成html,后续的博客会使用一个shell命令来自动生成这个报告.当然如果要集成CI可以使用 <a href="http://wiki.qatools.ru/display/AL/Allure+Jenkins+Plugin" target="_blank" rel="external">Jenkins Plugin</a></p>
+<h2 id="定制报告Steps"><a href="#定制报告Steps" class="headerlink" title="定制报告Steps"></a>定制报告Steps</h2><p>为了让生成的报告可读性更高,可以用一些 Api 来实现,比如下面我们将原先的 case 稍作改造</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line"><span class="comment"># content of test_sample.py</span></div><div class="line"><span class="keyword">import</span> allure</div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">TestSample</span>:</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">test_login</span><span class="params">(self)</span>:</span></div><div class="line">        allure.attach(<span class="string">'描述'</span>, <span class="string">'这是一个注册登录的case'</span>)</div><div class="line">        self.register()</div><div class="line">        result = self.login(<span class="string">'mio4kon'</span>)</div><div class="line">        <span class="keyword">assert</span> result</div><div class="line"></div><div class="line"><span class="meta">    @allure.step(title="登录账号:&#123;1&#125;")</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">login</span><span class="params">(self, account)</span>:</span></div><div class="line">        <span class="keyword">return</span> <span class="keyword">True</span></div><div class="line"></div><div class="line"><span class="meta">    @allure.step(title="注册")</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">register</span><span class="params">(self)</span>:</span></div><div class="line">        <span class="keyword">pass</span></div></pre></td></tr></table></figure>
+<p>上面是一个模拟注册然后操作的case,我们通过 <code>@allure.step</code> 和 <code>allure.attach</code> 可以让生成的报告更直观一点.</p>
+<p>其中</p>
+<pre><code>@allure.step(title=&quot;登录账号:{1}&quot;)
+def login(self, account):
+</code></pre><p><code>{1}</code>会填充为该注释下的方法的第二个参数值,第一个参数为<code>{0}</code></p>
+<p>让我们看看报告吧:点击 <code>xUnit-&gt;对应的Test suites</code></p>
+<p><img src="http://mio4kon.qiniudn.com/14919968331468.jpg" alt=""></p>
+<p>点击描述</p>
+<p><img src="http://mio4kon.qiniudn.com/14919968658481.jpg" alt=""></p>
+<p>这样每一个case具体做了什么就会非常直观.分析报告也更加容易.</p>
+<h2 id="severity"><a href="#severity" class="headerlink" title="severity"></a>severity</h2><p>可以为每个测试方法或者类都添加一个severity(严重等级),这么做的好处在于</p>
 <ol>
-<li>右键model-&gt;open model settings-&gt;jdk location设置为jdk8的路径</li>
-<li>在model的<code>build.gradle</code>中使用如下,筒子们可以对照添加.</li>
+<li>测试完成后告诉开发,等级严重的bug优先修复.</li>
+<li><p>执行测试用例可以只针对某一个或某几个等级执行,其他等级都跳过.</p>
+ <figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@pytest.allure.severity(pytest.allure.severity_level.MINOR)</span></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">test_minor</span><span class="params">()</span>:</span></div><div class="line">    <span class="keyword">assert</span> <span class="keyword">False</span></div><div class="line"></div><div class="line"></div><div class="line"><span class="meta">@pytest.allure.severity(pytest.allure.severity_level.CRITICAL)</span></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">TestBar</span>:</span></div></pre></td></tr></table></figure>
+</li>
 </ol>
-<figure class="highlight groovy"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">buildscript &#123;</div><div class="line">    repositories &#123;</div><div class="line">        mavenLocal()</div><div class="line">        mavenCentral()</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    dependencies &#123;</div><div class="line">        classpath <span class="string">'me.tatarka:gradle-retrolambda:3.1.0'</span></div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line">apply <span class="string">plugin:</span> <span class="string">'com.android.application'</span></div><div class="line">apply <span class="string">plugin:</span> <span class="string">'me.tatarka.retrolambda'</span></div><div class="line">android &#123;</div><div class="line">    compileSdkVersion <span class="number">22</span></div><div class="line">    buildToolsVersion <span class="string">"22.0.1"</span></div><div class="line"></div><div class="line">    compileOptions &#123;</div><div class="line">        sourceCompatibility JavaVersion.VERSION_1_8</div><div class="line">        targetCompatibility JavaVersion.VERSION_1_8</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    defaultConfig &#123;</div><div class="line">        applicationId <span class="string">"com.mio.rxjavademo"</span></div><div class="line">        minSdkVersion <span class="number">14</span></div><div class="line">        targetSdkVersion <span class="number">22</span></div><div class="line">        versionCode <span class="number">1</span></div><div class="line">        versionName <span class="string">"1.0"</span></div><div class="line">    &#125;</div><div class="line">    buildTypes &#123;</div><div class="line">        release &#123;</div><div class="line">            minifyEnabled <span class="literal">false</span></div><div class="line">            proguardFiles getDefaultProguardFile(<span class="string">'proguard-android.txt'</span>), <span class="string">'proguard-rules.pro'</span></div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line">dependencies &#123;</div><div class="line">    compile fileTree(<span class="string">dir:</span> <span class="string">'libs'</span>, <span class="string">include:</span> [<span class="string">'*.jar'</span>])</div><div class="line">    compile <span class="string">'com.android.support:appcompat-v7:22.1.1'</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>最后就可以优雅的使用lambda表达式了.是不是瞬间觉得逼格变高了?</p>
-<p>Update:</p>
-<blockquote>
-<p>过时,最新Android Studio已经支持</p>
-</blockquote>
+<p>如果希望只跑<code>critical</code>和<code>blocker</code>这两个等级的case</p>
+<p>在原先命令上加上<code>--allure_severities=critical,blocker</code>参数</p>
+<pre><code>py.test --alluredir report --allure_severities=critical,blocker -s -q
+</code></pre><p>有五类严重等级,可以点击测试报告的<code>Graph</code>查看,其中灰色的为跳过的 case</p>
+<p><img src="http://mio4kon.qiniudn.com/14919979342135.jpg" alt=""></p>
+<h2 id="Features-amp-Stories"><a href="#Features-amp-Stories" class="headerlink" title="Features &amp; Stories"></a>Features &amp; Stories</h2><p>使用Features和Stories的好处</p>
+<ol>
+<li>case分类清晰明了</li>
+<li>与 severity一样,可以指定只执行某 <code>Features/Stories</code> 的 case</li>
+</ol>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@allure.feature('Feature1')</span></div><div class="line"><span class="meta">@allure.story('Story1')</span></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">test_minor</span><span class="params">()</span>:</span></div><div class="line">    <span class="keyword">assert</span> <span class="keyword">False</span></div><div class="line"></div><div class="line"></div><div class="line"><span class="meta">@allure.feature('Feature2')</span></div><div class="line"><span class="meta">@allure.story('Story2', 'Story3')</span></div><div class="line"><span class="meta">@allure.story('Story4')</span></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">TestBar</span>:</span></div><div class="line">    <span class="comment"># will have 'Feature2 and Story2 and Story3 and Story4'</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">test_bar</span><span class="params">(self)</span>:</span></div><div class="line">        <span class="keyword">pass</span></div></pre></td></tr></table></figure>
+<p>只执行部分 <code>feature/stories</code> 的话,用下面命令</p>
+<pre><code>py.test --alluredir report --allure_features=feature1,feature2 --allure_stories=story1,story2
+</code></pre><p>在测试报告的<code>Behaviors</code>中可以清晰的看到分类</p>
+<p><img src="http://mio4kon.qiniudn.com/14919989065999.jpg" alt=""></p>
+<p><code>Allure</code> 的用法大致介绍完了,大部分示例都是来自 <code>adapter</code> 的 <code>Gayhub</code>,更多的内容请参考下面的链接.</p>
+<h1 id="参考链接"><a href="#参考链接" class="headerlink" title="参考链接"></a>参考链接</h1><p><a href="https://github.com/allure-framework/allure-pytest" target="_blank" rel="external">https://github.com/allure-framework/allure-pytest</a></p>
+<p><a href="http://wiki.qatools.ru/display/AL/Getting+Started" target="_blank" rel="external">http://wiki.qatools.ru/display/AL/Getting+Started</a></p>
 
 
                 <hr>
@@ -224,12 +274,12 @@
                 <ul class="pager">
                     
                         <li class="previous">
-                            <a href="/2015/06/01/Design Support Library轻松打造酷炫Android5.0风格/" data-toggle="tooltip" data-placement="top" title="Design Support Library 轻松打造酷炫Android5.0风格">&larr; Previous Post</a>
+                            <a href="/2017/04/13/移动端自动化测试系列之四——生成定位元素/" data-toggle="tooltip" data-placement="top" title="移动端自动化测试系列之三——Allure测试报告">&larr; Previous Post</a>
                         </li>
                     
                     
                         <li class="next">
-                            <a href="/2015/04/16/Android webview之java与js交互/" data-toggle="tooltip" data-placement="top" title="Android Hybrid app开发之java与js交互">Next Post &rarr;</a>
+                            <a href="/2017/04/12/移动端自动化测试系列之二——pytest入门详解/" data-toggle="tooltip" data-placement="top" title="移动端自动化测试系列之二——pytest入门详解">Next Post &rarr;</a>
                         </li>
                     
                 </ul>
@@ -276,7 +326,7 @@
                     <h5><a href="/tags/">FEATURED TAGS</a></h5>
                     <div class="tags">
                        
-                          <a class="tag" href="/tags/#java8" title="java8">java8</a>
+                          <a class="tag" href="/tags/#移动自动化测试" title="移动自动化测试">移动自动化测试</a>
                         
                     </div>
                 </section>
@@ -306,8 +356,8 @@
 <script type="text/javascript">
     /* * * CONFIGURATION VARIABLES * * */
     var disqus_shortname = "hexo-theme-huxblog";
-    var disqus_identifier = "http://mio4kon.com/2015/06/01/Android使用JAVA8新特性/";
-    var disqus_url = "http://mio4kon.com/2015/06/01/Android使用JAVA8新特性/";
+    var disqus_identifier = "http://mio4kon.com/2017/04/12/移动端自动化测试系列之三——Allure测试报告/";
+    var disqus_url = "http://mio4kon.com/2017/04/12/移动端自动化测试系列之三——Allure测试报告/";
 
     (function() {
         var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;

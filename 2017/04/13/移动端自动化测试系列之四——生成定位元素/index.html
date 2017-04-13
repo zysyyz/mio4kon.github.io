@@ -13,11 +13,11 @@
 
     <title>
         
-          Android如何使用JAVA8新特性--lambda表达式 - Mio4kon的博客 | Mio4kon&#39;s Blog
+          移动端自动化测试系列之三——Allure测试报告 - Mio4kon的博客 | Mio4kon&#39;s Blog
         
     </title>
 
-    <link rel="canonical" href="http://mio4kon.com/2015/06/01/Android使用JAVA8新特性/">
+    <link rel="canonical" href="http://mio4kon.com/2017/04/13/移动端自动化测试系列之四——生成定位元素/">
 
     <!-- Bootstrap Core CSS -->
     <link rel="stylesheet" href="/css/bootstrap.min.css">
@@ -165,14 +165,14 @@
                 <div class="post-heading">
                     <div class="tags">
                         
-                          <a class="tag" href="/tags/#java8" title="java8">java8</a>
+                          <a class="tag" href="/tags/#移动自动化测试" title="移动自动化测试">移动自动化测试</a>
                         
                     </div>
-                    <h1>Android如何使用JAVA8新特性--lambda表达式</h1>
-                    <h2 class="subheading">lambda表达式</h2>
+                    <h1>移动端自动化测试系列之三——Allure测试报告</h1>
+                    <h2 class="subheading">生成美观实用的测试报告</h2>
                     <span class="meta">
                         Posted by Mio4kon on
-                        2015-06-01
+                        2017-04-13
                     </span>
                 </div>
             </div>
@@ -191,30 +191,66 @@
                 col-md-10 col-md-offset-1
                 post-container">
 
-                <h1 id="准备工作"><a href="#准备工作" class="headerlink" title="准备工作"></a>准备工作</h1><p>1.下载java8,并配置java8环境变量.</p>
-<p>2.配置参数可以自由切换java7,java8 (mac 环境)</p>
-<blockquote>
-<p>在.bash_profile下添加</p>
-</blockquote>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">export JAVA7_HOME=/Library/Java/JavaVirtualMachines/jdk1.7.0_71.jdk/Contents/Home</div><div class="line">export JAVA8_HOME=/Library/Java/JavaVirtualMachines/jdk1.8.0_45.jdk/Contents/Home</div><div class="line">export JAVA_HOME=$JAVA7_HOME</div></pre></td></tr></table></figure>
-<blockquote>
-<p>在终端执行</p>
-</blockquote>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">alias jdk8=&apos;export JAVA_HOME=$JAVA_8_HOME&apos;  </div><div class="line">alias jdk7=&apos;export JAVA_HOME=$JAVA_7_HOME&apos;</div></pre></td></tr></table></figure>
-<p>以后就可以在终端通过<code>jdk8</code>,<code>jdk7</code>来切换java环境.</p>
-<a id="more"></a>
-<h1 id="使用gradle-retrolambda库"><a href="#使用gradle-retrolambda库" class="headerlink" title="使用gradle-retrolambda库"></a>使用gradle-retrolambda库</h1><p><a href="https://github.com/evant/gradle-retrolambda" target="_blank" rel="external">gradle-retrolambda</a>库可以使android使用lambda表达式,如果不懂lambda表达式可以自行谷歌~</p>
-<p>具体配置过程:</p>
+                <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>之所以把定位元素单独拎出来说,是因为我觉得在写移动端测试框架的时候,如果处理不好的话,元素的定位是比较麻烦的事情.</p>
+<p>如果对 <code>Appium</code> 稍微了解的童鞋一定知道定位元素的方式有很多种:</p>
+<ul>
+<li>id</li>
+<li>name</li>
+<li>xpath</li>
+<li>tag_name</li>
+<li>…</li>
+</ul>
+<p>这么多的查找方式如果都写在代码中如下:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">find_elements_by_id(R.id.login)</div><div class="line">find_elements_by_name(<span class="string">'登录'</span>)</div><div class="line">find_elements_by_xpath(<span class="string">'//android.support.v7.widget.RecyclerView'</span>)</div><div class="line">....</div><div class="line"><span class="comment"># 甚至还有查单个元素的find_element_by_*的方法</span></div></pre></td></tr></table></figure>
+<p>如果都写在代码会有什么结果?</p>
 <ol>
-<li>右键model-&gt;open model settings-&gt;jdk location设置为jdk8的路径</li>
-<li>在model的<code>build.gradle</code>中使用如下,筒子们可以对照添加.</li>
+<li>不直观,不利于查找</li>
+<li>如果页面元素发生变动,比如id突然变化.但是整体case没有任何改变.我们还需要去改<strong>代码</strong>.</li>
 </ol>
-<figure class="highlight groovy"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">buildscript &#123;</div><div class="line">    repositories &#123;</div><div class="line">        mavenLocal()</div><div class="line">        mavenCentral()</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    dependencies &#123;</div><div class="line">        classpath <span class="string">'me.tatarka:gradle-retrolambda:3.1.0'</span></div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line">apply <span class="string">plugin:</span> <span class="string">'com.android.application'</span></div><div class="line">apply <span class="string">plugin:</span> <span class="string">'me.tatarka.retrolambda'</span></div><div class="line">android &#123;</div><div class="line">    compileSdkVersion <span class="number">22</span></div><div class="line">    buildToolsVersion <span class="string">"22.0.1"</span></div><div class="line"></div><div class="line">    compileOptions &#123;</div><div class="line">        sourceCompatibility JavaVersion.VERSION_1_8</div><div class="line">        targetCompatibility JavaVersion.VERSION_1_8</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    defaultConfig &#123;</div><div class="line">        applicationId <span class="string">"com.mio.rxjavademo"</span></div><div class="line">        minSdkVersion <span class="number">14</span></div><div class="line">        targetSdkVersion <span class="number">22</span></div><div class="line">        versionCode <span class="number">1</span></div><div class="line">        versionName <span class="string">"1.0"</span></div><div class="line">    &#125;</div><div class="line">    buildTypes &#123;</div><div class="line">        release &#123;</div><div class="line">            minifyEnabled <span class="literal">false</span></div><div class="line">            proguardFiles getDefaultProguardFile(<span class="string">'proguard-android.txt'</span>), <span class="string">'proguard-rules.pro'</span></div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line">dependencies &#123;</div><div class="line">    compile fileTree(<span class="string">dir:</span> <span class="string">'libs'</span>, <span class="string">include:</span> [<span class="string">'*.jar'</span>])</div><div class="line">    compile <span class="string">'com.android.support:appcompat-v7:22.1.1'</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>最后就可以优雅的使用lambda表达式了.是不是瞬间觉得逼格变高了?</p>
-<p>Update:</p>
-<blockquote>
-<p>过时,最新Android Studio已经支持</p>
-</blockquote>
+<p>那么如何去解决这两个痛点,就是这篇教程的主要目的,在说到解决痛点之前,我先<strong>简单</strong>介绍几款小框架,在最后会说明为什么结合了这几款小框架就能够解决这两个痛点.如果对着几个小框架毕竟熟悉,可以直接看最后一小节.</p>
+<h1 id="PyYAML"><a href="#PyYAML" class="headerlink" title="PyYAML"></a>PyYAML</h1><p>安装</p>
+<pre><code>pip3 install PyYAML
+</code></pre><p>用于解析 <code>yaml</code> 文件</p>
+<p>使用方法非常简单:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">parse</span><span class="params">()</span>:</span></div><div class="line">    L.i(<span class="string">'解析page.yaml, Path:'</span> + pages_path)</div><div class="line">    <span class="keyword">with</span> open(pages_path, <span class="string">'r'</span>, encoding=<span class="string">'utf-8'</span>) <span class="keyword">as</span> f:</div><div class="line">        <span class="keyword">return</span> yaml.safe_load(f)</div></pre></td></tr></table></figure>
+<p>这样就可以把 <code>yaml</code> 文件的内容解析成一个对象</p>
+<h1 id="watchdog"><a href="#watchdog" class="headerlink" title="watchdog"></a>watchdog</h1><p>安装</p>
+<pre><code>pip3 install watchdog
+</code></pre><p>用于监听某文件是否发生变化,一旦发生变化(保存,删除等)既执行回掉.</p>
+<p>先写一个Handler </p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">WatchHandler</span><span class="params">(PatternMatchingEventHandler)</span>:</span></div><div class="line">	<span class="comment"># 监听文件类型</span></div><div class="line">	patterns = [<span class="string">"*.yaml"</span>]</div><div class="line">   <span class="comment"># 想要监听的文件路径</span></div><div class="line">    watch_path = <span class="string">"/Users/mio4kon/.../pages.yaml"</span></div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">on_created</span><span class="params">(self, event)</span>:</span></div><div class="line">    		<span class="comment"># 比对看看是否真的是想要监听的文件</span></div><div class="line">        <span class="keyword">if</span> self.watch_path == event.src_path:</div><div class="line">            L.i(<span class="string">'监听到文件发生了变化'</span>)</div><div class="line">        <span class="keyword">try</span>:</div><div class="line">            gen_page_py()</div><div class="line">        <span class="keyword">except</span> Exception <span class="keyword">as</span> e:</div><div class="line">            <span class="keyword">pass</span></div></pre></td></tr></table></figure>
+<p>使用</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">if</span> __name__ == <span class="string">"__main__"</span>:</div><div class="line">    event_handler = WatchHandler()</div><div class="line">    full_path = event_handler.watch_path</div><div class="line">    path = full_path[:full_path.rfind(<span class="string">'/'</span>) + <span class="number">1</span>]</div><div class="line">    observer = Observer()</div><div class="line">    observer.schedule(event_handler, path)</div><div class="line">    observer.start()</div><div class="line">    <span class="keyword">try</span>:</div><div class="line">        <span class="keyword">while</span> <span class="keyword">True</span>:</div><div class="line">            time.sleep(<span class="number">1</span>)</div><div class="line">    <span class="keyword">except</span> KeyboardInterrupt:</div><div class="line">        observer.stop()</div><div class="line">    observer.join()</div></pre></td></tr></table></figure>
+<p>这样的话每当<code>pages.yaml</code>文件发生变化都会执行我定义的<code>gen_page_py()</code>方法.</p>
+<p>这些是干什么的用的呢?后面会说到.现在只需要知道 <code>watchdog</code> 能做什么即可.</p>
+<h1 id="Jinja2"><a href="#Jinja2" class="headerlink" title="Jinja2"></a>Jinja2</h1><p>安装</p>
+<pre><code>pip3 install Jinja2
+</code></pre><p>用于生成模板代码.</p>
+<p>使用方法</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@staticmethod</span></div><div class="line">   <span class="function"><span class="keyword">def</span> <span class="title">gen_page_py</span><span class="params">()</span>:</span></div><div class="line">       <span class="string">"""</span></div><div class="line">       利用jinja2生成pages.py文件</div><div class="line">       """</div><div class="line">       base_dir = Config.BASE_PATH_DIR</div><div class="line">       template_loader = jinja2.FileSystemLoader(searchpath=base_dir+<span class="string">"/page/template"</span>)</div><div class="line">       template_env = jinja2.Environment(loader=template_loader)</div><div class="line">       page_list = GenPages.gen_page_list()</div><div class="line">       _templateVars = &#123;</div><div class="line">           <span class="string">'page_list'</span>: page_list</div><div class="line">       &#125;</div><div class="line">       template = template_env.get_template(<span class="string">"pages"</span>)</div><div class="line">       <span class="keyword">with</span> open(base_dir+<span class="string">'/page/pages.py'</span>, <span class="string">'w'</span>, encoding=<span class="string">'utf-8'</span>) <span class="keyword">as</span> f:</div><div class="line">           f.write(template.render(_templateVars))</div></pre></td></tr></table></figure>
+<h1 id="效果"><a href="#效果" class="headerlink" title="效果"></a>效果</h1><p>之所以要用到上面这三个框架.目的是为了将元素定位简单化.并将定位的方式从代码中抽离.方便查找以及修改用例</p>
+<p>之前说的两个痛点,我在最初学习 <code>Appium</code> 的时候就深有体会,于是我搜寻了很多相关的测试框架,最终找到一种我认为比较科学的解决方式,其实这个解决方式还是之前在写java测试框架时看过的某一款框架(<a href="https://testerhome.com/topics/6798" target="_blank" rel="external">patatiumAppUi</a>)中用到的方式,不过其作者使用的是xml来定位元素,而且在使用方式上也略微麻烦一点,如果你还有更好的想法,希望能分享出来.</p>
+<p>总之通过上述三个框架组合最终不仅解决了上面两个痛点,而且非常易于添加新的元素查找.具体使用方式如下.</p>
+<h2 id="开启文件监听"><a href="#开启文件监听" class="headerlink" title="开启文件监听"></a>开启文件监听</h2><p>执行项目中的 <code>watch_dog.py</code></p>
+<pre><code>python3 watch_dog.py
+</code></pre><h2 id="定位元素"><a href="#定位元素" class="headerlink" title="定位元素"></a>定位元素</h2><p>打开在项目中的<code>pages.yaml</code>文件写入如下内容:</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="meta">---</span></div><div class="line"><span class="attr">LoginPage:</span></div><div class="line"><span class="attr">  dec:</span> 登录页面</div><div class="line"><span class="attr">  locators:</span></div><div class="line"><span class="bullet">    -</span></div><div class="line"><span class="attr">      name:</span> 注册</div><div class="line"><span class="attr">      timeOutInSeconds:</span> <span class="number">20</span></div><div class="line"><span class="attr">      type:</span> name</div><div class="line"><span class="attr">      value:</span> 注册</div></pre></td></tr></table></figure>
+<p>保存该文件</p>
+<p>至此,文件定位已经完成了.剩下要做的就是在case中用到这个定位的元素了.</p>
+<h2 id="使用元素"><a href="#使用元素" class="headerlink" title="使用元素"></a>使用元素</h2><p>使用元素也很简单,下面是点击元素的方法:</p>
+<pre><code>action.click(LoginPage.登录)
+</code></pre><h2 id="yaml配置说明"><a href="#yaml配置说明" class="headerlink" title="yaml配置说明"></a>yaml配置说明</h2><ul>
+<li><code>LoginPage</code> : 主要标识元素所属页面   </li>
+<li><code>dec</code>:描述页面,可以省略</li>
+<li><code>locators - name</code>: 定位元素的名称  </li>
+<li><code>locators - timeOutInSeconds</code>: 超时时间,重试查找的时间,省略后默认是20秒  </li>
+<li><code>locators - type</code>: 定位元素方式 </li>
+<li><code>locators - value</code>:定位元素的值</li>
+</ul>
+<h1 id="参考链接"><a href="#参考链接" class="headerlink" title="参考链接"></a>参考链接</h1><p><a href="http://pyyaml.org/wiki/PyYAMLDocumentation" target="_blank" rel="external">http://pyyaml.org/wiki/PyYAMLDocumentation</a></p>
+<p><a href="https://pypi.python.org/pypi/watchdog" target="_blank" rel="external">https://pypi.python.org/pypi/watchdog</a></p>
+<p><a href="http://jinja.pocoo.org/docs/2.9/" target="_blank" rel="external">http://jinja.pocoo.org/docs/2.9/</a></p>
+<p><a href="https://testerhome.com/topics/6798" target="_blank" rel="external">https://testerhome.com/topics/6798</a></p>
 
 
                 <hr>
@@ -223,13 +259,9 @@
 
                 <ul class="pager">
                     
-                        <li class="previous">
-                            <a href="/2015/06/01/Design Support Library轻松打造酷炫Android5.0风格/" data-toggle="tooltip" data-placement="top" title="Design Support Library 轻松打造酷炫Android5.0风格">&larr; Previous Post</a>
-                        </li>
-                    
                     
                         <li class="next">
-                            <a href="/2015/04/16/Android webview之java与js交互/" data-toggle="tooltip" data-placement="top" title="Android Hybrid app开发之java与js交互">Next Post &rarr;</a>
+                            <a href="/2017/04/12/移动端自动化测试系列之三——Allure测试报告/" data-toggle="tooltip" data-placement="top" title="移动端自动化测试系列之三——Allure测试报告">Next Post &rarr;</a>
                         </li>
                     
                 </ul>
@@ -276,7 +308,7 @@
                     <h5><a href="/tags/">FEATURED TAGS</a></h5>
                     <div class="tags">
                        
-                          <a class="tag" href="/tags/#java8" title="java8">java8</a>
+                          <a class="tag" href="/tags/#移动自动化测试" title="移动自动化测试">移动自动化测试</a>
                         
                     </div>
                 </section>
@@ -306,8 +338,8 @@
 <script type="text/javascript">
     /* * * CONFIGURATION VARIABLES * * */
     var disqus_shortname = "hexo-theme-huxblog";
-    var disqus_identifier = "http://mio4kon.com/2015/06/01/Android使用JAVA8新特性/";
-    var disqus_url = "http://mio4kon.com/2015/06/01/Android使用JAVA8新特性/";
+    var disqus_identifier = "http://mio4kon.com/2017/04/13/移动端自动化测试系列之四——生成定位元素/";
+    var disqus_url = "http://mio4kon.com/2017/04/13/移动端自动化测试系列之四——生成定位元素/";
 
     (function() {
         var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;

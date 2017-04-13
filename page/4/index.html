@@ -13,11 +13,11 @@
 
     <title>
         
-          利用 jEnv 管理 Mac OS 多java版本 - Mio4kon的博客 | Mio4kon&#39;s Blog
+          Mio4kon的博客 | Mio4kon&#39;s Blog
         
     </title>
 
-    <link rel="canonical" href="http://mio4kon.com/2017/02/20/利用 jEnv 管理 Mac OS 多java版本/">
+    <link rel="canonical" href="http://mio4kon.com/page/4/">
 
     <!-- Bootstrap Core CSS -->
     <link rel="stylesheet" href="/css/bootstrap.min.css">
@@ -147,128 +147,205 @@
 
 
     <!-- Main Content -->
-    
-<!-- Image to hack wechat -->
-<!-- <img src="http://mio4kon.com/img/icon_wechat.png" width="0" height="0"> -->
-<!-- <img src="{{ site.baseurl }}/{% if page.header-img %}{{ page.header-img }}{% else %}{{ site.header-img }}{% endif %}" width="0" height="0"> -->
-
-<!-- Post Header -->
-<style type="text/css">
-    header.intro-header{
-        background-image: url('/img/home-bg.jpg')
-    }
-</style>
-<header class="intro-header" >
+    <!-- Page Header -->
+<header class="intro-header" style="background-image: url('/img/home-bg.jpg')">
     <div class="container">
         <div class="row">
-            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
-                <div class="post-heading">
-                    <div class="tags">
-                        
-                          <a class="tag" href="/tags/#开发工具" title="开发工具">开发工具</a>
-                        
-                    </div>
-                    <h1>利用 jEnv 管理 Mac OS 多java版本</h1>
-                    <h2 class="subheading">开发工具推荐</h2>
-                    <span class="meta">
-                        Posted by Mio4kon on
-                        2017-02-20
-                    </span>
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1 ">
+                <div class="site-heading">
+                    <h1>Mio4kon</h1>
+                    <!--<hr class="small">-->
+                    <span class="subheading">扶我起来 我还能送!</span>
                 </div>
             </div>
         </div>
     </div>
 </header>
 
-<!-- Post Content -->
-<article>
-    <div class="container">
-        <div class="row">
 
+
+<!-- Main Content -->
+<div class="container">
+    <div class="row">
+        
+
+<!-- USE SIDEBAR -->
     <!-- Post Container -->
             <div class="
-                col-lg-8 col-lg-offset-2
-                col-md-10 col-md-offset-1
-                post-container">
+                col-lg-8 col-lg-offset-1
+                col-md-8 col-md-offset-1
+                col-sm-12
+                col-xs-12
+                post-container
+            ">
+            
+                <!-- Main Content -->
 
-                <p>以前管理java分支用的是<code>alias</code>的方式,最近发现一个工具<code>jEnv</code>也非常好用,不只可以管理java版本,还可管理maven,tomcat等等的版本控制.</p>
-<p>使用如下:</p>
-<ul>
-<li><p>安装 jEnv</p>
-<pre><code>curl -L -s get.jenv.io | bash
-</code></pre></li>
-<li><p>创建对应文件夹</p>
-<pre><code>mkdir -p $HOME/.jenv/candidates/java
-cd ~/.jenv/candidates/java
-mkdir 1.7
-mkdir 1.8
-</code></pre></li>
-<li><p>指定映射</p>
-<pre><code>ln -s /Library/Java/JavaVirtualMachines/jdk1.7.0_80.jdk/Contents/Home/bin ~/.jenv/candidates/java/1.7
-ln -s /Library/Java/JavaVirtualMachines/jdk1.8.0_25.jdk/Contents/Home/bin ~/.jenv/candidates/java/1.8 
-</code></pre></li>
+
+<div class="post-preview">
+
+    <a href="/2014/05/21/hexo命令与md语法/">
+        <h2 class="post-title">
+            Hexo 命令 与 MarkDown 语法
+        </h2>
+        <h3 class="post-subtitle">
+            hexo的一些常用的命令以及MarkDown的一些语法知识
+        </h3>
+        <div class="post-content-preview">
+            常用命令hexo new &quot;postName&quot; #新建文章hexo new page &quot;pageName&quot;     #新建页面hexo generate #生成静态页面至public目录hexo server #开启预览访问端口（默认端口4000，&#39;ctrl + c&#39;关闭server）hexo deploy #将.deploy目录部署到......
+        </div>
+    </a>
+    <p class="post-meta">
+        Posted by Mio4kon on
+        2014-05-21
+    </p>
+
+</div>
+<hr>
+
+
+
+<!-- Pager -->
+
+<ul class="pager">
+    
+        <li class="previous">
+            <a href="/page/3/">&larr; Newer Posts</a>
+        </li>
+    
+    
 </ul>
-<p>上面映射的具体版本要根据自己电脑装的来,别直接复制用了.</p>
-<ul>
-<li><p>切换环境</p>
-<pre><code>jenv use java 1.8
-</code></pre></li>
-</ul>
-<p>更多用法参见:</p>
-<p><a href="https://github.com/linux-china/jenv" target="_blank" rel="external">https://github.com/linux-china/jenv</a></p>
 
 
-                <hr>
 
-                
-
-                <ul class="pager">
-                    
-                        <li class="previous">
-                            <a href="/2017/04/12/移动端自动化测试系列之一——Appium环境搭建/" data-toggle="tooltip" data-placement="top" title="移动端自动化测试系列之一——Appium环境搭建">&larr; Previous Post</a>
-                        </li>
-                    
-                    
-                        <li class="next">
-                            <a href="/2017/02/13/自动化之旅--Appium/" data-toggle="tooltip" data-placement="top" title="自动化之旅--Appium">Next Post &rarr;</a>
-                        </li>
-                    
-                </ul>
-
-                
-
-                
-                <!-- disqus 评论框 start -->
-                <div class="comment">
-                    <div id="disqus_thread" class="disqus-thread"></div>
-                </div>
-                <!-- disqus 评论框 end -->
+                <!-- 如果开启评论功能 -->
                 
 
             </div>
-    <!-- Side Catalog Container -->
-        
-
     <!-- Sidebar Container -->
-
             <div class="
-                col-lg-8 col-lg-offset-2
-                col-md-10 col-md-offset-1
-                sidebar-container">
-
+                col-lg-3 col-lg-offset-0
+                col-md-3 col-md-offset-0
+                col-sm-12
+                col-xs-12
+                sidebar-container
+            ">
                 <!-- Featured Tags -->
                 
                 <section>
                     <!-- no hr -->
                     <h5><a href="/tags/">FEATURED TAGS</a></h5>
                     <div class="tags">
-                       
-                          <a class="tag" href="/tags/#开发工具" title="开发工具">开发工具</a>
+                        
+                            
+                        
+                            
+                        
+                            
+                        
+                            
+                        
+                            
+                        
+                            
+                            <a href="/tags/#Material Design" title="Material Design" rel="3">Material Design</a>
+                            
+                        
+                            
+                        
+                            
+                        
+                            
+                            <a href="/tags/#Kotlin" title="Kotlin" rel="2">Kotlin</a>
+                            
+                        
+                            
+                        
+                            
+                        
+                            
+                        
+                            
+                        
+                            
+                        
+                            
+                        
+                            
+                        
+                            
+                        
+                            
+                            <a href="/tags/#移动自动化测试" title="移动自动化测试" rel="4">移动自动化测试</a>
+                            
+                        
+                            
+                        
+                            
+                        
+                            
+                        
+                            
+                            <a href="/tags/#Head First,设计模式" title="Head First,设计模式" rel="2">Head First,设计模式</a>
+                            
+                        
+                            
+                        
+                            
                         
                     </div>
                 </section>
                 
 
+                <!-- Short About -->
+                <section class="visible-md visible-lg">
+                    <hr><h5><a href="/about/">ABOUT ME</a></h5>
+                    <div class="short-about">
+
+                        
+                            <img src="/img/Mio-Akiyama.jpg" />
+                        
+
+                        
+                            <p>扶我起来,我还能送!</p>
+                        
+
+                        <!-- SNS Link -->
+                        <ul class="list-inline">
+                            
+                            
+                            
+
+                            
+                                <li>
+                                    <a target="_blank" href="http://weibo.com/u/3198010790">
+                                        <span class="fa-stack fa-lg">
+                                            <i class="fa fa-circle fa-stack-2x"></i>
+                                            <i class="fa fa-weibo fa-stack-1x fa-inverse"></i>
+                                        </span>
+                                    </a>
+                                </li>
+                            
+
+                            
+
+                            
+                                <li>
+                                    <a target="_blank"  href="https://github.com/Mio4kon">
+                                        <span class="fa-stack fa-lg">
+                                            <i class="fa fa-circle fa-stack-2x"></i>
+                                            <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                                        </span>
+                                    </a>
+                                </li>
+                            
+                            
+                            
+                            
+                        </ul>
+                    </div>
+                </section>
+                
                 <!-- Friends Blog -->
                 
                 <hr>
@@ -281,66 +358,9 @@ ln -s /Library/Java/JavaVirtualMachines/jdk1.8.0_25.jdk/Contents/Home/bin ~/.jen
                 </ul>
                 
             </div>
-
-        </div>
+        
     </div>
-</article>
-
-
-
-
-<!-- disqus 公共JS代码 start (一个网页只需插入一次) -->
-<script type="text/javascript">
-    /* * * CONFIGURATION VARIABLES * * */
-    var disqus_shortname = "hexo-theme-huxblog";
-    var disqus_identifier = "http://mio4kon.com/2017/02/20/利用 jEnv 管理 Mac OS 多java版本/";
-    var disqus_url = "http://mio4kon.com/2017/02/20/利用 jEnv 管理 Mac OS 多java版本/";
-
-    (function() {
-        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
-        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
-        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
-    })();
-</script>
-<!-- disqus 公共JS代码 end -->
-
-
-
-
-<!-- async load function -->
-<script>
-    function async(u, c) {
-      var d = document, t = 'script',
-          o = d.createElement(t),
-          s = d.getElementsByTagName(t)[0];
-      o.src = u;
-      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
-      s.parentNode.insertBefore(o, s);
-    }
-</script>
-<!-- anchor-js, Doc:http://bryanbraun.github.io/anchorjs/ -->
-<script>
-    async("https://cdn.bootcss.com/anchor-js/1.1.1/anchor.min.js",function(){
-        anchors.options = {
-          visible: 'always',
-          placement: 'right',
-          icon: '#'
-        };
-        anchors.add().remove('.intro-header h1').remove('.subheading').remove('.sidebar-container h5');
-    })
-</script>
-<style>
-    /* place left on bigger screen */
-    @media all and (min-width: 800px) {
-        .anchorjs-link{
-            position: absolute;
-            left: -0.75em;
-            font-size: 1.1em;
-            margin-top : -0.1em;
-        }
-    }
-</style>
-
+</div>
 
 
     <!-- Footer -->

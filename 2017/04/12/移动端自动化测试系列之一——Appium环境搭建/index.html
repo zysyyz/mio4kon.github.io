@@ -13,11 +13,11 @@
 
     <title>
         
-          利用 jEnv 管理 Mac OS 多java版本 - Mio4kon的博客 | Mio4kon&#39;s Blog
+          移动端自动化测试系列之一——Appium环境搭建 - Mio4kon的博客 | Mio4kon&#39;s Blog
         
     </title>
 
-    <link rel="canonical" href="http://mio4kon.com/2017/02/20/利用 jEnv 管理 Mac OS 多java版本/">
+    <link rel="canonical" href="http://mio4kon.com/2017/04/12/移动端自动化测试系列之一——Appium环境搭建/">
 
     <!-- Bootstrap Core CSS -->
     <link rel="stylesheet" href="/css/bootstrap.min.css">
@@ -165,14 +165,14 @@
                 <div class="post-heading">
                     <div class="tags">
                         
-                          <a class="tag" href="/tags/#开发工具" title="开发工具">开发工具</a>
+                          <a class="tag" href="/tags/#移动自动化测试" title="移动自动化测试">移动自动化测试</a>
                         
                     </div>
-                    <h1>利用 jEnv 管理 Mac OS 多java版本</h1>
-                    <h2 class="subheading">开发工具推荐</h2>
+                    <h1>移动端自动化测试系列之一——Appium环境搭建</h1>
+                    <h2 class="subheading">Appium环境搭建</h2>
                     <span class="meta">
                         Posted by Mio4kon on
-                        2017-02-20
+                        2017-04-12
                     </span>
                 </div>
             </div>
@@ -191,31 +191,39 @@
                 col-md-10 col-md-offset-1
                 post-container">
 
-                <p>以前管理java分支用的是<code>alias</code>的方式,最近发现一个工具<code>jEnv</code>也非常好用,不只可以管理java版本,还可管理maven,tomcat等等的版本控制.</p>
-<p>使用如下:</p>
-<ul>
-<li><p>安装 jEnv</p>
-<pre><code>curl -L -s get.jenv.io | bash
-</code></pre></li>
-<li><p>创建对应文件夹</p>
-<pre><code>mkdir -p $HOME/.jenv/candidates/java
-cd ~/.jenv/candidates/java
-mkdir 1.7
-mkdir 1.8
-</code></pre></li>
-<li><p>指定映射</p>
-<pre><code>ln -s /Library/Java/JavaVirtualMachines/jdk1.7.0_80.jdk/Contents/Home/bin ~/.jenv/candidates/java/1.7
-ln -s /Library/Java/JavaVirtualMachines/jdk1.8.0_25.jdk/Contents/Home/bin ~/.jenv/candidates/java/1.8 
-</code></pre></li>
-</ul>
-<p>上面映射的具体版本要根据自己电脑装的来,别直接复制用了.</p>
-<ul>
-<li><p>切换环境</p>
-<pre><code>jenv use java 1.8
-</code></pre></li>
-</ul>
-<p>更多用法参见:</p>
-<p><a href="https://github.com/linux-china/jenv" target="_blank" rel="external">https://github.com/linux-china/jenv</a></p>
+                <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>最近准备写一系列移动端的自动化测试教程,大致打算分为五篇.包含环境搭建,依赖库的使用,以及最后的框架搭建和使用.</p>
+<p>本教程基于 <code>Appium</code>,如果没有听过 <code>Appium</code> 或者不太清楚它是做什么的可以参考我之前的一篇文章: <a href="http://mio4kon.com/2017/02/13/%E8%87%AA%E5%8A%A8%E5%8C%96%E4%B9%8B%E6%97%85--Appium/">自动化之旅–Appium</a>,之前这篇文章使用的 <strong>Java</strong> 做为开发语言. 而这一系列是我将使用 <strong>Python</strong> 做为开发语言(<del>人生苦短  我用Python</del>).</p>
+<p>如果你有一门编程语言的经验,那么无论是否会 <strong>Python</strong> 只要跟着教程,都可以游刃有余的(毕竟虽然以前稍微了解过python,但都没有好好用过,只写过一写简单的爬虫,所以还请python大牛纠错!)</p>
+<p>这里假定你对 <code>Appium</code> 是什么以及能做什么有一定了解,那么我们开始着手搭建Appium的环境了.</p>
+<h1 id="搭建环境"><a href="#搭建环境" class="headerlink" title="搭建环境"></a>搭建环境</h1><p>安装 <code>appium</code> 服务端:</p>
+<pre><code>npm install -g appium
+</code></pre><p>如果没有<code>npm</code>命令,先安装<code>node.js</code></p>
+<pre><code>brew install node
+</code></pre><p>检查 <code>Appium</code> 是否安装成功:</p>
+<pre><code>appium -v
+</code></pre><p>执行后会显示<code>appium</code>的版本号,我现在使用的是 1.6.4 版本.</p>
+<p><img src="http://mio4kon.qiniudn.com/14919686483120.jpg" alt=""></p>
+<p>安装<code>appium-doctor</code>,用于检查系统环境是否支持后续测试:</p>
+<pre><code>npm install -g appium-doctor
+appium-doctor
+</code></pre><p><img src="http://mio4kon.qiniudn.com/14919690240687.jpg" alt=""></p>
+<p>这里需要安装一些测试相关的依赖:<code>xcode</code>, <code>android SDK</code> 等,还要配置 <code>JAVA_HOME</code>, <code>ANDROID_HOME</code>等等.</p>
+<p>关于 <code>android SDK</code> 相关配置可以参考 <a href="https://gist.github.com/Erichain/0ac3a6aaca0c28ad6551" target="_blank" rel="external">Android SDK 和 Android HOME 配置</a></p>
+<p>其他一些配置依赖可以google一下.基本都有详细配置教程.</p>
+<p>当上图所有配置项都为勾勾的时候.你的 <code>Appium</code> 环境基本已经搭建完成了.</p>
+<p>有了服务端,自然还需要客户端来进行支持.我们的框架就是基于 <code>Appium Client</code> 所提供的 <code>Api</code> 进行搭建的. <code>Appium Client</code>有各种语言的版本.这里我用 Python 版本. </p>
+<p>首先自然要先安装 python3:</p>
+<pre><code>brew install python3
+</code></pre><p>安装 Appium-Python-Client</p>
+<pre><code>pip3 install Appium-Python-Client
+</code></pre><p>这里有一个坑,安装 <code>Appium-Python-Client</code> 的同时会安装一个<code>selenium</code>模块.试着进入python3交互命令行,然后执行下面命令:</p>
+<pre><code>import selenium
+selenium.__version__
+</code></pre><p>结果</p>
+<p><img src="http://mio4kon.qiniudn.com/14919722593823.jpg" alt=""><br>如果你显示的 <code>selenium</code> 版本是当前最新版本<code>3.3.3</code>的话,那么最好使用下面命令将版本装成<code>3.0.2</code></p>
+<pre><code>pip3 install -I selenium==3.0.2
+</code></pre><p>否则的话,在使用<code>Appium-Python-Client</code>的某些Api的话会报错.应该是版本兼容性的问题.以后应该会修复的.</p>
+<p>至此,与 <code>Appium</code> 相关的环境都已经搭建完毕了,下一章会先脱离 <code>Appium</code> 主要讲解 <code>pytest</code> 的使用.</p>
 
 
                 <hr>
@@ -225,12 +233,12 @@ ln -s /Library/Java/JavaVirtualMachines/jdk1.8.0_25.jdk/Contents/Home/bin ~/.jen
                 <ul class="pager">
                     
                         <li class="previous">
-                            <a href="/2017/04/12/移动端自动化测试系列之一——Appium环境搭建/" data-toggle="tooltip" data-placement="top" title="移动端自动化测试系列之一——Appium环境搭建">&larr; Previous Post</a>
+                            <a href="/2017/04/12/移动端自动化测试系列之二——pytest入门详解/" data-toggle="tooltip" data-placement="top" title="移动端自动化测试系列之二——pytest入门详解">&larr; Previous Post</a>
                         </li>
                     
                     
                         <li class="next">
-                            <a href="/2017/02/13/自动化之旅--Appium/" data-toggle="tooltip" data-placement="top" title="自动化之旅--Appium">Next Post &rarr;</a>
+                            <a href="/2017/02/20/利用 jEnv 管理 Mac OS 多java版本/" data-toggle="tooltip" data-placement="top" title="利用 jEnv 管理 Mac OS 多java版本">Next Post &rarr;</a>
                         </li>
                     
                 </ul>
@@ -248,6 +256,20 @@ ln -s /Library/Java/JavaVirtualMachines/jdk1.8.0_25.jdk/Contents/Home/bin ~/.jen
             </div>
     <!-- Side Catalog Container -->
         
+            <div class="
+                col-lg-2 col-lg-offset-0
+                visible-lg-block
+                sidebar-container
+                catalog-container">
+                <div class="side-catalog">
+                    <hr class="hidden-sm hidden-xs">
+                    <h5>
+                        <a class="catalog-toggle" href="#">CATALOG</a>
+                    </h5>
+                    <ul class="catalog-body"></ul>
+                </div>
+            </div>
+        
 
     <!-- Sidebar Container -->
 
@@ -263,7 +285,7 @@ ln -s /Library/Java/JavaVirtualMachines/jdk1.8.0_25.jdk/Contents/Home/bin ~/.jen
                     <h5><a href="/tags/">FEATURED TAGS</a></h5>
                     <div class="tags">
                        
-                          <a class="tag" href="/tags/#开发工具" title="开发工具">开发工具</a>
+                          <a class="tag" href="/tags/#移动自动化测试" title="移动自动化测试">移动自动化测试</a>
                         
                     </div>
                 </section>
@@ -293,8 +315,8 @@ ln -s /Library/Java/JavaVirtualMachines/jdk1.8.0_25.jdk/Contents/Home/bin ~/.jen
 <script type="text/javascript">
     /* * * CONFIGURATION VARIABLES * * */
     var disqus_shortname = "hexo-theme-huxblog";
-    var disqus_identifier = "http://mio4kon.com/2017/02/20/利用 jEnv 管理 Mac OS 多java版本/";
-    var disqus_url = "http://mio4kon.com/2017/02/20/利用 jEnv 管理 Mac OS 多java版本/";
+    var disqus_identifier = "http://mio4kon.com/2017/04/12/移动端自动化测试系列之一——Appium环境搭建/";
+    var disqus_url = "http://mio4kon.com/2017/04/12/移动端自动化测试系列之一——Appium环境搭建/";
 
     (function() {
         var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
@@ -473,6 +495,50 @@ ln -s /Library/Java/JavaVirtualMachines/jdk1.8.0_25.jdk/Contents/Home/bin ~/.jen
 
 
 <!-- Side Catalog -->
+
+<script type="text/javascript">
+    function generateCatalog (selector) {
+        var P = $('div.post-container'),a,n,t,l,i,c;
+        a = P.find('h1,h2,h3,h4,h5,h6');
+        a.each(function () {
+            n = $(this).prop('tagName').toLowerCase();
+            i = "#"+$(this).prop('id');
+            t = $(this).text();
+            c = $('<a href="'+i+'" rel="nofollow">'+t+'</a>');
+            l = $('<li class="'+n+'_nav"></li>').append(c);
+            $(selector).append(l);
+        });
+        return true;    
+    }
+
+    generateCatalog(".catalog-body");
+
+    // toggle side catalog
+    $(".catalog-toggle").click((function(e){
+        e.preventDefault();
+        $('.side-catalog').toggleClass("fold")
+    }))
+
+    /*
+     * Doc: https://github.com/davist11/jQuery-One-Page-Nav
+     * Fork by Hux to support padding
+     */
+    async("/js/jquery.nav.js", function () {
+        $('.catalog-body').onePageNav({
+            currentClass: "active",
+            changeHash: !1,
+            easing: "swing",
+            filter: "",
+            scrollSpeed: 700,
+            scrollOffset: 0,
+            scrollThreshold: .2,
+            begin: null,
+            end: null,
+            scrollChange: null,
+            padding: 80
+        });
+    });
+</script>
 
 
 
