@@ -13,11 +13,11 @@
 
     <title>
         
-          换个主题,还不错 - Mio4kon的博客 | Mio4kon&#39;s Blog
+          Appium踩坑之旅——小米手机 - Mio4kon的博客 | Mio4kon&#39;s Blog
         
     </title>
 
-    <link rel="canonical" href="http://mio4kon.com/2015/08/22/换个主题,还不错/">
+    <link rel="canonical" href="http://mio4kon.com/2017/06/12/Appium踩坑之旅——小米手机/">
 
     <!-- Bootstrap Core CSS -->
     <link rel="stylesheet" href="/css/bootstrap.min.css">
@@ -165,14 +165,14 @@
                 <div class="post-heading">
                     <div class="tags">
                         
-                          <a class="tag" href="/tags/#随笔" title="随笔">随笔</a>
+                          <a class="tag" href="/tags/#移动自动化测试" title="移动自动化测试">移动自动化测试</a>
                         
                     </div>
-                    <h1>换个主题,还不错</h1>
-                    <h2 class="subheading"></h2>
+                    <h1>Appium踩坑之旅——小米手机</h1>
+                    <h2 class="subheading">踩坑之旅</h2>
                     <span class="meta">
-                        Posted by mio on
-                        2015-08-22
+                        Posted by Mio4kon on
+                        2017-06-12
                     </span>
                 </div>
             </div>
@@ -191,7 +191,48 @@
                 col-md-10 col-md-offset-1
                 post-container">
 
-                <p>换了个主题,挺好的..</p>
+                <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>了解过 <code>Appium</code> 或看过我之前写的系列教程的人,一定知道在与<code>Appium Server</code>连接的时候会传入相应的<code>capabilities</code>.</p>
+<ul>
+<li>platformName</li>
+<li>automationName</li>
+<li>autoLaunch</li>
+<li>noSign</li>
+<li>….</li>
+</ul>
+<p><code>automationName</code>是告诉 <code>Appium Server</code>是用什么方式来操作UI元素的.对应源码来说就是使用什么样的 <code>Driver</code>.(下一篇教程会简单的过一遍 <code>Appium Server</code>的源码)</p>
+<p>由于<code>uiautomator2</code>的执行效率以及<strong>支持<code>Toast</code>验证</strong>.使得在写测试用例的时候应优先使用<code>uiautomator2</code>.</p>
+<p>不过当我使用<code>uiautomator2</code>后,尤其是小米手机,那可是一坑接一坑..</p>
+<h1 id="坑一-autoLaunch"><a href="#坑一-autoLaunch" class="headerlink" title="坑一:autoLaunch"></a>坑一:autoLaunch</h1><p>由于公司的平台希望能在跑Case前由平台来控制打开App.所以我将<code>autoLaunch</code>设置为<code>false</code>.起初在我的乐视手机上没有任何问题.但是当换到一台<strong>未跑过测试代码的小米手机</strong>时候,发现一只报一个奇葩的错误:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">[MJSONWP] Encountered internal error running command: ProxyRequestError: Could not proxy command to remote server. Original error: Error: socket hang up</div><div class="line">    at JWProxy.proxy$ (../../../lib/jsonwp-proxy/proxy.js:153:13)</div><div class="line">    at tryCatch (/Users/mio4kon/code/mio4kon_github/appium/node_modules/babel-runtime/regenerator/runtime.js:67:40)</div><div class="line">    at GeneratorFunctionPrototype.invoke [as _invoke] (/Users/mio4kon/code/mio4kon_github/appium/node_modules/babel-runtime/regenerator/runtime.js:315:22)</div><div class="line">    at GeneratorFunctionPrototype.prototype.(anonymous function) [as throw] (/Users/mio4kon/code/mio4kon_github/appium/node_modules/babel-runtime/regenerator/runtime.js:100:21)</div><div class="line">    at GeneratorFunctionPrototype.invoke (/Users/mio4kon/code/mio4kon_github/appium/node_modules/babel-runtime/regenerator/runtime.js:136:37)</div><div class="line">[HTTP] &lt;-- POST /wd/hub/session 500 31412 ms - 216</div></pre></td></tr></table></figure>
+<p>好吧.当时也不知道为啥我就试着把<code>uiautomator2</code>这条删掉.发现一切OK了.竟然能跑起来了.根据多年的控制变量法我得出了”看来小米手机可能不支持uiautomator2吧”. native </p>
+<p>于是后来我就为了兼容小米手机对<code>case</code>做了适配.但是不能验证<code>Toast</code>这个问题就变得很棘手了.所以还要避免用<code>Toast</code>来验证<code>case</code>的成功还是失败.再后来我发现小米手机在使用<code>uiautomator1</code>的时候.会存在反馈特别慢甚至会超时或者找不到等等的问题.在<code>Appium</code>上提<code>ISSUE</code>得到的反馈是使用<code>uiautomator2</code>再试试看.Orz…</p>
+<p>还是得动手靠自己.就此我打算研究下 <code>Appium Server</code>的源码,想要解决的问题有下面两点:</p>
+<ol>
+<li>为什么小米手机在用 <code>uiautomator1</code> 的时候会存在服务端返回超时或找不到元素的情况(必现)</li>
+<li>为什么小米手机Api&gt;18却不支持 <code>uiautomator2</code>呢?是不是我使用姿势的问题?</li>
+</ol>
+<p>带着原因我开始翻源码了(这篇文章不过多涉及源码.主要说结论)</p>
+<p>在说这两个问题之前先说明一个问题:之所以<code>AppiumServer</code>可以控制手机的UI,是因为<code>Appium</code>会在手机上开一个<code>Server</code>,通过<code>AppiumServer</code>与<code>PhoneServer</code>之间的通讯来控制手机UI.</p>
+<p>第一个问题.Debug发现<code>AppiumServer</code>与<code>PhoneServer</code>之间的通讯没有问题.问题主要在于调用<code>uiautomator1</code>的api时抛了异常.但是这个<code>PhoneServer</code>的工程编译各种问题.所以第一个问题暂时先放下.暂时归结于<code>uiautomator1</code>不稳定.有兴趣的小伙伴可以看看这个<code>PhoneServer</code>的源码.</p>
+<p><a href="https://github.com/appium/appium-android-bootstrap" target="_blank" rel="external">https://github.com/appium/appium-android-bootstrap</a></p>
+<p>于是我开始把主要精力放在第二个问题上.因为如果解决第二个问题.那么<code>Toast</code>验证的问题就迎刃而解了.而且现在主流的手机都在<code>Api18</code>以上,可以放心使用<code>uiautomator2</code>.</p>
+<p>直接上源码:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">[appium-uiautomator2-driver:driver.js]</div><div class="line"></div><div class="line">    // If the user sets autoLaunch to false, they are responsible for initAUT() and startAUT()</div><div class="line">    if (this.opts.autoLaunch) &#123;</div><div class="line">      // set up app under test</div><div class="line">      // prepare our actual AUT, get it on the device, etc...</div><div class="line">      await this.initAUT();</div><div class="line">&#125;</div><div class="line"></div><div class="line">  async initAUT () &#123;</div><div class="line">  		....</div><div class="line">    await this.grantPermissions();</div><div class="line">    await this.uiautomator2.installServerApk();</div><div class="line">  &#125;</div></pre></td></tr></table></figure>
+<p>可以发现只要autoLaunch为false,就不会安装ServerApk…</p>
+<p>问题终于找到了.我自己装还不行嘛!! 好了有遇到下一个坑.</p>
+<h1 id="坑二-神隐模式"><a href="#坑二-神隐模式" class="headerlink" title="坑二:神隐模式"></a>坑二:神隐模式</h1><p>当我安装好了ServerApk,再跑用例的时候发现另一个神奇的问题.</p>
+<p><img src="media/14973366788331.jpg" alt=""><br><img src="media/14973370658826.jpg" alt=""></p>
+<p>好吧.又报了个这个错.不过这次过程明显感到不一样.这次可以明细感觉比之前要慢很多.这是因为实际上<code>uiautomator2</code>的服务还在运行.但是始终连不上.</p>
+<p>为什么连不上呢?由于这个是小米手机.而小米有一个<a href="https://jingyan.baidu.com/article/c275f6ba2ac144e33d756731.html" target="_blank" rel="external">神隐模式</a>.简单来说就是后台的应用禁止网络.而<code>uiautomator2</code>的服务恰好是通过代理转发返回响应消息的.这就使得服务一直没有响应,最终报错.</p>
+<p>所有一定要把<code>uiautomator2Server</code>加入神隐模式的白名单,或者关闭神隐模式.</p>
+<h1 id="坑三-INJECT-EVENTS"><a href="#坑三-INJECT-EVENTS" class="headerlink" title="坑三:INJECT_EVENTS"></a>坑三:INJECT_EVENTS</h1><p>解决了上面两个坑.你会发现可以顺利的打开App进行测试了.你以为这就完了?<br>跑完用例你会发现所有的case全部失败了.什么鬼?我用<code>uiautomator1</code>跑用例好好的.怎么一换成<code>uiautomator2</code>全是失败?</p>
+<p>case最后会发现错误信息:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">selenium.common.exceptions.WebDriverException: Message: An unknown server-side </div><div class="line">error occurred while processing the command. Original error: </div><div class="line">java.lang.SecurityException: Injecting to another application requires </div><div class="line">INJECT_EVENTS permission</div></pre></td></tr></table></figure>
+<p><code>INJECT_EVENTS permission</code>又是什么鬼.</p>
+<p>网上搜了一下才发现小米手机需要打开<code>USB调试（安全设置）</code>才可以.但是之前没打开这个设置<code>uiautomator1</code>好像也并没有什么问题.</p>
+<p>总之在开发者模式中打开这个选项.你就可以放心的在小米手机上使用<code>uiautomator2</code>了.</p>
+<p>这三个坑虽然解决起来相当简单.但是当你第一次遇到的时候真的是一脸懵逼.尤其是前面两个坑.网上都找不到原因的.只能靠半猜半试来寻找原因.</p>
+<p>下一篇将会对 <code>appium server</code> 的源码进行分析.梳理 <code>server</code>的流程,有助于解决一些莫名其妙的问题.</p>
 
 
                 <hr>
@@ -200,13 +241,9 @@
 
                 <ul class="pager">
                     
-                        <li class="previous">
-                            <a href="/2015/08/26/Picasso源码分析/" data-toggle="tooltip" data-placement="top" title="Picasso源码分析">&larr; Previous Post</a>
-                        </li>
-                    
                     
                         <li class="next">
-                            <a href="/2015/06/01/Android使用JAVA8新特性/" data-toggle="tooltip" data-placement="top" title="Android如何使用JAVA8新特性--lambda表达式">Next Post &rarr;</a>
+                            <a href="/2017/04/13/移动端自动化测试系列之五——AppiumLich框架使用/" data-toggle="tooltip" data-placement="top" title="移动端自动化测试系列之五——AppiumLich框架使用">Next Post &rarr;</a>
                         </li>
                     
                 </ul>
@@ -224,6 +261,20 @@
             </div>
     <!-- Side Catalog Container -->
         
+            <div class="
+                col-lg-2 col-lg-offset-0
+                visible-lg-block
+                sidebar-container
+                catalog-container">
+                <div class="side-catalog">
+                    <hr class="hidden-sm hidden-xs">
+                    <h5>
+                        <a class="catalog-toggle" href="#">CATALOG</a>
+                    </h5>
+                    <ul class="catalog-body"></ul>
+                </div>
+            </div>
+        
 
     <!-- Sidebar Container -->
 
@@ -239,7 +290,7 @@
                     <h5><a href="/tags/">FEATURED TAGS</a></h5>
                     <div class="tags">
                        
-                          <a class="tag" href="/tags/#随笔" title="随笔">随笔</a>
+                          <a class="tag" href="/tags/#移动自动化测试" title="移动自动化测试">移动自动化测试</a>
                         
                     </div>
                 </section>
@@ -269,8 +320,8 @@
 <script type="text/javascript">
     /* * * CONFIGURATION VARIABLES * * */
     var disqus_shortname = "hexo-theme-huxblog";
-    var disqus_identifier = "http://mio4kon.com/2015/08/22/换个主题,还不错/";
-    var disqus_url = "http://mio4kon.com/2015/08/22/换个主题,还不错/";
+    var disqus_identifier = "http://mio4kon.com/2017/06/12/Appium踩坑之旅——小米手机/";
+    var disqus_url = "http://mio4kon.com/2017/06/12/Appium踩坑之旅——小米手机/";
 
     (function() {
         var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
@@ -449,6 +500,50 @@
 
 
 <!-- Side Catalog -->
+
+<script type="text/javascript">
+    function generateCatalog (selector) {
+        var P = $('div.post-container'),a,n,t,l,i,c;
+        a = P.find('h1,h2,h3,h4,h5,h6');
+        a.each(function () {
+            n = $(this).prop('tagName').toLowerCase();
+            i = "#"+$(this).prop('id');
+            t = $(this).text();
+            c = $('<a href="'+i+'" rel="nofollow">'+t+'</a>');
+            l = $('<li class="'+n+'_nav"></li>').append(c);
+            $(selector).append(l);
+        });
+        return true;    
+    }
+
+    generateCatalog(".catalog-body");
+
+    // toggle side catalog
+    $(".catalog-toggle").click((function(e){
+        e.preventDefault();
+        $('.side-catalog').toggleClass("fold")
+    }))
+
+    /*
+     * Doc: https://github.com/davist11/jQuery-One-Page-Nav
+     * Fork by Hux to support padding
+     */
+    async("/js/jquery.nav.js", function () {
+        $('.catalog-body').onePageNav({
+            currentClass: "active",
+            changeHash: !1,
+            easing: "swing",
+            filter: "",
+            scrollSpeed: 700,
+            scrollOffset: 0,
+            scrollThreshold: .2,
+            begin: null,
+            end: null,
+            scrollChange: null,
+            padding: 80
+        });
+    });
+</script>
 
 
 
