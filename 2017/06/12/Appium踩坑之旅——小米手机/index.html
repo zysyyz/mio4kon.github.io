@@ -97,14 +97,14 @@
 
                         
                         <li>
-                            <a href="/archives/">Archives</a>
+                            <a href="/tags/">Tags</a>
                         </li>
                         
                     
 
                         
                         <li>
-                            <a href="/tags/">Tags</a>
+                            <a href="/archives/">Archives</a>
                         </li>
                         
                     
@@ -221,7 +221,7 @@
 <p>可以发现只要autoLaunch为false,就不会安装ServerApk…</p>
 <p>问题终于找到了.我自己装还不行嘛!! 好了有遇到下一个坑.</p>
 <h1 id="坑二-神隐模式"><a href="#坑二-神隐模式" class="headerlink" title="坑二:神隐模式"></a>坑二:神隐模式</h1><p>当我安装好了ServerApk,再跑用例的时候发现另一个神奇的问题.</p>
-<p><img src="http://mio4kon.qiniudn.com/14973366788331.jpg" alt=""><br><img src="http://mio4kon.qiniudn.com/14973370658826.jpg" alt=""></p>
+<p><img src="http://mio4kon.qiniudn.com/14982050849988.jpg" alt=""><br><img src="http://mio4kon.qiniudn.com/14982051025805.jpg" alt=""></p>
 <p>好吧.又报了个这个错.不过这次过程明显感到不一样.这次可以明细感觉比之前要慢很多.这是因为实际上<code>uiautomator2</code>的服务还在运行.但是始终连不上.</p>
 <p>为什么连不上呢?由于这个是小米手机.而小米有一个<a href="https://jingyan.baidu.com/article/c275f6ba2ac144e33d756731.html" target="_blank" rel="external">神隐模式</a>.简单来说就是后台的应用禁止网络.而<code>uiautomator2</code>的服务恰好是通过代理转发返回响应消息的.这就使得服务一直没有响应,最终报错.</p>
 <p>所有一定要把<code>uiautomator2Server</code>加入神隐模式的白名单,或者关闭神隐模式.</p>
