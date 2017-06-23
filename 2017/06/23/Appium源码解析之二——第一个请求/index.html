@@ -1,0 +1,634 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="android mio4kon mio">
+    <meta name="keyword"  content="">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>
+        
+          Appium源码解析之二——第一个请求 - Mio4kon的博客 | Mio4kon&#39;s Blog
+        
+    </title>
+
+    <link rel="canonical" href="http://mio4kon.com/2017/06/23/Appium源码解析之二——第一个请求/">
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/hux-blog.min.css">
+
+    <!-- Pygments Highlight CSS -->
+    <link rel="stylesheet" href="/css/highlight.css">
+
+    <!-- Custom Fonts -->
+    <!-- <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"> -->
+    <!-- Hux change font-awesome CDN to qiniu -->
+    <link href="https://cdn.staticfile.org/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+
+    <!-- Hux Delete, sad but pending in China
+    <link href='http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/
+    css'>
+    -->
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+
+<!-- hack iOS CSS :active style -->
+<body ontouchstart="">
+
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">Mio4kon</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <!-- Known Issue, found by Hux:
+            <nav>'s height woule be hold on by its content.
+            so, when navbar scale out, the <nav> will cover tags.
+            also mask any touch event of tags, unfortunately.
+        -->
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+
+                    
+
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/about/">About</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/archives/">Archives</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/tags/">Tags</a>
+                        </li>
+                        
+                    
+                    
+                </ul>
+            </div>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+<script>
+    // Drop Bootstarp low-performance Navbar
+    // Use customize navbar with high-quality material design animation
+    // in high-perf jank-free CSS3 implementation
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        // CLOSE
+            $navbar.className = " ";
+            // wait until animation end.
+            setTimeout(function(){
+                // prevent frequently toggle
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        // OPEN
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+    <!-- Main Content -->
+    
+<!-- Image to hack wechat -->
+<!-- <img src="http://mio4kon.com/img/icon_wechat.png" width="0" height="0"> -->
+<!-- <img src="{{ site.baseurl }}/{% if page.header-img %}{{ page.header-img }}{% else %}{{ site.header-img }}{% endif %}" width="0" height="0"> -->
+
+<!-- Post Header -->
+<style type="text/css">
+    header.intro-header{
+        background-image: url('/img/home-bg.jpg')
+    }
+</style>
+<header class="intro-header" >
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+                        
+                          <a class="tag" href="/tags/#移动自动化测试" title="移动自动化测试">移动自动化测试</a>
+                        
+                    </div>
+                    <h1>Appium源码解析之二——第一个请求</h1>
+                    <h2 class="subheading">源码解析</h2>
+                    <span class="meta">
+                        Posted by Mio4kon on
+                        2017-06-23
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+    <!-- Post Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>通过前一篇的源码分析,我们知道<code>Appium</code>如何开启了服务以及如何处理客户端发起的请求.</p>
+<p>本篇教程将根据第一个请求,来看一看<code>Appium</code>初始化到底做了哪些事情.</p>
+<h1 id="创建SessionId"><a href="#创建SessionId" class="headerlink" title="创建SessionId"></a>创建SessionId</h1><p>先看看Server的log:</p>
+<p><img src="http://mio4kon.qiniudn.com/14975248273981.jpg" alt=""></p>
+<p>在创建服务之后,收到的第一个请求就是<code>/wd/hub/session</code>,让我们来分析下收到请求后具体都干了哪些事情.</p>
+<p>上回说到.收到请求后都会在 <code>buildHandler</code>中做请求处理.我们再来看看具体内容:</p>
+<p><strong>[appium-base-driver:lib/mjsonwp/mjsonwp.js]</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line">function buildHandler (app, method, path, spec, driver, isSessCmd) &#123;</div><div class="line">  let asyncHandler = async (req, res) =&gt; &#123;</div><div class="line">   </div><div class="line">    try &#123;</div><div class="line">      if (driver.executeCommand) &#123;</div><div class="line">        driverRes = await driver.executeCommand(spec.command, ...args);</div><div class="line">      &#125; else &#123;</div><div class="line">        driverRes = await driver.execute(spec.command, ...args);</div><div class="line">      &#125;</div><div class="line"></div><div class="line">      // unpack createSession response</div><div class="line">      if (spec.command === &apos;createSession&apos;) &#123;</div><div class="line">        newSessionId = driverRes[0];</div><div class="line">        driverRes = driverRes[1];</div><div class="line">      &#125;</div><div class="line">    &#125;;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>其他代码都删了.我们只关心上面的代码.</p>
+<p><code>driver.executeCommand</code>执行具体操作.操作会返回<code>driverRes</code>信息.而且如果<code>spec.command</code>为 <code>createSession</code>的话返回的第一个内容就是<code>Session</code>.那么我们就从<code>executeCommand</code>入手.</p>
+<p>上一篇说到<code>driver</code>中提供了各种方法.其中就有一个<code>executeCommand</code>方法.如下图:</p>
+<p><img src="http://mio4kon.qiniudn.com/14975180262189.jpg" alt=""></p>
+<p>看下具体代码:</p>
+<p><strong>[appium:lib/appium.js]</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">  async executeCommand (cmd, ...args) &#123;</div><div class="line">if (isAppiumDriverCommand(cmd)) &#123;</div><div class="line">      return super.executeCommand(cmd, ...args);</div><div class="line">    &#125;</div><div class="line">    let sessionId = args[args.length - 1];</div><div class="line">    return this.sessions[sessionId].executeCommand(cmd, ...args);</div><div class="line">  &#125;</div></pre></td></tr></table></figure>
+<p>看来主要逻辑实在父类里:</p>
+<p><strong>[appium-base-driver:lib/basedriver/driver.js]</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line">async executeCommand (cmd, ...args) &#123;</div><div class="line">  ...</div><div class="line">  let nextCommand = this.curCommand.then(() =&gt; &#123;</div><div class="line">    // if we unexpectedly shut down, we need to reject every command in</div><div class="line">    // the queue before we actually try to run it</div><div class="line">    if (this.shutdownUnexpectedly) &#123;</div><div class="line">      return B.reject(new errors.NoSuchDriverError(&apos;The driver was unexpectedly shut down!&apos;));</div><div class="line">    &#125;</div><div class="line">   </div><div class="line">    this.curCommandCancellable = new B((r) =&gt; &#123; r(); &#125;).then(() =&gt; &#123;</div><div class="line">      return this[cmd](...args);</div><div class="line">    &#125;).cancellable();</div><div class="line">    return this.curCommandCancellable;</div><div class="line">  &#125;);</div><div class="line">  ...</div><div class="line">  this.curCommand = nextCommand.catch(() =&gt; &#123;&#125;);</div><div class="line">  let res = await nextCommand;</div><div class="line">  return res;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>同样删掉了一些日志,异常检查和注释.这里有一块挺复杂的语法逻辑.看着有点绕.我们关注最后的调用即可.</p>
+<p>关键代码: <code>this[cmd](...args)</code> </p>
+<p>这里调用本类的方法,即又跑到子类<code>appium</code>中了</p>
+<p><strong>[appium:lib/appium.js]</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">async createSession (caps, reqCaps) &#123;</div><div class="line">  caps = _.defaults(_.clone(caps), this.args.defaultCapabilities);</div><div class="line">  let InnerDriver = this.getDriverForCaps(caps);</div><div class="line">  ...</div><div class="line">  let d = new InnerDriver(this.args);</div><div class="line">  let [innerSessionId, dCaps] = await d.createSession(caps, reqCaps, curSessions);</div><div class="line">  this.sessions[innerSessionId] = d;</div><div class="line">  ...</div><div class="line">  return [innerSessionId, dCaps];</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>逻辑很简单,创建一个<code>InnerDriver</code>,然后调用<code>InnerDriver</code>的<code>createSession</code>方法.</p>
+<p>看看<code>InnerDriver</code>是如何创建的:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div></pre></td><td class="code"><pre><div class="line"> getDriverForCaps (caps) &#123;</div><div class="line">  </div><div class="line">   // we don&apos;t necessarily have an `automationName` capability,</div><div class="line">   if (caps.automationName) &#123;</div><div class="line">     if (caps.automationName.toLowerCase() === &apos;selendroid&apos;) &#123;</div><div class="line">       // but if we do and it is &apos;Selendroid&apos;, act on it</div><div class="line">       return SelendroidDriver;</div><div class="line">     &#125; else if (caps.automationName.toLowerCase() === &apos;uiautomator2&apos;) &#123;</div><div class="line">       // but if we do and it is &apos;Uiautomator2&apos;, act on it</div><div class="line">       return AndroidUiautomator2Driver;</div><div class="line">     &#125; else if (caps.automationName.toLowerCase() === &apos;xcuitest&apos;) &#123;</div><div class="line">       // but if we do and it is &apos;XCUITest&apos;, act on it</div><div class="line">       return XCUITestDriver;</div><div class="line">     &#125; else if (caps.automationName.toLowerCase() === &apos;youiengine&apos;) &#123;</div><div class="line">       // but if we do and it is &apos;YouiEngine&apos;, act on it</div><div class="line">       return YouiEngineDriver;</div><div class="line">     &#125;</div><div class="line">   &#125;</div><div class="line"></div><div class="line">   if (caps.platformName.toLowerCase() === &quot;fake&quot;) &#123;</div><div class="line">     return FakeDriver;</div><div class="line">   &#125;</div><div class="line"></div><div class="line">   if (caps.platformName.toLowerCase() === &apos;android&apos;) &#123;</div><div class="line">     return AndroidDriver;</div><div class="line">   &#125;</div><div class="line">...</div></pre></td></tr></table></figure>
+<p>可见这个<code>InnerDriver</code>是根据我们客户端的给的参数来决定的.当我们没有传入<code>automationName</code>这个参数时,如果是Android手机就会使用<code>AndroidDriver</code>.如果<code>automationName</code> 为 <code>uiautomator2</code>,则最终会使用<code>AndroidUiautomator2Driver</code>.</p>
+<p>这里我们只跟着一条线来分析,即: <code>AndroidUiautomator2Driver</code></p>
+<p><strong>[appium-uiautomator2-driver:lib/driver.js]</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">async createSession (caps) &#123;</div><div class="line">    try &#123;</div><div class="line">      let sessionId;</div><div class="line">      [sessionId] = await super.createSession(caps);</div><div class="line">      ...</div><div class="line">      return [sessionId, caps];</div><div class="line">  &#125;</div></pre></td></tr></table></figure>
+<p>下面省略的不是不重要.而是现在我们要搞清楚<code>sessionId</code>到底在哪里创建的.</p>
+<p>看来创建<code>session</code>的逻辑应该就在这里了<code>super.createSession(caps)</code>.我们看看基类是啥吧?</p>
+<p><code>class AndroidUiautomator2Driver extends BaseDriver</code></p>
+<p>什么鬼.怎么<code>createSession</code>的逻辑跑到了<code>BaseDriver</code>中了? 如果你找下<code>BaseDriver</code>中的方法会发现并没有<code>createSession</code>这个方法.但是有个关键的代码:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">for (let [cmd, fn] of _.toPairs(commands)) &#123;</div><div class="line">  BaseDriver.prototype[cmd] = fn;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>原来它把很多方法分开写在各个文件内了.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">import sessionCmds from &apos;./session&apos;;</div><div class="line">import settingsCmds from &apos;./settings&apos;;</div><div class="line">import timeoutCmds from &apos;./timeout&apos;;</div><div class="line">import findCmds from &apos;./find&apos;;</div></pre></td></tr></table></figure>
+<p>让我们看看<code>/session</code>文件</p>
+<p><strong>[appium-base-driver:lib/basedriver/commands/session.js]</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line">commands.createSession = async function (desiredCapabilities, requiredCaps, capabilities) &#123;</div><div class="line">  if (this.sessionId !== null) &#123;</div><div class="line">    throw new errors.SessionNotCreatedError(&apos;Cannot create a new session &apos; +</div><div class="line">                                            &apos;while one is in progress&apos;);</div><div class="line">  &#125;</div><div class="line"></div><div class="line">  let caps;</div><div class="line">  if (desiredCapabilities) &#123;</div><div class="line">    caps = desiredCapabilities;</div><div class="line">  &#125; else &#123;</div><div class="line">    caps = processCapabilities(capabilities, this.desiredCapConstraints, this.shouldValidateCaps);</div><div class="line">  &#125;</div><div class="line"></div><div class="line">  caps = fixCaps(caps, this.desiredCapConstraints);</div><div class="line">  this.validateDesiredCaps(caps);</div><div class="line"></div><div class="line">  this.sessionId = UUID.create().hex;</div><div class="line"></div><div class="line">  log.info(`Session created with session id: $&#123;this.sessionId&#125;`);</div><div class="line"></div><div class="line">  return [this.sessionId, caps];</div><div class="line">&#125;;</div></pre></td></tr></table></figure>
+<p>终于.在这个方法里我们终于看到了session到底是如何创建的.</p>
+<h1 id="StartUiAutomator2Session"><a href="#StartUiAutomator2Session" class="headerlink" title="StartUiAutomator2Session"></a>StartUiAutomator2Session</h1><p>那么seesion创建后呢?回到之前的ui2中:</p>
+<p><strong>[appium-uiautomator2-driver:lib/driver.js]</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">async createSession (caps) &#123;</div><div class="line">    </div><div class="line">  try &#123;</div><div class="line">    // TODO handle otherSessionData for multiple sessions</div><div class="line">    let sessionId;</div><div class="line">    [sessionId] = await super.createSession(caps);</div><div class="line"></div><div class="line">    let serverDetails = &#123;platform: &apos;LINUX&apos;,</div><div class="line">      webStorageEnabled: false,</div><div class="line">      takesScreenshot: true,</div><div class="line">      javascriptEnabled: true,</div><div class="line">      databaseEnabled: false,</div><div class="line">      networkConnectionEnabled: true,</div><div class="line">      locationContextEnabled: false,</div><div class="line">      warnings: &#123;&#125;,</div><div class="line">      desired: this.caps&#125;;</div><div class="line"></div><div class="line">    ....</div><div class="line">    await this.startUiAutomator2Session();</div><div class="line">    return [sessionId, caps];</div><div class="line">  &#125; catch (e) &#123;</div><div class="line">    await this.deleteSession();</div><div class="line">    throw e;</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>可以看到对客户端的一些选项做各种配置.其中会调用<code>startUiAutomator2Session()</code>这个方法.用来开启UI2.</p>
+<p><strong>[appium-uiautomator2-driver:lib/driver.js]</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div></pre></td><td class="code"><pre><div class="line">async startUiAutomator2Session () &#123;</div><div class="line"></div><div class="line">    logger.info(`UIAutomator2 Driver version:$&#123;version&#125;`);</div><div class="line"></div><div class="line">    if (!this.opts.javaVersion) &#123;</div><div class="line">      this.opts.javaVersion = await helpers.getJavaVersion();</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    // get device udid for this session</div><div class="line">    let &#123;udid, emPort&#125; = await helpers.getDeviceInfoFromCaps(this.opts);</div><div class="line">    this.opts.udid = udid;</div><div class="line">    this.opts.emPort = emPort;</div><div class="line"></div><div class="line"></div><div class="line"></div><div class="line">    // now that we know our java version and device info, we can create our</div><div class="line">    // ADB instance</div><div class="line">    this.adb = await androidHelpers.createADB(this.opts.javaVersion,</div><div class="line">        this.opts.udid, this.opts.emPort, this.opts.adbPort);</div><div class="line">    // get appPackage et al from manifest if necessary</div><div class="line">    let appInfo = await helpers.getLaunchInfo(this.adb, this.opts);</div><div class="line">    // and get it onto our &apos;opts&apos; object so we use it from now on</div><div class="line">    Object.assign(this.opts, appInfo);</div><div class="line"></div><div class="line">    // set actual device name, udid, platform version, screen size, model and manufacturer details</div><div class="line">    this.caps.deviceName = this.adb.curDeviceId;</div><div class="line">    this.caps.deviceUDID = this.opts.udid;</div><div class="line">    this.caps.platformVersion = await this.adb.getPlatformVersion();</div><div class="line">    this.caps.deviceScreenSize = await this.adb.getScreenSize();</div><div class="line">    this.caps.deviceModel = await this.adb.getModel();</div><div class="line">    this.caps.deviceManufacturer = await this.adb.getManufacturer();</div><div class="line"></div><div class="line">    // set up the modified UiAutomator2 server etc</div><div class="line">    await this.initUiAutomator2Server();</div><div class="line">    // killing any uiautomator existing processes</div><div class="line">    await this.uiautomator2.killUiAutomatorOnDevice();</div><div class="line">    // start an avd, set the language/locale, pick an emulator, etc...</div><div class="line">    // TODO with multiple devices we&apos;ll need to parameterize this</div><div class="line">    await helpers.initDevice(this.adb, this.opts);</div><div class="line">    // Further prepare the device by forwarding the UiAutomator2 port</div><div class="line">    logger.debug(`Forwarding UiAutomator2 Server port $&#123;DEVICE_PORT&#125; to $&#123;this.opts.systemPort&#125;`);</div><div class="line">    await this.adb.forwardPort(this.opts.systemPort, DEVICE_PORT);</div><div class="line"></div><div class="line">    if (!this.opts.skipUnlock) &#123;</div><div class="line">      // unlock the device to prepare it for testing</div><div class="line">      await helpers.unlock(this, this.adb, this.caps);</div><div class="line">    &#125; else &#123;</div><div class="line">      logger.debug(`&apos;skipUnlock&apos; capability set, so skipping device unlock`);</div><div class="line">    &#125;</div><div class="line">    // If the user sets autoLaunch to false, they are responsible for initAUT() and startAUT()</div><div class="line">    if (this.opts.autoLaunch) &#123;</div><div class="line">      // set up app under test</div><div class="line">      // prepare our actual AUT, get it on the device, etc...</div><div class="line">      await this.initAUT();</div><div class="line">    &#125;</div><div class="line">    //Adding AUT package name in the capabilities if package name not exist in caps</div><div class="line">    if (!this.caps.appPackage) &#123;</div><div class="line">      this.caps.appPackage = appInfo.appPackage;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    // launch UiAutomator2 and wait till its online and we have a session</div><div class="line">    await this.uiautomator2.startSession(this.caps);</div><div class="line"></div><div class="line">    // rescue UiAutomator2 if it fails to start our AUT</div><div class="line">    await this.ensureAppStarts();</div><div class="line">    // if we want to immediately get into a webview, set our context</div><div class="line">    // appropriately</div><div class="line">    if (this.opts.autoWebview) &#123;</div><div class="line">      await retryInterval(20, this.opts.autoWebviewTimeout || 2000, async () =&gt; &#123;</div><div class="line">        await this.setContext(this.defaultWebviewName());</div><div class="line">      &#125;);</div><div class="line">    &#125;</div><div class="line">    // now that everything has started successfully, turn on proxying so all</div><div class="line">    // subsequent session requests go straight to/from uiautomator2</div><div class="line">    this.jwpProxyActive = true;</div><div class="line">  &#125;</div></pre></td></tr></table></figure>
+<p>代码还蛮多的.不过注释很清楚.里面主要做了下面几件事:</p>
+<ol>
+<li>检查java版本</li>
+<li>创建adb实例</li>
+<li>设置一些设备相关的内容(device name,udid)</li>
+<li>初始化 <code>UiAutomator2 Server</code></li>
+<li>关闭 <code>UiAutomator2 Server</code></li>
+<li>初始化设备</li>
+<li>解锁</li>
+<li>配置AUT</li>
+<li>开启 <code>UiAutomator2 Server</code></li>
+</ol>
+<p>来看第4条干了啥:</p>
+<p><strong>[appium-uiautomator2-driver:lib/driver.js]</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">async initUiAutomator2Server () &#123;</div><div class="line">  this.uiautomator2 = new UiAutomator2Server(&#123;</div><div class="line">    host: this.opts.host || &apos;localhost&apos;,</div><div class="line">    systemPort: this.opts.systemPort,</div><div class="line">    devicePort: DEVICE_PORT,</div><div class="line">    adb: this.adb,</div><div class="line">    apk: this.opts.app,</div><div class="line">    tmpDir: this.opts.tmpDir,</div><div class="line">    appPackage: this.opts.appPackage,</div><div class="line">    appActivity: this.opts.appActivity,</div><div class="line">  &#125;);</div><div class="line">  this.proxyReqRes = this.uiautomator2.proxyReqRes.bind(this.uiautomator2);</div><div class="line"></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>创建了<code>UiAutomator2Server</code>的实例.然后把一个代理请求资源绑定在这个实例上.<br>这个代理到底是做什么的呢?我们看下图:</p>
+<p><img src="http://mio4kon.qiniudn.com/14981907295929.jpg" alt=""></p>
+<p>这个图挺老的了.不过原理还是没变的.客户端会向<code>Appium Server</code>下发请求.手机端同样也会安装一个<code>Phone Server</code>,<code>Appium Server</code>通过代理把之前收到客户端请求转发给手机端的<code>Phone Server</code>.这样就实现了三端通讯:</p>
+<p><strong><code>Client</code> &lt;–&gt; <code>`Appium Server</code> &lt;–&gt; <code>Phone</code></strong></p>
+<p>再来看看第8条 <code>initAUT</code>:</p>
+<p>调用<code>initAUT</code>有个前提,就是客户端给的配置项<code>autoLaunch</code>必须为<code>True</code>.这里有个坑之前坑到了我.有兴趣的可以看下我之前的一篇博客: <a href="http://mio4kon.com/2017/06/12/Appium%E8%B8%A9%E5%9D%91%E4%B9%8B%E6%97%85%E2%80%94%E2%80%94%E5%B0%8F%E7%B1%B3%E6%89%8B%E6%9C%BA/">Appium踩坑之旅——小米手机</a></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div></pre></td><td class="code"><pre><div class="line">async initAUT () &#123;</div><div class="line">  // set the localized strings for the current language from the apk</div><div class="line">  // TODO: incorporate changes from appium#5308 which fix a race cond-</div><div class="line">  // ition bug in old appium and need to be replicated here</div><div class="line">  this.apkStrings[this.opts.language] = await androidHelpers.pushStrings(</div><div class="line">      this.opts.language, this.adb, this.opts);</div><div class="line"></div><div class="line">  if (!this.opts.app) &#123;</div><div class="line">    if (this.opts.fullReset) &#123;</div><div class="line">      logger.errorAndThrow(&apos;Full reset requires an app capability, use fastReset if app is not provided&apos;);</div><div class="line">    &#125;</div><div class="line">    logger.debug(&apos;No app capability. Assuming it is already on the device&apos;);</div><div class="line">    if (this.opts.fastReset) &#123;</div><div class="line">      await helpers.resetApp(this.adb, this.opts.app, this.opts.appPackage, this.opts.fastReset);</div><div class="line">    &#125;</div><div class="line">  &#125;</div><div class="line"></div><div class="line">  if (!this.opts.skipUninstall) &#123;</div><div class="line">    await this.adb.uninstallApk(this.opts.appPackage);</div><div class="line">  &#125;</div><div class="line">  if (!this.opts.noSign) &#123;</div><div class="line">    let signed = await this.adb.checkApkCert(this.opts.app, this.opts.appPackage);</div><div class="line">    if (!signed &amp;&amp; this.opts.app) &#123;</div><div class="line">      await this.adb.sign(this.opts.app, this.opts.appPackage);</div><div class="line">    &#125;</div><div class="line">  &#125;</div><div class="line">  if (this.opts.app) &#123;</div><div class="line">    await helpers.installApkRemotely(this.adb, this.opts);</div><div class="line">  &#125;</div><div class="line">  await this.grantPermissions();</div><div class="line">  await this.uiautomator2.installServerApk();</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>有很多配置项,大家有兴趣的可以看下各种配置具体的实现.这里有个<code>this.grantPermissions()</code>方法,我们来看下:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">async grantPermissions () &#123;</div><div class="line">  if (this.opts.autoGrantPermissions) &#123;</div><div class="line">    try &#123;</div><div class="line">      await this.adb.grantAllPermissions(this.opts.appPackage, this.opts.app);</div><div class="line">    &#125; catch (error) &#123;</div><div class="line">      logger.error(`Unable to grant permissions requested. Original error: $&#123;error.message&#125;`);</div><div class="line">    &#125;</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>竟然有个配置可以获取app的全部权限.这个在我看源码之前还真不知道.很好奇它是用什么命令申请到的权限.<br>,所以看了下源码:</p>
+<p><strong>[appium-adb:lib/tools/adb-commands.js]</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line">methods.grantAllPermissions = async function (pkg, apk) &#123;</div><div class="line">	...</div><div class="line">  if (apiLevel &gt;= 23 &amp;&amp; targetSdk &gt;= 23) &#123;</div><div class="line">    const stdout = await this.shell([&apos;pm&apos;, &apos;dump&apos;, pkg]);</div><div class="line">    const requestedPermissions = await this.getReqPermissions(pkg, stdout);</div><div class="line">    const grantedPermissions = await this.getGrantedPermissions(pkg, stdout);</div><div class="line">    const permissonsToGrant = requestedPermissions.filter((x) =&gt; grantedPermissions.indexOf(x) &lt; 0);</div><div class="line">    ...</div><div class="line">    for (let permission of permissonsToGrant) &#123;</div><div class="line">      const nextCmd = [&apos;pm&apos;, &apos;grant&apos;, pkg, permission, &apos;;&apos;];</div><div class="line">      if (nextCmd.join(&apos; &apos;).length + cmdChunk.join(&apos; &apos;).length &gt;= MAX_SHELL_BUFFER_LENGTH) &#123;</div><div class="line">        cmds.push(cmdChunk);</div><div class="line">        cmdChunk = [];</div><div class="line">      &#125;</div><div class="line">      cmdChunk = cmdChunk.concat(nextCmd);</div><div class="line">    &#125;</div><div class="line">     ...</div><div class="line">  &#125;;</div></pre></td></tr></table></figure>
+<p>原来他是通过<code>adb shell pm grant package android.permission.READ_PHONE_STATE</code>命令来获取权限.</p>
+<p>所以如果你不希望运行测试case的时候弹出各种权限框可以设置<code>autoGrantPermissions</code>这个配置项.</p>
+<p><code>initAUT</code>中最重要的当然是最后一个方法.<code>this.uiautomator2.installServerApk()</code>,他会在测试手机上安装<code>Uiautomator2 Server</code>.</p>
+<p>到此为止第8条(配置AUT)说完了我们该看下第9条了(开启 <code>UiAutomator2 Server</code>)</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div></pre></td><td class="code"><pre><div class="line">async startSession (caps) &#123;</div><div class="line"></div><div class="line">  // killing any uiautomator existing processes</div><div class="line">  await this.killUiAutomatorOnDevice();</div><div class="line"></div><div class="line">  if (caps.deviceUDID) &#123;</div><div class="line">    this.startSessionOnSpecificDeviceUsingAdbKit(caps.deviceUDID);</div><div class="line">  &#125; else &#123;</div><div class="line">    this.startSessionUsingAdbkit();</div><div class="line">  &#125;</div><div class="line">  // wait 20s for UiAutomator2 to be online</div><div class="line">  await retryInterval(retries, 1000, this.jwproxy.command.bind(this.jwproxy), &apos;/status&apos;, &apos;GET&apos;);</div><div class="line">  await this.jwproxy.command(&apos;/session&apos;, &apos;POST&apos;, &#123;desiredCapabilities: caps&#125;);</div><div class="line">&#125;</div><div class="line"></div><div class="line"></div><div class="line"></div><div class="line"> async startSessionOnSpecificDeviceUsingAdbKit (deviceUDID) &#123;</div><div class="line">  Promise.try(function ()&#123;</div><div class="line">    client.shell(deviceUDID, &quot;am instrument -w io.appium.uiautomator2.server.test/android.support.test.runner.AndroidJUnitRunner&quot;);</div><div class="line">  &#125;)</div><div class="line">    .catch(function (err) &#123;</div><div class="line">      logger.error(&apos;Something went wrong while executing instrument test:&apos;, err.stack);</div><div class="line">    &#125;);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>其实开启了Ui2 Server就是靠这个命令:</p>
+<p><code>am instrument -w io.appium.uiautomator2.server.test/android.support.test.runner.AndroidJUnitRunner</code></p>
+<p>这个命令是干什么用的呢? 你可以简单的想象成他会运行一个没有界面的服务.下面稍微简单的介绍下<code>Instrument</code></p>
+<h1 id="Instrument介绍"><a href="#Instrument介绍" class="headerlink" title="Instrument介绍"></a>Instrument介绍</h1><p>官方文档:<a href="https://developer.android.com/training/testing/start/index.html" target="_blank" rel="external">https://developer.android.com/training/testing/start/index.html</a></p>
+<p>关于<code>Instrument</code>,它常用于应用的测试框架中.下面是官方的解释:</p>
+<pre><code>Base class for implementing application instrumentation code. When running with 
+instrumentation turned on, this class will be instantiated for you before any 
+of the application code, allowing you to monitor all of the interaction the 
+system has with the application. An Instrumentation implementation is described 
+to the system through an AndroidManifest.xml&apos;s &lt;instrumentation&gt; tag.
+</code></pre><p>简单来说就是可以监视应用的生命周期.这也是为什么它适合做Android的UI测试.再来看来下官方图:</p>
+<p><img src="http://mio4kon.qiniudn.com/14982033664802.jpg" alt="-w766"></p>
+<p>再来看看官方对应UiAutomator2的定义:</p>
+<p><img src="http://mio4kon.qiniudn.com/14982059593001.jpg" alt=""></p>
+<p>可以看出无论是<code>Espresso</code>还是<code>UI Automator</code>都是要结合<code>Instrument</code>的.</p>
+<h1 id="Uiautomator2-Server"><a href="#Uiautomator2-Server" class="headerlink" title="Uiautomator2 Server"></a>Uiautomator2 Server</h1><p>既然要通过<code>Instrument</code>来启动<code>Uiautomator2 Server</code>,那么我们来看下<code>UI2 Server</code>的代码:  </p>
+<p><a href="https://github.com/appium/appium-uiautomator2-server" target="_blank" rel="external">https://github.com/appium/appium-uiautomator2-server</a></p>
+<p>或者在Appium项目下:<code>node_modules/appium-uiautomator2-server</code></p>
+<p><strong>[appium-uiautomator2-server:app/src/androidTestServer/java/io/appium/uiautomator2/server/test/AppiumUiAutomator2Server.java]</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@RunWith</span>(AndroidJUnit4.class)</div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">AppiumUiAutomator2Server</span> </span>&#123;</div><div class="line">    <span class="keyword">private</span> <span class="keyword">static</span> ServerInstrumentation serverInstrumentation;</div><div class="line">    <span class="keyword">private</span> Context ctx;</div><div class="line"></div><div class="line"></div><div class="line">    <span class="comment">/**</span></div><div class="line">     * Starts the server on the device</div><div class="line">     */</div><div class="line">    <span class="meta">@Test</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">startServer</span><span class="params">()</span> <span class="keyword">throws</span> InterruptedException </span>&#123;</div><div class="line">        <span class="keyword">if</span> (serverInstrumentation == <span class="keyword">null</span>) &#123;</div><div class="line">            ctx = InstrumentationRegistry.getInstrumentation().getContext();</div><div class="line">            serverInstrumentation = ServerInstrumentation.getInstance(ctx, ServerConfig.getServerPort());</div><div class="line">            Logger.info(<span class="string">"[AppiumUiAutomator2Server]"</span>, <span class="string">" Starting Server"</span>);</div><div class="line">            <span class="keyword">try</span> &#123;</div><div class="line">                <span class="keyword">while</span> (!serverInstrumentation.isStopServer()) &#123;</div><div class="line">                    SystemClock.sleep(<span class="number">1000</span>);</div><div class="line">                    serverInstrumentation.startServer();</div><div class="line">                &#125;</div><div class="line">            &#125;<span class="keyword">catch</span> (SessionRemovedException e)&#123;</div><div class="line">                <span class="comment">//Ignoring SessionRemovedException</span></div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>运行之前的<code>am</code>命令会执行<code>startServer</code>的方法.(<a href="https://developer.android.com/training/testing/unit-testing/instrumented-unit-tests.html#build" target="_blank" rel="external">相关配置文档</a>)</p>
+<p>这段代码会开启一个Socket服务来处理请求.如果大家有兴趣的可以看看这套框架的实现.这里面是<code>Appium</code>在使用<code>UI2</code>来进行控制UI控件的核心代码了. </p>
+<p>上面说了通过<code>am</code>命令开启<code>Phone Server</code>后同样也会转发第一个请求给<code>Phone Server</code>,忘记的童鞋可以回到上面再看下,在<code>startSession</code>方法中.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">await this.jwproxy.command(&apos;/session&apos;, &apos;POST&apos;, &#123;desiredCapabilities: caps&#125;);</div></pre></td></tr></table></figure>
+<p>我们再简单的跟下<code>uiautomator2 server</code>的源码:</p>
+<p><strong>[appium-uiautomator2-server:app/src/main/java/io/appium/uiautomator2/server/ServerInstrumentation.java]</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">   <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">startServer</span><span class="params">()</span> <span class="keyword">throws</span> InterruptedException, SessionRemovedException </span>&#123;</div><div class="line">       ...</div><div class="line">       serverThread = <span class="keyword">new</span> HttpdThread(<span class="keyword">this</span>, <span class="keyword">this</span>.serverPort);</div><div class="line">       serverThread.start();</div><div class="line">&#125;</div><div class="line"></div><div class="line"> <span class="keyword">private</span> <span class="class"><span class="keyword">class</span> <span class="title">HttpdThread</span> <span class="keyword">extends</span> <span class="title">Thread</span> </span>&#123;</div><div class="line"></div><div class="line">       <span class="keyword">private</span> <span class="keyword">final</span> AndroidServer server;</div><div class="line">       <span class="keyword">private</span> ServerInstrumentation instrumentation;</div><div class="line">       <span class="keyword">private</span> Looper looper;</div><div class="line"></div><div class="line">       <span class="function"><span class="keyword">public</span> <span class="title">HttpdThread</span><span class="params">(ServerInstrumentation instrumentation, <span class="keyword">int</span> serverPort)</span> </span>&#123;</div><div class="line">           <span class="keyword">this</span>.instrumentation = instrumentation;</div><div class="line">        </div><div class="line">           server = <span class="keyword">new</span> AndroidServer(serverPort);</div><div class="line">       &#125;</div><div class="line"></div><div class="line">       <span class="meta">@Override</span></div><div class="line">       <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</div><div class="line">           Looper.prepare();</div><div class="line">           looper = Looper.myLooper();</div><div class="line">           startServer();</div><div class="line">           Looper.loop();</div><div class="line">       &#125;</div><div class="line"></div><div class="line">       ...</div><div class="line">       <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">startServer</span><span class="params">()</span> </span>&#123;</div><div class="line">           ...</div><div class="line">           server.start();</div><div class="line">       &#125;</div><div class="line"></div><div class="line">      ...</div><div class="line">   &#125;</div></pre></td></tr></table></figure>
+<p>会开启一个<code>AndroidServer</code>,其代码非常简单,如下:</p>
+<p><strong>[appium-uiautomator2-server:app/src/main/java/io/appium/uiautomator2/server/AndroidServer.java]</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line">public class AndroidServer &#123;</div><div class="line">    private final int driverPort;</div><div class="line">    private final HttpServer webServer;</div><div class="line"></div><div class="line">    public AndroidServer(int port) &#123;</div><div class="line">        driverPort = port;</div><div class="line">        webServer = new HttpServer(driverPort);</div><div class="line">        init();</div><div class="line">        Logger.info(&quot;AndroidServer created on port &quot; + port);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    protected void init() &#123;</div><div class="line">        webServer.addHandler(new AppiumServlet());</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    public void start() &#123;</div><div class="line">        webServer.start();</div><div class="line">    &#125;</div><div class="line">	...</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p><code>init</code>方法中会创建一个<code>AppiumServlet</code>, 它就是收到各种请求后的处理.</p>
+<p><img src="http://mio4kon.qiniudn.com/14982125088593.jpg" alt=""></p>
+<p>我们第一个请求的处理自然就在<code>NewSession</code>文件中.</p>
+<p><strong>[appium-uiautomator2-server:app/src/main/java/io/appium/uiautomator2/handler/NewSession.java]</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div></pre></td><td class="code"><pre><div class="line">public class NewSession extends SafeRequestHandler &#123;</div><div class="line"></div><div class="line">    public NewSession(String mappedUri) &#123;</div><div class="line">        super(mappedUri);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    @Override</div><div class="line">    public AppiumResponse safeHandle(IHttpRequest request) &#123;</div><div class="line"></div><div class="line">        String sessionID;</div><div class="line">        try &#123;</div><div class="line">            Session.capabilities = getCapabilities(request);</div><div class="line">            sessionID = new AppiumUiAutomatorDriver().initializeSession();</div><div class="line">            Logger.info(&quot;Session Created with SessionID:&quot; + sessionID);</div><div class="line">        &#125; catch (JSONException e) &#123;</div><div class="line">            Logger.error(&quot;Exception while reading JSON: &quot;, e);</div><div class="line">            return new AppiumResponse(getSessionId(request), WDStatus.JSON_DECODER_ERROR, e);</div><div class="line">        &#125;</div><div class="line">        return new AppiumResponse(sessionID, WDStatus.SUCCESS, &quot;Created Session&quot;);</div><div class="line">    &#125;</div><div class="line"></div><div class="line"></div><div class="line">    public  Map&lt;String, Object&gt; getCapabilities(IHttpRequest request) throws JSONException &#123;</div><div class="line">        JSONObject caps = getPayload(request).getJSONObject(&quot;desiredCapabilities&quot;);</div><div class="line">        Map&lt;String, Object&gt; map = new HashMap&lt;String, Object&gt;();</div><div class="line"></div><div class="line">        Iterator&lt;String&gt; keysItr = caps.keys();</div><div class="line">        while(keysItr.hasNext()) &#123;</div><div class="line">            String key = keysItr.next();</div><div class="line">            Object value = caps.get(key);</div><div class="line">            map.put(key, value);</div><div class="line">        &#125;</div><div class="line">        return map;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>好吧其实猜都猜的到干嘛了.<code>Uiautomator2 Server</code>也会创建一个<code>SeesionId</code>用来保持<code>Appium Server</code>和 <code>Phone Server</code>之间的通讯.</p>
+<p><img src="http://mio4kon.qiniudn.com/14982133026742.jpg" alt=""></p>
+<p>大家可以看到上图的通讯.这里包含了2个<code>SeesionId</code>,在最后会将<code>Phone Server</code>的<code>SeesionId</code>进行一次替换.</p>
+<p>到此为止我们已经从代码的角度分析了从客户端的<strong>第一个请求</strong>到<strong>Appium服务</strong>再到<strong>Uiautomator2服务</strong>的处理流程,以及各个框架之间如何衔接.</p>
+
+
+                <hr>
+
+                
+
+                <ul class="pager">
+                    
+                    
+                        <li class="next">
+                            <a href="/2017/06/12/Appium源码解析——建立连接/" data-toggle="tooltip" data-placement="top" title="Appium源码解析之一——建立连接">Next Post &rarr;</a>
+                        </li>
+                    
+                </ul>
+
+                
+
+                
+                <!-- disqus 评论框 start -->
+                <div class="comment">
+                    <div id="disqus_thread" class="disqus-thread"></div>
+                </div>
+                <!-- disqus 评论框 end -->
+                
+
+            </div>
+    <!-- Side Catalog Container -->
+        
+            <div class="
+                col-lg-2 col-lg-offset-0
+                visible-lg-block
+                sidebar-container
+                catalog-container">
+                <div class="side-catalog">
+                    <hr class="hidden-sm hidden-xs">
+                    <h5>
+                        <a class="catalog-toggle" href="#">CATALOG</a>
+                    </h5>
+                    <ul class="catalog-body"></ul>
+                </div>
+            </div>
+        
+
+    <!-- Sidebar Container -->
+
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                <!-- Featured Tags -->
+                
+                <section>
+                    <!-- no hr -->
+                    <h5><a href="/tags/">FEATURED TAGS</a></h5>
+                    <div class="tags">
+                       
+                          <a class="tag" href="/tags/#移动自动化测试" title="移动自动化测试">移动自动化测试</a>
+                        
+                    </div>
+                </section>
+                
+
+                <!-- Friends Blog -->
+                
+                <hr>
+                <h5>FRIENDS</h5>
+                <ul class="list-inline">
+
+                    
+                        <li><a href="http://lrd.ele.me/" target="_blank">lrd ele&#39;s Blog</a></li>
+                    
+                </ul>
+                
+            </div>
+
+        </div>
+    </div>
+</article>
+
+
+
+
+<!-- disqus 公共JS代码 start (一个网页只需插入一次) -->
+<script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES * * */
+    var disqus_shortname = "hexo-theme-huxblog";
+    var disqus_identifier = "http://mio4kon.com/2017/06/23/Appium源码解析之二——第一个请求/";
+    var disqus_url = "http://mio4kon.com/2017/06/23/Appium源码解析之二——第一个请求/";
+
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<!-- disqus 公共JS代码 end -->
+
+
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+<!-- anchor-js, Doc:http://bryanbraun.github.io/anchorjs/ -->
+<script>
+    async("https://cdn.bootcss.com/anchor-js/1.1.1/anchor.min.js",function(){
+        anchors.options = {
+          visible: 'always',
+          placement: 'right',
+          icon: '#'
+        };
+        anchors.add().remove('.intro-header h1').remove('.subheading').remove('.sidebar-container h5');
+    })
+</script>
+<style>
+    /* place left on bigger screen */
+    @media all and (min-width: 800px) {
+        .anchorjs-link{
+            position: absolute;
+            left: -0.75em;
+            font-size: 1.1em;
+            margin-top : -0.1em;
+        }
+    }
+</style>
+
+
+
+    <!-- Footer -->
+    <!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                
+                
+                
+
+                
+                    <li>
+                        <a target="_blank" href="http://weibo.com/u/3198010790">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-weibo fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+
+                
+                    <li>
+                        <a target="_blank"  href="https://github.com/Mio4kon">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+
+                </ul>
+                <p class="copyright text-muted">
+                    Copyright &copy; Mio4kon 2017 
+                    <br>
+                    Theme by <a href="http://huangxuan.me">Hux</a> 
+                    <span style="display: inline-block; margin: 0 5px;">
+                        <i class="fa fa-heart"></i>
+                    </span> 
+                    Ported by <a href="http://blog.kaijun.rocks">Kaijun</a> | 
+                    <iframe
+                        style="margin-left: 2px; margin-bottom:-5px;"
+                        frameborder="0" scrolling="0" width="91px" height="20px"
+                        src="https://ghbtns.com/github-btn.html?user=kaijun&repo=hexo-theme-huxblog&type=star&count=true" >
+                    </iframe>
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+<script src="/js/jquery.min.js"></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="/js/bootstrap.min.js"></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/js/hux-blog.min.js"></script>
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!-- 
+     Because of the native support for backtick-style fenced code blocks 
+     right within the Markdown is landed in Github Pages, 
+     From V1.6, There is no need for Highlight.js, 
+     so Huxblog drops it officially.
+
+     - https://github.com/blog/2100-github-pages-now-faster-and-simpler-with-jekyll-3-0  
+     - https://help.github.com/articles/creating-and-highlighting-code-blocks/    
+-->
+<!--
+    <script>
+        async("http://cdn.bootcss.com/highlight.js/8.6/highlight.min.js", function(){
+            hljs.initHighlightingOnLoad();
+        })
+    </script>
+    <link href="http://cdn.bootcss.com/highlight.js/8.6/styles/github.min.css" rel="stylesheet">
+-->
+
+
+<!-- jquery.tagcloud.js -->
+<script>
+    // only load tagcloud.js in tag.html
+    if($('#tag_cloud').length !== 0){
+        async("http://mio4kon.com/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                //size: {start: 1, end: 1, unit: 'em'},
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+<!--fastClick.js -->
+<script>
+    async("https://cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+<!-- Google Analytics -->
+
+
+
+
+<!-- Baidu Tongji -->
+
+
+<!-- Side Catalog -->
+
+<script type="text/javascript">
+    function generateCatalog (selector) {
+        var P = $('div.post-container'),a,n,t,l,i,c;
+        a = P.find('h1,h2,h3,h4,h5,h6');
+        a.each(function () {
+            n = $(this).prop('tagName').toLowerCase();
+            i = "#"+$(this).prop('id');
+            t = $(this).text();
+            c = $('<a href="'+i+'" rel="nofollow">'+t+'</a>');
+            l = $('<li class="'+n+'_nav"></li>').append(c);
+            $(selector).append(l);
+        });
+        return true;    
+    }
+
+    generateCatalog(".catalog-body");
+
+    // toggle side catalog
+    $(".catalog-toggle").click((function(e){
+        e.preventDefault();
+        $('.side-catalog').toggleClass("fold")
+    }))
+
+    /*
+     * Doc: https://github.com/davist11/jQuery-One-Page-Nav
+     * Fork by Hux to support padding
+     */
+    async("/js/jquery.nav.js", function () {
+        $('.catalog-body').onePageNav({
+            currentClass: "active",
+            changeHash: !1,
+            easing: "swing",
+            filter: "",
+            scrollSpeed: 700,
+            scrollOffset: 0,
+            scrollThreshold: .2,
+            begin: null,
+            end: null,
+            scrollChange: null,
+            padding: 80
+        });
+    });
+</script>
+
+
+
+
+
+<!-- Image to hack wechat -->
+<img src="http://mio4kon.com/img/icon_wechat.png" width="0" height="0" />
+<!-- Migrate from head to bottom, no longer block render and still work -->
+
+</body>
+
+</html>

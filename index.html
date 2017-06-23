@@ -97,14 +97,14 @@
 
                         
                         <li>
-                            <a href="/tags/">Tags</a>
+                            <a href="/archives/">Archives</a>
                         </li>
                         
                     
 
                         
                         <li>
-                            <a href="/archives/">Archives</a>
+                            <a href="/tags/">Tags</a>
                         </li>
                         
                     
@@ -181,6 +181,61 @@
             
                 <!-- Main Content -->
 
+
+<div class="post-preview">
+
+    <a href="/2017/06/23/Appium源码解析之二——第一个请求/">
+        <h2 class="post-title">
+            Appium源码解析之二——第一个请求
+        </h2>
+        <h3 class="post-subtitle">
+            源码解析
+        </h3>
+        <div class="post-content-preview">
+            前言通过前一篇的源码分析,我们知道Appium如何开启了服务以及如何处理客户端发起的请求.
+本篇教程将根据第一个请求,来看一看Appium初始化到底做了哪些事情.
+创建SessionId先看看Server的log:
+
+在创建服务之后,收到的第一个请求就是/wd/hub/session,让我们来分析下收到请求后具体都干了哪些事情.
+上回说到.收到请求后都会在 buildHandler中做请求处......
+        </div>
+    </a>
+    <p class="post-meta">
+        Posted by Mio4kon on
+        2017-06-23
+    </p>
+
+</div>
+<hr>
+
+<div class="post-preview">
+
+    <a href="/2017/06/12/Appium源码解析——建立连接/">
+        <h2 class="post-title">
+            Appium源码解析之一——建立连接
+        </h2>
+        <h3 class="post-subtitle">
+            源码解析
+        </h3>
+        <div class="post-content-preview">
+            本地运行Appium源码
+首先先下载 Appium 源码: https://github.com/appium/appium
+进入工程目录
+执行 npm install
+执行 node build/lib/main.js 即可.
+
+建立Appium连接根据启动命令可以知道程序入口点在lib/main.js中.
+[appium:lib/main.js]
+1234567async functio......
+        </div>
+    </a>
+    <p class="post-meta">
+        Posted by Mio4kon on
+        2017-06-12
+    </p>
+
+</div>
+<hr>
 
 <div class="post-preview">
 
@@ -402,64 +457,6 @@ Appium优点
 </div>
 <hr>
 
-<div class="post-preview">
-
-    <a href="/2016/10/14/Atom之React Native配置/">
-        <h2 class="post-title">
-            React Native 开发工具之 Atom 配置
-        </h2>
-        <h3 class="post-subtitle">
-            开发工具推荐
-        </h3>
-        <div class="post-content-preview">
-            React Native Atom 配置插件nuclide安装完成后,进入设置,勾选:  
-Install recommended packets on startup
-重启Atom
-
-js-hyperclick`hyperclick`在`nuclide`安装后会自动安装,但需要配合`js-hyperclick`才能进行**定义跳转**.
-Platformio Ide Terminal可以内......
-        </div>
-    </a>
-    <p class="post-meta">
-        Posted by Mio4kon on
-        2016-10-14
-    </p>
-
-</div>
-<hr>
-
-<div class="post-preview">
-
-    <a href="/2016/08/30/Why use Kotlin & Kotlin Use Case  /">
-        <h2 class="post-title">
-            Why use Kotlin & Kotlin Use Case 
-        </h2>
-        <h3 class="post-subtitle">
-            最先进的语言Kotlin
-        </h3>
-        <div class="post-content-preview">
-            为什么选择Kotlin而不是ScalaScala开源客户端:shadowsocks-android
-
-Kotlin 与 Scala 的方法大相径庭,那为什么选择Kotlin而不是Scala?
-
-
-没有太多的学习曲线,现学现用.
-与Java紧密结合.
-相对于Scala库小很多(小于7000个方法数)
-JetBrains家的东西,IDE完美支持.
-
-Kotlin相对于Java的优势
-case 1......
-        </div>
-    </a>
-    <p class="post-meta">
-        Posted by Mio4kon on
-        2016-08-30
-    </p>
-
-</div>
-<hr>
-
 
 
 <!-- Pager -->
@@ -501,13 +498,11 @@ case 1......
                             
                         
                             
-                            <a href="/tags/#移动自动化测试" title="移动自动化测试" rel="6">移动自动化测试</a>
-                            
                         
                             
                         
                             
-                        
+                            <a href="/tags/#移动自动化测试" title="移动自动化测试" rel="8">移动自动化测试</a>
                             
                         
                             
@@ -545,9 +540,11 @@ case 1......
                             
                         
                             
-                            <a href="/tags/#Head First,设计模式" title="Head First,设计模式" rel="2">Head First,设计模式</a>
+                        
                             
                         
+                            
+                            <a href="/tags/#Head First,设计模式" title="Head First,设计模式" rel="2">Head First,设计模式</a>
                             
                         
                     </div>

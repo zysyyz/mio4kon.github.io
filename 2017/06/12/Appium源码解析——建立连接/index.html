@@ -13,11 +13,11 @@
 
     <title>
         
-          Android Studio之NDK开发  - Mio4kon的博客 | Mio4kon&#39;s Blog
+          Appium源码解析之一——建立连接 - Mio4kon的博客 | Mio4kon&#39;s Blog
         
     </title>
 
-    <link rel="canonical" href="http://mio4kon.com/2015/09/28/Android Studio之NDK开发/">
+    <link rel="canonical" href="http://mio4kon.com/2017/06/12/Appium源码解析——建立连接/">
 
     <!-- Bootstrap Core CSS -->
     <link rel="stylesheet" href="/css/bootstrap.min.css">
@@ -165,14 +165,14 @@
                 <div class="post-heading">
                     <div class="tags">
                         
-                          <a class="tag" href="/tags/#NDK" title="NDK">NDK</a>
+                          <a class="tag" href="/tags/#移动自动化测试" title="移动自动化测试">移动自动化测试</a>
                         
                     </div>
-                    <h1>Android Studio之NDK开发 </h1>
-                    <h2 class="subheading"></h2>
+                    <h1>Appium源码解析之一——建立连接</h1>
+                    <h2 class="subheading">源码解析</h2>
                     <span class="meta">
                         Posted by Mio4kon on
-                        2015-09-28
+                        2017-06-12
                     </span>
                 </div>
             </div>
@@ -191,31 +191,43 @@
                 col-md-10 col-md-offset-1
                 post-container">
 
-                <p><code>Android Studio 1.3</code> 版本开始支持了NDK开发.试用了一下发现的确方便了许多,不再需要mk文件.</p>
-<h3 id="准备工作"><a href="#准备工作" class="headerlink" title="准备工作"></a>准备工作</h3><p>1.在<code>SDK-Tools</code>中安装<code>Android-Ndk</code>‘</p>
-<p>2.修改工程目录下的<code>build,gradle</code>(不是Model下的文件)</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">dependencies &#123;</div><div class="line">//classpath &apos;com.android.tools.build:gradle:1.3.0&apos;</div><div class="line">classpath &apos;com.android.tools.build:gradle-experimental:0.2.0&apos;    </div><div class="line">    &#125;</div></pre></td></tr></table></figure>
-<a id="more"></a>
-<p>3.修改<code>gradle-&gt;wrapper</code>目录下的<code>gradle-wrapper.properties</code>,修改为2.5版本</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">distributionUrl=https\://services.gradle.org/distributions/gradle-2.5-all.zip</div></pre></td></tr></table></figure>
-<p>4.修改Model下的<code>build.gradle</code>文件</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div></pre></td><td class="code"><pre><div class="line">apply plugin: &apos;com.android.model.application&apos;</div><div class="line"></div><div class="line">model &#123;</div><div class="line">    android &#123;</div><div class="line">        compileSdkVersion = 23</div><div class="line">        buildToolsVersion = &quot;23.0.1&quot;</div><div class="line"></div><div class="line">        defaultConfig.with &#123;</div><div class="line">            applicationId = &quot;mio.kon.yyb.ndk_test&quot;</div><div class="line">            minSdkVersion.apiLevel = 14</div><div class="line">            targetSdkVersion.apiLevel = 22</div><div class="line">            versionCode = 1</div><div class="line">            versionName = &quot;1.0&quot;</div><div class="line">        &#125;</div><div class="line">        compileOptions.with &#123;</div><div class="line">            sourceCompatibility=JavaVersion.VERSION_1_7</div><div class="line">            targetCompatibility=JavaVersion.VERSION_1_7</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">    android.ndk &#123;</div><div class="line">        moduleName = &quot;jni-test&quot;</div><div class="line">        /*</div><div class="line">         * Other ndk flags configurable here are</div><div class="line">         * cppFlags += &quot;-fno-rtti&quot;</div><div class="line">         * cppFlags += &quot;-fno-exceptions&quot;</div><div class="line">         * ldLibs    = [&quot;android&quot;, &quot;log&quot;]</div><div class="line">         * stl       = &quot;system&quot;</div><div class="line">         */</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    android.productFlavors &#123;</div><div class="line">        // for detailed abiFilter descriptions, refer to &quot;Supported ABIs&quot; @</div><div class="line">        // https://developer.android.com/ndk/guides/abis.html#sa</div><div class="line">        create(&quot;arm&quot;) &#123;</div><div class="line">            ndk.abiFilters += &quot;armeabi&quot;</div><div class="line">        &#125;</div><div class="line">        create(&quot;arm7&quot;) &#123;</div><div class="line">            ndk.abiFilters += &quot;armeabi-v7a&quot;</div><div class="line">        &#125;</div><div class="line">        create(&quot;arm8&quot;) &#123;</div><div class="line">            ndk.abiFilters += &quot;arm64-v8a&quot;</div><div class="line">        &#125;</div><div class="line">        create(&quot;x86&quot;) &#123;</div><div class="line">            ndk.abiFilters += &quot;x86&quot;</div><div class="line">        &#125;</div><div class="line">        create(&quot;x86-64&quot;) &#123;</div><div class="line">            ndk.abiFilters += &quot;x86_64&quot;</div><div class="line">        &#125;</div><div class="line">        create(&quot;mips&quot;) &#123;</div><div class="line">            ndk.abiFilters += &quot;mips&quot;</div><div class="line">        &#125;</div><div class="line">        create(&quot;mips-64&quot;) &#123;</div><div class="line">            ndk.abiFilters += &quot;mips64&quot;</div><div class="line">        &#125;</div><div class="line">        // To include all cpu architectures, leaves abiFilters empty</div><div class="line">        create(&quot;all&quot;)</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    android.buildTypes &#123;</div><div class="line">        release &#123;</div><div class="line">            minifyEnabled = false</div><div class="line">            proguardFiles += file(&apos;proguard-rules.pro&apos;)</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">&#125;</div><div class="line"></div><div class="line">dependencies &#123;</div><div class="line">    compile fileTree(include: [&apos;*.jar&apos;], dir: &apos;libs&apos;)</div><div class="line">    compile &apos;com.android.support:appcompat-v7:23.0.1&apos;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<h3 id="JNI开发"><a href="#JNI开发" class="headerlink" title="JNI开发"></a>JNI开发</h3><p>在<code>main</code>目录下新建<code>jni</code>目录</p>
-<p><img src="http://7q5ccl.com1.z0.glb.clouddn.com/miojni.png" alt=""></p>
-<p>编写JNI代码</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">native</span> String <span class="title">stringFromJNI</span><span class="params">()</span></span>;</div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">native</span> <span class="keyword">int</span> <span class="title">intFromJNI</span><span class="params">()</span></span>;</div></pre></td></tr></table></figure>
-<p>生成c文件</p>
-<p><img src="http://7q5ccl.com1.z0.glb.clouddn.com/miojni2.png" alt=""></p>
-<p>编写.c文件</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;string.h&gt;</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;jni.h&gt;</span></span></div><div class="line"></div><div class="line"><span class="function">JNIEXPORT jstring JNICALL</span></div><div class="line"><span class="title">Java_mio_kon_yyb_ndk_1test_MainActivity_stringFromJNI</span><span class="params">(JNIEnv *env, jobject instance)</span> &#123;</div><div class="line"></div><div class="line">    <span class="keyword">return</span> (*env)-&gt;NewStringUTF(env, <span class="string">"I come from jni string"</span>);</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function">JNIEXPORT jint JNICALL</span></div><div class="line"><span class="title">Java_mio_kon_yyb_ndk_1test_MainActivity_intFromJNI</span><span class="params">(JNIEnv *env, jobject instance)</span> &#123;</div><div class="line"></div><div class="line">    <span class="keyword">return</span> <span class="number">24</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>导入库(应该与之前gradle配置的<code>android.ndk</code>下的<code>moduleName</code>保持一致)</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="keyword">static</span> &#123;</div><div class="line">        System.loadLibrary (<span class="string">"jni-test"</span>);</div><div class="line">    &#125;</div></pre></td></tr></table></figure>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">TextView tv = (TextView) findViewById (R.id.tv);</div><div class="line">TextView tv2 = (TextView) findViewById (R.id.tv2);</div><div class="line">tv.setText (stringFromJNI ());</div><div class="line">tv2.setText (<span class="string">"int from jni:"</span>+intFromJNI ());</div></pre></td></tr></table></figure>
-<p>运行结果:</p>
-<p><img src="http://7q5ccl.com1.z0.glb.clouddn.com/jni3.png" alt=""></p>
-<p>最后,如果需要so文件可以在<code>build-binaries-debug-all-obj</code>文件下找到.</p>
-<p><a href="https://github.com/mio4kon/ndk-test" target="_blank" rel="external">demo</a></p>
-<p><a href="http://tools.android.com/tech-docs/new-build-system/gradle-experimental" target="_blank" rel="external">参考链接</a></p>
+                <h1 id="本地运行Appium源码"><a href="#本地运行Appium源码" class="headerlink" title="本地运行Appium源码"></a>本地运行Appium源码</h1><ul>
+<li>首先先下载 <code>Appium</code> 源码: <a href="https://github.com/appium/appium" target="_blank" rel="external">https://github.com/appium/appium</a></li>
+<li>进入工程目录</li>
+<li>执行 <code>npm install</code></li>
+<li>执行 <code>node build/lib/main.js</code> 即可.</li>
+</ul>
+<h1 id="建立Appium连接"><a href="#建立Appium连接" class="headerlink" title="建立Appium连接"></a>建立Appium连接</h1><p>根据启动命令可以知道程序入口点在<code>lib/main.js</code>中.</p>
+<p><strong>[appium:lib/main.js]</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">async function main (args = null) &#123;</div><div class="line">  ...</div><div class="line">  let router = getAppiumRouter(args);</div><div class="line">  let server = await baseServer(router, args.port, args.address);</div><div class="line">  ...</div><div class="line">  return server;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>这里其实主要做了两件事.获取<code>router</code>和开启<code>server</code>.</p>
+<p>让我们看<code>getAppiumRouter</code>到底做了什么?</p>
+<p><strong>[appium:lib/appium.js]</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">function getAppiumRouter (args) &#123;</div><div class="line">  let appium = new AppiumDriver(args);</div><div class="line">  return routeConfiguringFunction(appium);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>这里会生成<code>AppiumDriver</code>,然后将<code>driver</code>配置给<code>route</code>,那么<code>driver</code>具体是做什么的呢?</p>
+<p>打开源码你会发现提供了各种方法,由于代码太多了.我们直接来看有哪些方法:</p>
+<p><img src="http://mio4kon.qiniudn.com/14975180262189.jpg" alt=""></p>
+<p>可以看出里面的方法都挺重要的.很多都是之后我们需要分析到的.现在我们先记住这个<code>AppiumDriver</code>可以给我提供类似<code>createSession</code>,<code>executeCommand</code>这些方法.</p>
+<p>生成了<code>AppiumDriver</code>会把它传给<code>routeConfiguringFunction</code>.<code>routeConfiguringFunction</code>是什么.最终发现它是<code>mjsonwp.js</code>的一个方法.</p>
+<p><em>Tips: <code>routeConfiguringFunction</code>指向的是 <code>node_modules/appium-base-driver/build/lib/mjsonwp/mjsonwp.js</code>,但是build下都是最终生成的代码,会很多乱七八糟的东西会扰乱我们阅读源码.所以建议直接到<code>node_modules/appium-base-driver/lib/mjsonwp/mjsonwp.js</code>中看源码,后面源码的都是这种情况</em></p>
+<p><strong>[appium-base-driver:lib/mjsonwp/mjsonwp.js]</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">function routeConfiguringFunction (driver) &#123;</div><div class="line">  ...</div><div class="line">  // return a function which will add all the routes to the driver</div><div class="line">  return function (app) &#123;</div><div class="line">    for (let [path, methods] of _.toPairs(METHOD_MAP)) &#123;</div><div class="line">      for (let [method, spec] of _.toPairs(methods)) &#123;</div><div class="line">        // set up the express route handler</div><div class="line">        buildHandler(app, method, path, spec, driver, isSessionCommand(spec.command));</div><div class="line">      &#125;</div><div class="line">    &#125;</div><div class="line">  &#125;;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>主要逻辑都是在<code>buildHandler</code>中:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div></pre></td><td class="code"><pre><div class="line">function buildHandler (app, method, path, spec, driver, isSessCmd) &#123;</div><div class="line">  let asyncHandler = async (req, res) =&gt; &#123;</div><div class="line">    let jsonObj = req.body;</div><div class="line">    let httpResBody = &#123;&#125;;</div><div class="line">    let httpStatus = 200;</div><div class="line">    let newSessionId;</div><div class="line">    try &#123;</div><div class="line">      ...</div><div class="line">      if (driver.executeCommand) &#123;</div><div class="line">        driverRes = await driver.executeCommand(spec.command, ...args);</div><div class="line">      &#125; else &#123;</div><div class="line">        driverRes = await driver.execute(spec.command, ...args);</div><div class="line">      &#125;</div><div class="line"></div><div class="line">      // unpack createSession response</div><div class="line">      if (spec.command === &apos;createSession&apos;) &#123;</div><div class="line">        newSessionId = driverRes[0];</div><div class="line">        driverRes = driverRes[1];</div><div class="line">      &#125;</div><div class="line">  // add the method to the app</div><div class="line">  app[method.toLowerCase()](path, (req, res) =&gt; &#123;</div><div class="line">    B.resolve(asyncHandler(req, res)).done();</div><div class="line">  &#125;);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>这里面实际上就是服务器响应的处理逻辑,而逻辑是通过<code>driver.executeCommand</code>来执行的.<br><code>executeCommand</code>方法实际上就是之前<code>AppiumDriver</code>中提供的方法.这个之后会具体分析.</p>
+<p>那么<code>command</code>具体是什么? 发现它是取自<code>spec</code>中的.回到之前的<code>routeConfiguringFunction</code>方法.<br>可以看到<code>spec</code>其实都是来自于<code>METHOD_MAP</code>.</p>
+<p><strong>[appium-base-driver:/lib/mjsonwp/routes.js]</strong></p>
+<p><img src="http://mio4kon.qiniudn.com/14975204135809.jpg" alt=""></p>
+<p>这个就不用太多解释了.根据客户端的不同请求来执行不同的<code>command</code>.<code>appium</code>正是这种<code>C/S架构</code>.</p>
+<p>OK,到此为止我们已经知道了入口文件<code>main.js</code>中<code>getAppiumRouter(args)</code>方法具体的内容了.</p>
+<p>现在我们来分析<code>await baseServer(router, args.port, args.address)</code>到底做了什么.其实猜都能猜到它开启了appium服务.</p>
+<p><strong>[appium-base-driver:lib/express/server.js]</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div></pre></td><td class="code"><pre><div class="line">async function server (configureRoutes, port, hostname = null) &#123;</div><div class="line">  // create the actual http server</div><div class="line">  let app = express();</div><div class="line">  let httpServer = http.createServer(app);</div><div class="line">  let close = httpServer.close.bind(httpServer);</div><div class="line">  httpServer.close = async () =&gt; &#123;</div><div class="line">    return await new Promise((resolve, reject) =&gt; &#123;</div><div class="line">      httpServer.on(&apos;close&apos;, resolve);</div><div class="line">      close((err) =&gt; &#123;</div><div class="line">        if (err) reject(err);</div><div class="line">      &#125;);</div><div class="line">    &#125;);</div><div class="line">  &#125;;</div><div class="line"></div><div class="line">  return await new Promise((resolve, reject) =&gt; &#123;</div><div class="line">    httpServer.on(&apos;error&apos;, (err) =&gt; &#123;</div><div class="line">    ...</div><div class="line">    configureServer(app, configureRoutes);</div><div class="line">    let serverArgs = [port];</div><div class="line">    if (hostname) &#123;</div><div class="line">      // If the hostname is omitted, the server will accept</div><div class="line">      // connections on any IP address</div><div class="line">      serverArgs.push(hostname);</div><div class="line">    &#125;</div><div class="line">    httpServer.listen(...serverArgs, (err) =&gt; &#123;</div><div class="line">      if (err) &#123;</div><div class="line">        reject(err);</div><div class="line">      &#125;</div><div class="line">      resolve(httpServer);</div><div class="line">    &#125;);</div><div class="line">  &#125;);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>反正就是开启一个服务咯.其中用了node的<a href="http://expressjs.com/zh-cn/" target="_blank" rel="external">express框架</a>,有心情的可以了解下.</p>
+<p>再来看看<code>configureServer(app, configureRoutes)</code>方法</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">function configureServer (app, configureRoutes) &#123;</div><div class="line"> </div><div class="line"></div><div class="line">  // set up static assets</div><div class="line">  app.use(favicon(path.resolve(STATIC_DIR, &apos;favicon.ico&apos;)));</div><div class="line">  app.use(express.static(STATIC_DIR));</div><div class="line"></div><div class="line">  // crash routes, for testing</div><div class="line">  app.use(&apos;/wd/hub/produce_error&apos;, produceError);</div><div class="line">  app.use(&apos;/wd/hub/crash&apos;, produceCrash);</div><div class="line">	...</div><div class="line">  configureRoutes(app);</div><div class="line">	...</div><div class="line">  &#125;</div></pre></td></tr></table></figure>
+<p>里面处理了各种异常,很重要一点绑定了之前创建的路由<code>configureRoutes(app)</code>,<code>configureRoutes</code>就是之前我们获得<code>router</code>.</p>
+<p>appium服务器的创建以及响应的处理我们都已经在代码中找到了.下一篇将具体针对创建<code>session</code>这个请求来看一看整个过程是如何处理的.</p>
 
 
                 <hr>
@@ -225,12 +237,12 @@
                 <ul class="pager">
                     
                         <li class="previous">
-                            <a href="/2016/01/12/解决NestedScrollView中ViewPager不显示的问题/" data-toggle="tooltip" data-placement="top" title="解决NestedScrollView中ViewPager不显示的问题">&larr; Previous Post</a>
+                            <a href="/2017/06/23/Appium源码解析之二——第一个请求/" data-toggle="tooltip" data-placement="top" title="Appium源码解析之二——第一个请求">&larr; Previous Post</a>
                         </li>
                     
                     
                         <li class="next">
-                            <a href="/2015/09/22/Touch事件模拟/" data-toggle="tooltip" data-placement="top" title="Touch模拟实例">Next Post &rarr;</a>
+                            <a href="/2017/06/12/Appium踩坑之旅——小米手机/" data-toggle="tooltip" data-placement="top" title="Appium踩坑之旅——小米手机">Next Post &rarr;</a>
                         </li>
                     
                 </ul>
@@ -277,7 +289,7 @@
                     <h5><a href="/tags/">FEATURED TAGS</a></h5>
                     <div class="tags">
                        
-                          <a class="tag" href="/tags/#NDK" title="NDK">NDK</a>
+                          <a class="tag" href="/tags/#移动自动化测试" title="移动自动化测试">移动自动化测试</a>
                         
                     </div>
                 </section>
@@ -307,8 +319,8 @@
 <script type="text/javascript">
     /* * * CONFIGURATION VARIABLES * * */
     var disqus_shortname = "hexo-theme-huxblog";
-    var disqus_identifier = "http://mio4kon.com/2015/09/28/Android Studio之NDK开发/";
-    var disqus_url = "http://mio4kon.com/2015/09/28/Android Studio之NDK开发/";
+    var disqus_identifier = "http://mio4kon.com/2017/06/12/Appium源码解析——建立连接/";
+    var disqus_url = "http://mio4kon.com/2017/06/12/Appium源码解析——建立连接/";
 
     (function() {
         var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
