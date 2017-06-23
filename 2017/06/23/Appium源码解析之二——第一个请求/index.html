@@ -97,14 +97,14 @@
 
                         
                         <li>
-                            <a href="/tags/">Tags</a>
+                            <a href="/archives/">Archives</a>
                         </li>
                         
                     
 
                         
                         <li>
-                            <a href="/archives/">Archives</a>
+                            <a href="/tags/">Tags</a>
                         </li>
                         
                     
@@ -308,7 +308,10 @@ to the system through an AndroidManifest.xml&apos;s &lt;instrumentation&gt; tag.
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div></pre></td><td class="code"><pre><div class="line">public class NewSession extends SafeRequestHandler &#123;</div><div class="line"></div><div class="line">    public NewSession(String mappedUri) &#123;</div><div class="line">        super(mappedUri);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    @Override</div><div class="line">    public AppiumResponse safeHandle(IHttpRequest request) &#123;</div><div class="line"></div><div class="line">        String sessionID;</div><div class="line">        try &#123;</div><div class="line">            Session.capabilities = getCapabilities(request);</div><div class="line">            //创建seesionId</div><div class="line">            sessionID = new AppiumUiAutomatorDriver().initializeSession();</div><div class="line">            Logger.info(&quot;Session Created with SessionID:&quot; + sessionID);</div><div class="line">        &#125; catch (JSONException e) &#123;</div><div class="line">            Logger.error(&quot;Exception while reading JSON: &quot;, e);</div><div class="line">            return new AppiumResponse(getSessionId(request), WDStatus.JSON_DECODER_ERROR, e);</div><div class="line">        &#125;</div><div class="line">        return new AppiumResponse(sessionID, WDStatus.SUCCESS, &quot;Created Session&quot;);</div><div class="line">    &#125;</div><div class="line"></div><div class="line"></div><div class="line">    public  Map&lt;String, Object&gt; getCapabilities(IHttpRequest request) throws JSONException &#123;</div><div class="line">        JSONObject caps = getPayload(request).getJSONObject(&quot;desiredCapabilities&quot;);</div><div class="line">        Map&lt;String, Object&gt; map = new HashMap&lt;String, Object&gt;();</div><div class="line"></div><div class="line">        Iterator&lt;String&gt; keysItr = caps.keys();</div><div class="line">        while(keysItr.hasNext()) &#123;</div><div class="line">            String key = keysItr.next();</div><div class="line">            Object value = caps.get(key);</div><div class="line">            map.put(key, value);</div><div class="line">        &#125;</div><div class="line">        return map;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <p>好吧其实猜都猜的到干嘛了.<code>Uiautomator2 Server</code>也会创建一个<code>SeesionId</code>用来保持<code>Appium Server</code>和 <code>Phone Server</code>之间的通讯.</p>
 <p><img src="http://mio4kon.qiniudn.com/14982133026742.jpg" alt=""></p>
-<p>大家可以看到上图的通讯.这里包含了2个<code>SeesionId</code>,在最后会将<code>Phone Server</code>的<code>SeesionId</code>进行一次替换.</p>
+<p>大家可以看到上图的通讯.这里包含了2个<code>SeesionId</code>,在最后会将<code>Phone Server</code>的<code>SeesionId</code>进行一次替换,然后再返回给客户端.</p>
+<p>相关代码在proxy文件中,这里就不细说了:</p>
+<p><strong>[appium-base-driver:lib/jsonwp-proxy/proxy.js]</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line">  async proxyReqRes (req, res) &#123;</div><div class="line">    let [response, body] = await this.proxy(req.originalUrl, req.method, req.body);</div><div class="line">    res.headers = response.headers;</div><div class="line">    res.set(&apos;Content-type&apos;, response.headers[&apos;content-type&apos;]);</div><div class="line">   </div><div class="line">    body = util.safeJsonParse(body);</div><div class="line">    if (body &amp;&amp; body.sessionId) &#123;</div><div class="line">      const reqSessionId = this.getSessionIdFromUrl(req.originalUrl);</div><div class="line">      if (reqSessionId) &#123;</div><div class="line">        log.info(`Replacing sessionId $&#123;body.sessionId&#125; with $&#123;reqSessionId&#125;`);</div><div class="line">        body.sessionId = reqSessionId;</div><div class="line">      &#125; else if (this.sessionId) &#123;</div><div class="line">        log.info(`Replacing sessionId $&#123;body.sessionId&#125; with $&#123;this.sessionId&#125;`);</div><div class="line">        body.sessionId = this.sessionId;</div><div class="line">      &#125;</div><div class="line">    &#125;</div><div class="line">    res.status(response.statusCode).send(JSON.stringify(body));</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <p>到此为止我们已经从代码的角度分析了从客户端的<strong>第一个请求</strong>到<strong>Appium服务</strong>再到<strong>Uiautomator2服务</strong>的处理流程,以及各个框架之间如何衔接.</p>
 
 
@@ -320,7 +323,7 @@ to the system through an AndroidManifest.xml&apos;s &lt;instrumentation&gt; tag.
                     
                     
                         <li class="next">
-                            <a href="/2017/06/12/Appium源码解析——建立连接/" data-toggle="tooltip" data-placement="top" title="Appium源码解析之一——建立连接">Next Post &rarr;</a>
+                            <a href="/2017/06/12/Appium踩坑之旅——小米手机/" data-toggle="tooltip" data-placement="top" title="Appium踩坑之旅——小米手机">Next Post &rarr;</a>
                         </li>
                     
                 </ul>
