@@ -1,0 +1,590 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="android mio4kon mio">
+    <meta name="keyword"  content="">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>
+        
+          Mio4kon的博客 | Mio4kon&#39;s Blog
+        
+    </title>
+
+    <link rel="canonical" href="http://mio4kon.com/后台权限.html">
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/hux-blog.min.css">
+
+    <!-- Pygments Highlight CSS -->
+    <link rel="stylesheet" href="/css/highlight.css">
+
+    <!-- Custom Fonts -->
+    <!-- <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"> -->
+    <!-- Hux change font-awesome CDN to qiniu -->
+    <link href="https://cdn.staticfile.org/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+
+    <!-- Hux Delete, sad but pending in China
+    <link href='http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/
+    css'>
+    -->
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+
+<!-- hack iOS CSS :active style -->
+<body ontouchstart="">
+
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">Mio4kon</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <!-- Known Issue, found by Hux:
+            <nav>'s height woule be hold on by its content.
+            so, when navbar scale out, the <nav> will cover tags.
+            also mask any touch event of tags, unfortunately.
+        -->
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+
+                    
+
+                        
+                    
+
+                        
+                    
+
+                        
+                    
+
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/about/">About</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/archives/">Archives</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/tags/">Tags</a>
+                        </li>
+                        
+                    
+                    
+                </ul>
+            </div>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+<script>
+    // Drop Bootstarp low-performance Navbar
+    // Use customize navbar with high-quality material design animation
+    // in high-perf jank-free CSS3 implementation
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        // CLOSE
+            $navbar.className = " ";
+            // wait until animation end.
+            setTimeout(function(){
+                // prevent frequently toggle
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        // OPEN
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+    <!-- Main Content -->
+    <!-- Page Header -->
+<header class="intro-header" style="background-image: url('/img/home-bg.jpg')">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1 ">
+                <div class="site-heading">
+                    <h1>Mio4kon</h1>
+                    <!--<hr class="small">-->
+                    <span class="subheading">扶我起来 我还能送!</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+
+
+<!-- Main Content -->
+<div class="container">
+    <div class="row">
+        
+
+<!-- USE SIDEBAR -->
+    <!-- Post Container -->
+            <div class="
+                col-lg-8 col-lg-offset-1
+                col-md-8 col-md-offset-1
+                col-sm-12
+                col-xs-12
+                post-container
+            ">
+            
+                <h1 id="后台权限"><a href="#后台权限" class="headerlink" title="后台权限"></a>后台权限</h1><p>所有机型的流程:</p>
+<p><code>checkBackground</code></p>
+<ol>
+<li>如果是第一次启动检查之前结果是否授权</li>
+<li>获取进入后台的次数</li>
+<li>检查是否处于检查条件(后台,熄屏等)</li>
+<li>计算存活时间</li>
+</ol>
+<h2 id="华为"><a href="#华为" class="headerlink" title="华为"></a>华为</h2><p>检测条件:</p>
+<ul>
+<li>后台</li>
+<li>熄屏</li>
+<li>一分钟内APP被杀死.</li>
+</ul>
+<p><strong>可能存在开启后台权限还是会被杀死,做double check.</strong></p>
+<h2 id="OPPO"><a href="#OPPO" class="headerlink" title="OPPO"></a>OPPO</h2><p> 检测条件</p>
+<ul>
+<li>未充电</li>
+<li>未开发者模式</li>
+<li>5分钟内被杀死</li>
+<li>后台</li>
+<li>熄屏</li>
+</ul>
+<h2 id="vivo"><a href="#vivo" class="headerlink" title="vivo"></a>vivo</h2><h2 id="魅族"><a href="#魅族" class="headerlink" title="魅族"></a>魅族</h2><p>检测条件</p>
+<ul>
+<li>后台</li>
+<li>2分钟后服务终止,APP不会被杀</li>
+</ul>
+<p><strong>进后台,每10秒记录时间,进前台时如果处于记录状态,则减去上一次记录时间 delta &gt; interval + 误差  ,则代表无权限</strong></p>
+<h2 id="小米"><a href="#小米" class="headerlink" title="小米"></a>小米</h2><p>检测条件</p>
+<h1 id="定位权限"><a href="#定位权限" class="headerlink" title="定位权限"></a>定位权限</h1><h2 id="vivo-1"><a href="#vivo-1" class="headerlink" title="vivo"></a>vivo</h2><p>权限关闭/网没开: location为空</p>
+<p>Android 版本 : 5.1</p>
+<ul>
+<li>定位: 定位权限(开启,禁止,询问)普通方式不能判断(永远都是有权限)</li>
+</ul>
+<p>网上解决方案:通过 getLastKnownLocation 强制获取一次 location,然后判断是否为空.<br>但是测试发现为空有几种情况 </p>
+<ol>
+<li>[定位权限]未开启   </li>
+<li>[定位权限]开启了但是[定位服务]未开启   </li>
+<li>[定位权限],[定位服务]开启了,但是wifi关闭.</li>
+</ol>
+<p>思路 :<br>    只要wifi,[定位服务] 未开启, 那么通过 getLastKnownLocation 方式都是无法check定位权限是否真正已经打开.<br>    所以倒序进行check.</p>
+<ul>
+<li>GPS/定位服务: gps provider 方式可以判断.</li>
+</ul>
+<p>进入设置页面:</p>
+<p>Intent intent = new Intent(“android.settings.APPLICATION_DETAILS_SETTINGS”);<br>            Uri uri = Uri.fromParts(“package”, ctx.getPackageName(), null);<br>            intent.setData(uri);<br>            ctx.startActivity(intent);</p>
+<p>进入所有应用权限管理:</p>
+<p>adb shell am start -n com.coloros.safecenter/com.coloros.safecenter.permission.singlepage.PermissionSinglePageActivity -e ‘package’ ‘com.mio.sample.permissionsample’</p>
+<p>vivo</p>
+<h1 id="华为-1"><a href="#华为-1" class="headerlink" title="华为"></a>华为</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">Intent intent = new Intent();</div><div class="line">intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);</div><div class="line">intent.putExtra(&quot;packageName&quot;, BuildConfig.APPLICATION_ID);</div><div class="line">ComponentName comp = new ComponentName(&quot;com.huawei.systemmanager&quot;, &quot;com.huawei.permissionmanager.ui.MainActivity&quot;);</div><div class="line">intent.setComponent(comp);</div><div class="line">startActivity(intent);</div></pre></td></tr></table></figure>
+<h1 id="魅族-1"><a href="#魅族-1" class="headerlink" title="魅族"></a>魅族</h1><p>system info ===MX6===6.0===Flyme 6.1.0.0A</p>
+<p>定位权限</p>
+<p>AppOpsManagerCompat 方式无效<br>checkSelfPermission 方式无效<br>getLastKnownLocation 方式经常失效</p>
+<p>加入高德地图后发现:<br>定位权限关闭,定位服务打开<br>    高德可以拿到经纬度<br>    系统拿不到经纬度<br>定位权限打开,定位服务关闭<br>    高德可以拿到经纬度<br>    系统拿不到经纬度<br>定位权限关闭,定位服务关闭<br>    都拿不到经纬度</p>
+<p>解决: 系统,高德每30秒检查一次定位经纬度,如果都为空则重试,重试次数为n次,期间如果成功过则认为有权限.否则视为无权限.</p>
+<p>Intent intent = new Intent(“com.meizu.safe.security.SHOW_APPSEC”);<br>intent.addCategory(Intent.CATEGORY_DEFAULT);<br>intent.putExtra(“packageName”, BuildConfig.APPLICATION_ID);<br>startActivity(intent);</p>
+<h1 id="小米-1"><a href="#小米-1" class="headerlink" title="小米"></a>小米</h1><p>String rom = getMiuiVersion();<br>    Intent intent = null;<br>    if (ROM_MIUI_V5.equals(rom)) {</p>
+<pre><code>    Uri packageURI = Uri.parse(&quot;package:&quot; + context.getApplicationInfo().packageName);
+    intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS, packageURI);
+
+
+} else if (ROM_MIUI_V6.equals(rom) || ROM_MIUI_V7.equals(rom)) {
+    intent = new Intent(&quot;miui.intent.action.APP_PERM_EDITOR&quot;);
+    intent.setClassName(&quot;com.miui.securitycenter&quot;, &quot;com.miui.permcenter.permissions.AppPermissionsEditorActivity&quot;);
+    intent.putExtra(&quot;extra_pkgname&quot;, context.getPackageName());
+} else if(ROM_MIUI_V8.equals(rom)){
+    intent = new Intent(&quot;miui.intent.action.APP_PERM_EDITOR&quot;);
+    intent.setClassName(&quot;com.miui.securitycenter&quot;, &quot;com.miui.permcenter.permissions.PermissionsEditorActivity&quot;);
+    intent.putExtra(&quot;extra_pkgname&quot;, context.getPackageName());
+}else{
+}
+</code></pre>
+
+                <!-- 如果开启评论功能 -->
+                
+                    <hr>
+
+                    
+
+                    
+                    <!-- disqus 评论框 start -->
+                    <div class="comment">
+                        <div id="disqus_thread" class="disqus-thread"></div>
+                    </div>
+                    <!-- disqus 评论框 end -->
+                    
+
+
+                    
+
+                    
+                    <!-- disqus 公共JS代码 start (一个网页只需插入一次) -->
+                    <script type="text/javascript">
+                        /* * * CONFIGURATION VARIABLES * * */
+                        var disqus_shortname = "hexo-theme-huxblog";
+                        var disqus_identifier = "http://mio4kon.com/后台权限.html";
+                        var disqus_url = "http://mio4kon.com/后台权限.html";
+
+                        (function() {
+                            var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+                            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+                            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+                        })();
+
+                        
+                    </script>
+                    <!-- disqus 公共JS代码 end -->
+                    
+
+
+
+                
+
+            </div>
+    <!-- Sidebar Container -->
+            <div class="
+                col-lg-3 col-lg-offset-0
+                col-md-3 col-md-offset-0
+                col-sm-12
+                col-xs-12
+                sidebar-container
+            ">
+                <!-- Featured Tags -->
+                
+                <section>
+                    <!-- no hr -->
+                    <h5><a href="/tags/">FEATURED TAGS</a></h5>
+                    <div class="tags">
+                        
+                            
+                        
+                            
+                        
+                            
+                        
+                            
+                            <a href="/tags/#源码分析" title="源码分析" rel="2">源码分析</a>
+                            
+                        
+                            
+                            <a href="/tags/#移动自动化测试" title="移动自动化测试" rel="8">移动自动化测试</a>
+                            
+                        
+                            
+                        
+                            
+                        
+                            
+                        
+                            
+                            <a href="/tags/#Material Design" title="Material Design" rel="3">Material Design</a>
+                            
+                        
+                            
+                        
+                            
+                        
+                            
+                            <a href="/tags/#Kotlin" title="Kotlin" rel="2">Kotlin</a>
+                            
+                        
+                            
+                        
+                            
+                        
+                            
+                        
+                            
+                        
+                            
+                        
+                            
+                        
+                            
+                        
+                            
+                        
+                            
+                        
+                            
+                        
+                            
+                            <a href="/tags/#Head First,设计模式" title="Head First,设计模式" rel="2">Head First,设计模式</a>
+                            
+                        
+                            
+                        
+                    </div>
+                </section>
+                
+
+                <!-- Short About -->
+                <section class="visible-md visible-lg">
+                    <hr><h5><a href="/about/">ABOUT ME</a></h5>
+                    <div class="short-about">
+
+                        
+                            <img src="/img/Mio-Akiyama.jpg" />
+                        
+
+                        
+                            <p>扶我起来,我还能送!</p>
+                        
+
+                        <!-- SNS Link -->
+                        <ul class="list-inline">
+                            
+                            
+                            
+
+                            
+                                <li>
+                                    <a target="_blank" href="http://weibo.com/u/3198010790">
+                                        <span class="fa-stack fa-lg">
+                                            <i class="fa fa-circle fa-stack-2x"></i>
+                                            <i class="fa fa-weibo fa-stack-1x fa-inverse"></i>
+                                        </span>
+                                    </a>
+                                </li>
+                            
+
+                            
+
+                            
+                                <li>
+                                    <a target="_blank"  href="https://github.com/Mio4kon">
+                                        <span class="fa-stack fa-lg">
+                                            <i class="fa fa-circle fa-stack-2x"></i>
+                                            <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                                        </span>
+                                    </a>
+                                </li>
+                            
+                            
+                            
+                            
+                        </ul>
+                    </div>
+                </section>
+                
+                <!-- Friends Blog -->
+                
+                <hr>
+                <h5>FRIENDS</h5>
+                <ul class="list-inline">
+
+                    
+                        <li><a href="http://lrd.ele.me/" target="_blank">lrd ele&#39;s Blog</a></li>
+                    
+                </ul>
+                
+            </div>
+        
+    </div>
+</div>
+
+
+    <!-- Footer -->
+    <!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                
+                
+                
+
+                
+                    <li>
+                        <a target="_blank" href="http://weibo.com/u/3198010790">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-weibo fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+
+                
+                    <li>
+                        <a target="_blank"  href="https://github.com/Mio4kon">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+
+                </ul>
+                <p class="copyright text-muted">
+                    Copyright &copy; Mio4kon 2017 
+                    <br>
+                    Theme by <a href="http://huangxuan.me">Hux</a> 
+                    <span style="display: inline-block; margin: 0 5px;">
+                        <i class="fa fa-heart"></i>
+                    </span> 
+                    Ported by <a href="http://blog.kaijun.rocks">Kaijun</a> | 
+                    <iframe
+                        style="margin-left: 2px; margin-bottom:-5px;"
+                        frameborder="0" scrolling="0" width="91px" height="20px"
+                        src="https://ghbtns.com/github-btn.html?user=kaijun&repo=hexo-theme-huxblog&type=star&count=true" >
+                    </iframe>
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+<script src="/js/jquery.min.js"></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="/js/bootstrap.min.js"></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/js/hux-blog.min.js"></script>
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!-- 
+     Because of the native support for backtick-style fenced code blocks 
+     right within the Markdown is landed in Github Pages, 
+     From V1.6, There is no need for Highlight.js, 
+     so Huxblog drops it officially.
+
+     - https://github.com/blog/2100-github-pages-now-faster-and-simpler-with-jekyll-3-0  
+     - https://help.github.com/articles/creating-and-highlighting-code-blocks/    
+-->
+<!--
+    <script>
+        async("http://cdn.bootcss.com/highlight.js/8.6/highlight.min.js", function(){
+            hljs.initHighlightingOnLoad();
+        })
+    </script>
+    <link href="http://cdn.bootcss.com/highlight.js/8.6/styles/github.min.css" rel="stylesheet">
+-->
+
+
+<!-- jquery.tagcloud.js -->
+<script>
+    // only load tagcloud.js in tag.html
+    if($('#tag_cloud').length !== 0){
+        async("http://mio4kon.com/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                //size: {start: 1, end: 1, unit: 'em'},
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+<!--fastClick.js -->
+<script>
+    async("https://cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+<!-- Google Analytics -->
+
+
+
+
+<!-- Baidu Tongji -->
+
+
+<!-- Side Catalog -->
+
+
+
+
+
+<!-- Image to hack wechat -->
+<img src="http://mio4kon.com/img/icon_wechat.png" width="0" height="0" />
+<!-- Migrate from head to bottom, no longer block render and still work -->
+
+</body>
+
+</html>
