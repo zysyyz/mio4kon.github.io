@@ -1,0 +1,630 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="android mio4kon mio">
+    <meta name="keyword"  content="">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>
+        
+          30分钟了解轻量级插件化方案--Small - Mio4kon的博客 | Mio4kon&#39;s Blog
+        
+    </title>
+
+    <link rel="canonical" href="http://mio4kon.com/2017/12/26/30分钟了解轻量级插件化方案--Small/">
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/hux-blog.min.css">
+
+    <!-- Pygments Highlight CSS -->
+    <link rel="stylesheet" href="/css/highlight.css">
+
+    <!-- Custom Fonts -->
+    <!-- <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"> -->
+    <!-- Hux change font-awesome CDN to qiniu -->
+    <link href="https://cdn.staticfile.org/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+
+    <!-- Hux Delete, sad but pending in China
+    <link href='http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/
+    css'>
+    -->
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+
+<!-- hack iOS CSS :active style -->
+<body ontouchstart="">
+
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">Mio4kon</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <!-- Known Issue, found by Hux:
+            <nav>'s height woule be hold on by its content.
+            so, when navbar scale out, the <nav> will cover tags.
+            also mask any touch event of tags, unfortunately.
+        -->
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+
+                    
+
+                        
+                    
+
+                        
+                    
+
+                        
+                    
+
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/about/">About</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/tags/">Tags</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/archives/">Archives</a>
+                        </li>
+                        
+                    
+                    
+                </ul>
+            </div>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+<script>
+    // Drop Bootstarp low-performance Navbar
+    // Use customize navbar with high-quality material design animation
+    // in high-perf jank-free CSS3 implementation
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        // CLOSE
+            $navbar.className = " ";
+            // wait until animation end.
+            setTimeout(function(){
+                // prevent frequently toggle
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        // OPEN
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+    <!-- Main Content -->
+    
+<!-- Image to hack wechat -->
+<!-- <img src="http://mio4kon.com/img/icon_wechat.png" width="0" height="0"> -->
+<!-- <img src="{{ site.baseurl }}/{% if page.header-img %}{{ page.header-img }}{% else %}{{ site.header-img }}{% endif %}" width="0" height="0"> -->
+
+<!-- Post Header -->
+<style type="text/css">
+    header.intro-header{
+        background-image: url('/img/home-bg.jpg')
+    }
+</style>
+<header class="intro-header" >
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+                        
+                    </div>
+                    <h1>30分钟了解轻量级插件化方案--Small</h1>
+                    <h2 class="subheading">插件化</h2>
+                    <span class="meta">
+                        Posted by Mio4kon on
+                        2017-12-26
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+    <!-- Post Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                <h1 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h1><p>现有的插件化方案有很多,<a href="https://github.com/wequick/Small" target="_blank" rel="external">Small</a>以轻量级著称,先看下官方的对比图:</p>
+<p><img src="http://mio4kon.qiniudn.com/15142730025079.jpg" alt=""></p>
+<p>更多对比:<br><a href="https://github.com/wequick/Small/blob/master/Android/COMPARISION.md" target="_blank" rel="external">https://github.com/wequick/Small/blob/master/Android/COMPARISION.md</a></p>
+<p>插件化? 模块化?</p>
+<p><img src="http://mio4kon.qiniudn.com/15142731234723.jpg" alt=""></p>
+<h1 id="入门"><a href="#入门" class="headerlink" title="入门"></a>入门</h1><h2 id="Demo"><a href="#Demo" class="headerlink" title="Demo"></a>Demo</h2><ul>
+<li>新建一个宿主工程.</li>
+<li><code>project-build</code>中加入依赖:</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">dependencies &#123;</div><div class="line">        classpath &apos;com.android.tools.build:gradle:2.2.3&apos;</div><div class="line">        classpath &apos;net.wequick.tools.build:gradle-small:1.1.0-alpha2&apos;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">apply plugin: &apos;net.wequick.small&apos;</div><div class="line">small &#123;</div><div class="line">    aarVersion = &apos;1.1.0-alpha2&apos;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<ul>
+<li>宿主工程<code>Application</code>调用<code>Small.preSetUp(this)</code>方法.</li>
+<li>编译公共库(宿主工程)<code>./gradlew buildLib -q</code></li>
+<li>新建一个<code>module</code>(插件)工程,名称为<code>App.xxx</code></li>
+<li>编译插件 <code>./gradlew buildBundle -q -Dbundle.arch=armeabi</code></li>
+<li>在宿主工程中<code>assets</code>资源文件中添加<code>bundle.json</code>路由配置文件:</li>
+</ul>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">&#123;</div><div class="line">  <span class="attr">"version"</span>: <span class="string">"1.0.0"</span>,</div><div class="line">  <span class="attr">"bundles"</span>: [</div><div class="line">    &#123;</div><div class="line">      <span class="attr">"uri"</span>: <span class="string">"main"</span>,</div><div class="line">      <span class="attr">"pkg"</span>: <span class="string">"com.mio.appmain"</span></div><div class="line">    &#125;</div><div class="line">  ]</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<ul>
+<li>调用<code>Small.setup</code>打开插件工程:</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">Small.setUp(<span class="keyword">this</span>, <span class="keyword">new</span> Small.OnCompleteListener() &#123;</div><div class="line">           <span class="meta">@Override</span></div><div class="line">           <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onComplete</span><span class="params">()</span> </span>&#123;</div><div class="line">               Small.openUri(<span class="string">"main"</span>, MainActivity.<span class="keyword">this</span>);</div><div class="line">           &#125;</div><div class="line">       &#125;);</div></pre></td></tr></table></figure>
+<h2 id="公共库插件模块"><a href="#公共库插件模块" class="headerlink" title="公共库插件模块"></a>公共库插件模块</h2><h3 id="定义-二选一"><a href="#定义-二选一" class="headerlink" title="定义(二选一)"></a>定义(二选一)</h3><ol>
+<li>指定 <code>Module name</code> 为 lib.*</li>
+<li>在 <code>Small DSL</code> 中显式指明 <code>bundles lib your_module_name</code></li>
+</ol>
+<h3 id="读取-二选一"><a href="#读取-二选一" class="headerlink" title="读取(二选一)"></a>读取(二选一)</h3><ol>
+<li>指定 <code>Package name</code> 为 <code>**.lib.*</code> 或 <code>**.lib*</code></li>
+<li>在 <code>bundle.json</code>中添加描述 <code>&quot;type&quot;: &quot;lib&quot;</code></li>
+</ol>
+<p>公共库插件模块: 例如将<code>theme</code>,<code>color</code>,<code>style</code>抽取成 <code>lib.style</code> 库.</p>
+<h2 id="应用插件模块"><a href="#应用插件模块" class="headerlink" title="应用插件模块"></a>应用插件模块</h2><h3 id="定义-二选一-1"><a href="#定义-二选一-1" class="headerlink" title="定义(二选一)"></a>定义(二选一)</h3><ol>
+<li>指定 <code>Module name</code> 为 app.*</li>
+<li>在 <code>Small DSL</code> 中显式指明 <code>bundles app your_module_name</code></li>
+</ol>
+<h3 id="读取-二选一-1"><a href="#读取-二选一-1" class="headerlink" title="读取(二选一)"></a>读取(二选一)</h3><ol>
+<li>指定 <code>Package name</code> 为 <code>**.app.*</code> 或 <code>**.app*</code></li>
+<li>在 <code>bundle.json</code>中添加描述 <code>&quot;type&quot;: &quot;app&quot;</code></li>
+</ol>
+<p>应用插件模块: 就是各种的业务模块.</p>
+<h2 id="宿主分身模块"><a href="#宿主分身模块" class="headerlink" title="宿主分身模块"></a>宿主分身模块</h2><p>会编译到宿主中的模块.</p>
+<p>需要使用宿主分身模块的场景:</p>
+<ul>
+<li>模块中需要使用宿主中资源和代码.</li>
+<li>必须在宿主Manifest注册的受限组件.</li>
+</ul>
+<p>定义一个名为: <code>app+*</code> 的 <code>lib</code> 库.</p>
+<h2 id="传递和接受参数"><a href="#传递和接受参数" class="headerlink" title="传递和接受参数"></a>传递和接受参数</h2><ul>
+<li>传递</li>
+</ul>
+<p><code>Small.openUri(&quot;detail?from=app.home&quot;, getContext());</code></p>
+<ul>
+<li>接受</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">Uri uri = Small.getUri(this);</div><div class="line">if (uri != null) &#123;</div><div class="line">  String from = uri.getQueryParameter(&quot;from&quot;);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h1 id="原理分析"><a href="#原理分析" class="headerlink" title="原理分析"></a>原理分析</h1><p>这里只是简单的带着疑问去分析源码,围绕着:</p>
+<ul>
+<li>AndroidManifest.xml</li>
+<li>bundle.json</li>
+<li>libcom_mio_appmain.so</li>
+</ul>
+<p>我们可以来个三连问.</p>
+<h2 id="如何启动插件中的Activity"><a href="#如何启动插件中的Activity" class="headerlink" title="如何启动插件中的Activity"></a>如何启动插件中的Activity</h2><p>从<code>Application</code>的初始化方法<code>preSetUp</code>入手:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">preSetUp</span><span class="params">(Application context)</span> </span>&#123;</div><div class="line">    <span class="keyword">if</span> (sContext != <span class="keyword">null</span>) &#123;</div><div class="line">        <span class="keyword">return</span>;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    sContext = context;</div><div class="line"></div><div class="line">    <span class="comment">// Register default bundle launchers</span></div><div class="line">    registerLauncher(<span class="keyword">new</span> ActivityLauncher());</div><div class="line">    registerLauncher(<span class="keyword">new</span> ApkBundleLauncher());</div><div class="line">    registerLauncher(<span class="keyword">new</span> WebBundleLauncher());</div><div class="line">    Bundle.onCreateLaunchers(context);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>这里<code>Bundle.onCreateLaunchers</code>会调用 <code>Launcher</code>的<code>onCreate</code>生命周期.而唯一实现的只有<code>ApkBundleLauncher</code>.</p>
+<p>查看 <code>ApkBundleLauncher</code> 的 <code>onCreate</code> :</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div></pre></td><td class="code"><pre><div class="line">Instrumentation base;</div><div class="line">        ApkBundleLauncher.InstrumentationWrapper wrapper;</div><div class="line">        Field f;</div><div class="line"></div><div class="line">        <span class="comment">// Get activity thread</span></div><div class="line">        thread = ReflectAccelerator.getActivityThread(app);</div><div class="line"></div><div class="line">        <span class="comment">// Replace instrumentation</span></div><div class="line">        <span class="keyword">try</span> &#123;</div><div class="line">            f = thread.getClass().getDeclaredField(<span class="string">"mInstrumentation"</span>);</div><div class="line">            f.setAccessible(<span class="keyword">true</span>);</div><div class="line">            base = (Instrumentation) f.get(thread);</div><div class="line">            wrapper = <span class="keyword">new</span> ApkBundleLauncher.InstrumentationWrapper(base);</div><div class="line">            f.set(thread, wrapper);</div><div class="line">        &#125; <span class="keyword">catch</span> (Exception e) &#123;</div><div class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> RuntimeException(<span class="string">"Failed to replace instrumentation for thread: "</span> + thread);</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        <span class="comment">// Inject message handler</span></div><div class="line">        <span class="keyword">try</span> &#123;</div><div class="line">            f = thread.getClass().getDeclaredField(<span class="string">"mH"</span>);</div><div class="line">            f.setAccessible(<span class="keyword">true</span>);</div><div class="line">            Handler ah = (Handler) f.get(thread);</div><div class="line">            f = Handler.class.getDeclaredField(<span class="string">"mCallback"</span>);</div><div class="line">            f.setAccessible(<span class="keyword">true</span>);</div><div class="line">            f.set(ah, <span class="keyword">new</span> ApkBundleLauncher.ActivityThreadHandlerCallback());</div><div class="line">        &#125; <span class="keyword">catch</span> (Exception e) &#123;</div><div class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> RuntimeException(<span class="string">"Failed to replace message handler for thread: "</span> + thread);</div><div class="line">        &#125;</div></pre></td></tr></table></figure>
+<p>可以发现这里与其他部分插件一样都是通过欺骗<code>AWS</code>,来启动未注册的<code>Activity</code>.</p>
+<p>不过这里用的是通过反射直接替换掉原来的<code>Instrumentation</code>对象.而不是通过反射替换掉<code>ActivityManagerNative</code>中的<code>gDefault</code>对象,并用动态代理hook的那种方式.</p>
+<h2 id="哪里加载bundle-json"><a href="#哪里加载bundle-json" class="headerlink" title="哪里加载bundle.json"></a>哪里加载<code>bundle.json</code></h2><p>我们知道在第一次使用的的时候需要调用<code>Small.setUp</code>的方法.我看看一下这个方法做了什么.</p>
+<p><strong>[Small.java]</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">setUp</span><span class="params">(Context context, OnCompleteListener listener)</span> </span>&#123;</div><div class="line">    ..</div><div class="line">    </div><div class="line">    Bundle.loadLaunchableBundles(listener);</div><div class="line">    sHasSetUp = <span class="keyword">true</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>调用<code>Bundle.loadLaunchableBundles</code></p>
+<p><strong>[Bundle.java]</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">protected</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">loadLaunchableBundles</span><span class="params">(Small.OnCompleteListener listener)</span> </span>&#123;</div><div class="line">    Context context = Small.getContext();</div><div class="line"></div><div class="line">    <span class="keyword">boolean</span> synchronous = (listener == <span class="keyword">null</span>);</div><div class="line">    <span class="keyword">if</span> (synchronous) &#123;</div><div class="line">        loadBundles(context);</div><div class="line">        <span class="keyword">return</span>;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="comment">// Asynchronous</span></div><div class="line">    <span class="keyword">if</span> (sThread == <span class="keyword">null</span>) &#123;</div><div class="line">        sThread = <span class="keyword">new</span> LoadBundleThread(context);</div><div class="line">        sHandler = <span class="keyword">new</span> LoadBundleHandler(listener);</div><div class="line">        sThread.start();</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>很简单,如果有回调的话,就异步开启线程,最终也会调用<code>loadBundles</code>方法.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">loadBundles</span><span class="params">(Context context)</span> </span>&#123;</div><div class="line">       JSONObject manifestData;</div><div class="line">       <span class="keyword">try</span> &#123;</div><div class="line">           File patchManifestFile = getPatchManifestFile();</div><div class="line">           String manifestJson = getCacheManifest();</div><div class="line">           <span class="keyword">if</span> (manifestJson != <span class="keyword">null</span>) &#123;</div><div class="line">               <span class="comment">// Load from cache and save as patch</span></div><div class="line">               <span class="keyword">if</span> (!patchManifestFile.exists()) patchManifestFile.createNewFile();</div><div class="line">               PrintWriter pw = <span class="keyword">new</span> PrintWriter(<span class="keyword">new</span> FileOutputStream(patchManifestFile));</div><div class="line">               pw.print(manifestJson);</div><div class="line">               pw.flush();</div><div class="line">               pw.close();</div><div class="line">               <span class="comment">// Clear cache</span></div><div class="line">               setCacheManifest(<span class="keyword">null</span>);</div><div class="line">           &#125; <span class="keyword">else</span> <span class="keyword">if</span> (patchManifestFile.exists()) &#123;</div><div class="line">               <span class="comment">// Load from patch</span></div><div class="line">               BufferedReader br = <span class="keyword">new</span> BufferedReader(<span class="keyword">new</span> FileReader(patchManifestFile));</div><div class="line">               StringBuilder sb = <span class="keyword">new</span> StringBuilder();</div><div class="line">               String line;</div><div class="line">               <span class="keyword">while</span> ((line = br.readLine()) != <span class="keyword">null</span>) &#123;</div><div class="line">                   sb.append(line);</div><div class="line">               &#125;</div><div class="line"></div><div class="line">               br.close();</div><div class="line">               manifestJson = sb.toString();</div><div class="line">           &#125; <span class="keyword">else</span> &#123;</div><div class="line">               <span class="comment">// Load from built-in `assets/bundle.json'</span></div><div class="line">               InputStream builtinManifestStream = context.getAssets().open(BUNDLE_MANIFEST_NAME);</div><div class="line">               <span class="keyword">int</span> builtinSize = builtinManifestStream.available();</div><div class="line">               <span class="keyword">byte</span>[] buffer = <span class="keyword">new</span> <span class="keyword">byte</span>[builtinSize];</div><div class="line">               builtinManifestStream.read(buffer);</div><div class="line">               builtinManifestStream.close();</div><div class="line">               manifestJson = <span class="keyword">new</span> String(buffer, <span class="number">0</span>, builtinSize);</div><div class="line">           &#125;</div><div class="line"></div><div class="line">           <span class="comment">// Parse manifest file</span></div><div class="line">           manifestData = <span class="keyword">new</span> JSONObject(manifestJson);</div><div class="line">       &#125; <span class="keyword">catch</span> (Exception e) &#123;</div><div class="line">           e.printStackTrace();</div><div class="line">           <span class="keyword">return</span>;</div><div class="line">       &#125;</div><div class="line"></div><div class="line">       Manifest manifest = parseManifest(manifestData);</div><div class="line">       <span class="keyword">if</span> (manifest == <span class="keyword">null</span>) <span class="keyword">return</span>;</div><div class="line"></div><div class="line">       setupLaunchers(context);</div><div class="line"></div><div class="line">       loadBundles(manifest.bundles);</div><div class="line">   &#125;</div></pre></td></tr></table></figure>
+<p><code>getPatchManifestFile</code>其实就是我们配置的<code>bundle.json</code>路由文件.总之通过一些判断,并通过解析得到了一个<br><code>Manifest</code>对象.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="class"><span class="keyword">class</span> <span class="title">Manifest</span> </span>&#123;</div><div class="line">    String version;</div><div class="line">    List&lt;Bundle&gt; bundles;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>下面会执行比较关键的两个方法,<code>setupLaunchers</code>和<code>loadBundles</code>. 这个问题暂时并不关心. </p>
+<h2 id="哪里加载了插件so文件"><a href="#哪里加载了插件so文件" class="headerlink" title="哪里加载了插件so文件"></a>哪里加载了插件so文件</h2><p>我们先看看上面的<code>setupLaunchers</code>方法.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">protected</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">setupLaunchers</span><span class="params">(Context context)</span> </span>&#123;</div><div class="line">    <span class="keyword">if</span> (sBundleLaunchers == <span class="keyword">null</span>) <span class="keyword">return</span>;</div><div class="line"></div><div class="line">    <span class="keyword">for</span> (BundleLauncher launcher : sBundleLaunchers) &#123;</div><div class="line">        launcher.setUp(context);</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>唔..调用之前那几个<code>launcher</code>的<code>setUp</code>方法.我大致的看了下三个<code>launcher</code>的<code>setUp</code>方法.发现并没有我想要的东西.</p>
+<p>其实听名字也知道,应该在<code>loadBundles</code>中才会加载<code>bundle</code>对应的 <strong>so</strong> 文件.</p>
+<p><strong>[Bundle.java]</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">loadBundles</span><span class="params">(List&lt;Bundle&gt; bundles)</span> </span>&#123;</div><div class="line">    sPreloadBundles = bundles;</div><div class="line"></div><div class="line">    <span class="comment">// Prepare bundle</span></div><div class="line">    <span class="keyword">for</span> (Bundle bundle : bundles) &#123;</div><div class="line">        bundle.prepareForLaunch();</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="comment">// Handle I/O</span></div><div class="line">    <span class="keyword">if</span> (sIOActions != <span class="keyword">null</span>) &#123;</div><div class="line">        ExecutorService executor = Executors.newFixedThreadPool(sIOActions.size());</div><div class="line">        <span class="keyword">for</span> (Runnable action : sIOActions) &#123;</div><div class="line">            executor.execute(action);</div><div class="line">        &#125;</div><div class="line">        executor.shutdown();</div><div class="line">        <span class="keyword">try</span> &#123;</div><div class="line">            <span class="keyword">if</span> (!executor.awaitTermination(LOADING_TIMEOUT_MINUTES, TimeUnit.MINUTES)) &#123;</div><div class="line">                <span class="keyword">throw</span> <span class="keyword">new</span> RuntimeException(<span class="string">"Failed to load bundles! (TIMEOUT &gt; "</span></div><div class="line">                        + LOADING_TIMEOUT_MINUTES + <span class="string">"minutes)"</span>);</div><div class="line">            &#125;</div><div class="line">        &#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</div><div class="line">            e.printStackTrace();</div><div class="line">        &#125;</div><div class="line">        sIOActions = <span class="keyword">null</span>;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="comment">// Wait for the things to be done on UI thread before `postSetUp`,</span></div><div class="line">    <span class="comment">// as on 7.0+ we should wait a WebView been initialized. (#347)</span></div><div class="line">    <span class="keyword">while</span> (sRunningUIActionCount != <span class="number">0</span>) &#123;</div><div class="line">        <span class="keyword">try</span> &#123;</div><div class="line">            Thread.sleep(<span class="number">100</span>);</div><div class="line">        &#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</div><div class="line">            e.printStackTrace();</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="comment">// Notify `postSetUp' to all launchers</span></div><div class="line">    <span class="keyword">for</span> (BundleLauncher launcher : sBundleLaunchers) &#123;</div><div class="line">        launcher.postSetUp();</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="comment">// Wait for the things to be done on UI thread after `postSetUp`,</span></div><div class="line">    <span class="comment">// like creating a bundle application.</span></div><div class="line">    <span class="keyword">while</span> (sRunningUIActionCount != <span class="number">0</span>) &#123;</div><div class="line">        <span class="keyword">try</span> &#123;</div><div class="line">            Thread.sleep(<span class="number">100</span>);</div><div class="line">        &#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</div><div class="line">            e.printStackTrace();</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="comment">// Free all unused temporary variables</span></div><div class="line">    <span class="keyword">for</span> (Bundle bundle : bundles) &#123;</div><div class="line">        <span class="keyword">if</span> (bundle.parser != <span class="keyword">null</span>) &#123;</div><div class="line">            bundle.parser.close();</div><div class="line">            bundle.parser = <span class="keyword">null</span>;</div><div class="line">        &#125;</div><div class="line">        bundle.mBuiltinFile = <span class="keyword">null</span>;</div><div class="line">        bundle.mExtractPath = <span class="keyword">null</span>;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>先看 <code>Prepare bundle</code>做了什么.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">prepareForLaunch</span><span class="params">()</span> </span>&#123;</div><div class="line">       <span class="keyword">if</span> (mIntent != <span class="keyword">null</span>) <span class="keyword">return</span>;</div><div class="line"></div><div class="line">       <span class="keyword">if</span> (mApplicableLauncher == <span class="keyword">null</span> &amp;&amp; sBundleLaunchers != <span class="keyword">null</span>) &#123;</div><div class="line">           <span class="keyword">for</span> (BundleLauncher launcher : sBundleLaunchers) &#123;</div><div class="line">               <span class="keyword">if</span> (launcher.resolveBundle(<span class="keyword">this</span>)) &#123;</div><div class="line">                   mApplicableLauncher = launcher;</div><div class="line">                   <span class="keyword">break</span>;</div><div class="line">               &#125;</div><div class="line">           &#125;</div><div class="line">       &#125;</div><div class="line">   &#125;</div></pre></td></tr></table></figure>
+<p>这个<code>bundle</code>对象是之前在构造<code>Manifest</code>的时候根据<code>json</code>文件新生成的.所有上面的逻辑会走到下面的for循环.这里它会通过<code>launcher.resolveBundle</code>匹配一个合适的<code>Launcher</code>,其方法实现是共同的<code>BundleLauncher.java</code>基类实现的.</p>
+<p><strong>[BundleLauncher.java]</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">public boolean resolveBundle(Bundle bundle) &#123;</div><div class="line">        if (!preloadBundle(bundle)) return false;</div><div class="line"></div><div class="line">        loadBundle(bundle);</div><div class="line">        return true;</div><div class="line">    &#125;</div></pre></td></tr></table></figure>
+<p>但是<code>preloadBundle</code>实现却不同,有兴趣的可以看看三个<code>Launcher</code>对这个方法的具体实现. 这里当<code>Launcher</code>为<code>ApkBundleLauncher</code>的时候才会走到<code>loadBundle</code>这个方法.</p>
+<p><strong>[ApkBundleLauncher.java]</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@Override</span></div><div class="line">   <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">loadBundle</span><span class="params">(Bundle bundle)</span> </span>&#123;</div><div class="line">       String packageName = bundle.getPackageName();</div><div class="line"></div><div class="line">       BundleParser parser = bundle.getParser();</div><div class="line">       parser.collectActivities();</div><div class="line">       PackageInfo pluginInfo = parser.getPackageInfo();</div><div class="line"></div><div class="line">       <span class="comment">// Load the bundle</span></div><div class="line">       String apkPath = parser.getSourcePath();</div><div class="line">       <span class="keyword">if</span> (sLoadedApks == <span class="keyword">null</span>) sLoadedApks = <span class="keyword">new</span> ConcurrentHashMap&lt;String, LoadedApk&gt;();</div><div class="line">       LoadedApk apk = sLoadedApks.get(packageName);</div><div class="line">       <span class="keyword">if</span> (apk == <span class="keyword">null</span>) &#123;</div><div class="line">       <span class="comment">//第一次会走</span></div><div class="line">           apk = <span class="keyword">new</span> LoadedApk();</div><div class="line">           apk.packageName = packageName;</div><div class="line">           apk.path = apkPath;</div><div class="line">           apk.nonResources = parser.isNonResources();</div><div class="line">           <span class="keyword">if</span> (pluginInfo.applicationInfo != <span class="keyword">null</span>) &#123;</div><div class="line">               apk.applicationName = pluginInfo.applicationInfo.className;</div><div class="line">           &#125;</div><div class="line">           apk.packagePath = bundle.getExtractPath();</div><div class="line">           apk.optDexFile = <span class="keyword">new</span> File(apk.packagePath, FILE_DEX);</div><div class="line"></div><div class="line">           <span class="comment">// Load dex</span></div><div class="line">           <span class="keyword">final</span> LoadedApk fApk = apk;</div><div class="line">           Bundle.postIO(<span class="keyword">new</span> Runnable() &#123;</div><div class="line">               <span class="meta">@Override</span></div><div class="line">               <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</div><div class="line">                   <span class="keyword">try</span> &#123;</div><div class="line">                       fApk.dexFile = DexFile.loadDex(fApk.path, fApk.optDexFile.getPath(), <span class="number">0</span>);</div><div class="line">                   &#125; <span class="keyword">catch</span> (IOException e) &#123;</div><div class="line">                       <span class="keyword">throw</span> <span class="keyword">new</span> RuntimeException(e);</div><div class="line">                   &#125;</div><div class="line">               &#125;</div><div class="line">           &#125;);</div><div class="line"></div><div class="line">           <span class="comment">// Extract native libraries with specify ABI</span></div><div class="line">           String libDir = parser.getLibraryDirectory();</div><div class="line">           <span class="keyword">if</span> (libDir != <span class="keyword">null</span>) &#123;</div><div class="line">               apk.libraryPath = <span class="keyword">new</span> File(apk.packagePath, libDir);</div><div class="line">           &#125;</div><div class="line">           sLoadedApks.put(packageName, apk);</div><div class="line">       &#125;</div><div class="line"></div><div class="line">       <span class="keyword">if</span> (pluginInfo.activities == <span class="keyword">null</span>) &#123;</div><div class="line">           bundle.setLaunchable(<span class="keyword">false</span>);</div><div class="line">           <span class="keyword">return</span>;</div><div class="line">       &#125;</div><div class="line"></div><div class="line">       <span class="comment">// Record activities for intent redirection</span></div><div class="line">       <span class="keyword">if</span> (sLoadedActivities == <span class="keyword">null</span>) sLoadedActivities = <span class="keyword">new</span> ConcurrentHashMap&lt;String, ActivityInfo&gt;();</div><div class="line">       <span class="keyword">for</span> (ActivityInfo ai : pluginInfo.activities) &#123;</div><div class="line">           sLoadedActivities.put(ai.name, ai);</div><div class="line">       &#125;</div><div class="line"></div><div class="line">       <span class="comment">// Record intent-filters for implicit action</span></div><div class="line">       ConcurrentHashMap&lt;String, List&lt;IntentFilter&gt;&gt; filters = parser.getIntentFilters();</div><div class="line">       <span class="keyword">if</span> (filters != <span class="keyword">null</span>) &#123;</div><div class="line">           <span class="keyword">if</span> (sLoadedIntentFilters == <span class="keyword">null</span>) &#123;</div><div class="line">               sLoadedIntentFilters = <span class="keyword">new</span> ConcurrentHashMap&lt;String, List&lt;IntentFilter&gt;&gt;();</div><div class="line">           &#125;</div><div class="line">           sLoadedIntentFilters.putAll(filters);</div><div class="line">       &#125;</div><div class="line"></div><div class="line">       <span class="comment">// Set entrance activity</span></div><div class="line">       bundle.setEntrance(parser.getDefaultActivityName());</div><div class="line">   &#125;</div></pre></td></tr></table></figure>
+<p><code>DexFile.loadDex(fApk.path, fApk.optDexFile.getPath(), 0)</code>这句话便是加载我们的插件so文件.</p>
+<h2 id="哪里合并了插件资源并加载dex"><a href="#哪里合并了插件资源并加载dex" class="headerlink" title="哪里合并了插件资源并加载dex"></a>哪里合并了插件资源并加载dex</h2><p>根据之前的分析,发现对插件的主要操作<code>launcher</code>都在<code>ApkBundleLauncher</code>中.<br>回到之前的<code>loadBundles</code>的方法中,<code>bundle.prepareForLaunch()</code>之后,会调用如下方法:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// Notify `postSetUp' to all launchers</span></div><div class="line">     <span class="keyword">for</span> (BundleLauncher launcher : sBundleLaunchers) &#123;</div><div class="line">         launcher.postSetUp();</div><div class="line">     &#125;</div></pre></td></tr></table></figure>
+<p>我们看下<code>ApkBundleLauncher</code>的<code>postSetUp</code>方法:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div><div class="line">91</div><div class="line">92</div><div class="line">93</div><div class="line">94</div><div class="line">95</div><div class="line">96</div><div class="line">97</div><div class="line">98</div><div class="line">99</div><div class="line">100</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@Override</span></div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">postSetUp</span><span class="params">()</span> </span>&#123;</div><div class="line">    <span class="keyword">super</span>.postSetUp();</div><div class="line"></div><div class="line">    <span class="keyword">if</span> (sLoadedApks == <span class="keyword">null</span>) &#123;</div><div class="line">        Log.e(TAG, <span class="string">"Could not find any APK bundles!"</span>);</div><div class="line">        <span class="keyword">return</span>;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    Collection&lt;LoadedApk&gt; apks = sLoadedApks.values();</div><div class="line"></div><div class="line">    <span class="comment">// Merge all the resources in bundles and replace the host one</span></div><div class="line">    <span class="keyword">final</span> Application app = Small.getContext();</div><div class="line">    String[] paths = <span class="keyword">new</span> String[apks.size() + <span class="number">1</span>];</div><div class="line">    <span class="comment">//添加宿主的asset path</span></div><div class="line">    paths[<span class="number">0</span>] = app.getPackageResourcePath(); </div><div class="line">    <span class="keyword">int</span> i = <span class="number">1</span>;</div><div class="line">    <span class="keyword">for</span> (LoadedApk apk : apks) &#123;</div><div class="line">        <span class="keyword">if</span> (apk.nonResources) <span class="keyword">continue</span>; <span class="comment">// ignores the empty entry to fix #62</span></div><div class="line">        <span class="comment">//添加插件的asset path</span></div><div class="line">        paths[i++] = apk.path; </div><div class="line">    &#125;</div><div class="line">    <span class="keyword">if</span> (i != paths.length) &#123;</div><div class="line">        paths = Arrays.copyOf(paths, i);</div><div class="line">    &#125;</div><div class="line">    <span class="comment">//合并资源</span></div><div class="line">    ReflectAccelerator.mergeResources(app, sActivityThread, paths);</div><div class="line"></div><div class="line">    <span class="comment">// 合并插件的dex到宿主的classloader</span></div><div class="line">    ClassLoader cl = app.getClassLoader();</div><div class="line">    i = <span class="number">0</span>;</div><div class="line">    <span class="keyword">int</span> N = apks.size();</div><div class="line">    String[] dexPaths = <span class="keyword">new</span> String[N];</div><div class="line">    DexFile[] dexFiles = <span class="keyword">new</span> DexFile[N];</div><div class="line">    <span class="keyword">for</span> (LoadedApk apk : apks) &#123;</div><div class="line">        dexPaths[i] = apk.path;</div><div class="line">        dexFiles[i] = apk.dexFile;</div><div class="line">        <span class="keyword">if</span> (Small.getBundleUpgraded(apk.packageName)) &#123;</div><div class="line">            <span class="comment">// If upgraded, delete the opt dex file for recreating</span></div><div class="line">            <span class="keyword">if</span> (apk.optDexFile.exists()) apk.optDexFile.delete();</div><div class="line">            Small.setBundleUpgraded(apk.packageName, <span class="keyword">false</span>);</div><div class="line">        &#125;</div><div class="line">        i++;</div><div class="line">    &#125;</div><div class="line">    <span class="comment">//扩充 path list</span></div><div class="line">    ReflectAccelerator.expandDexPathList(cl, dexPaths, dexFiles);</div><div class="line"></div><div class="line">    <span class="comment">// JNI相关的,扩充 Library Directories</span></div><div class="line">    List&lt;File&gt; libPathList = <span class="keyword">new</span> ArrayList&lt;File&gt;();</div><div class="line">    <span class="keyword">for</span> (LoadedApk apk : apks) &#123;</div><div class="line">        <span class="keyword">if</span> (apk.libraryPath != <span class="keyword">null</span>) &#123;</div><div class="line">            libPathList.add(apk.libraryPath);</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">if</span> (libPathList.size() &gt; <span class="number">0</span>) &#123;</div><div class="line">        ReflectAccelerator.expandNativeLibraryDirectories(cl, libPathList);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="comment">// 调用所有插件的Application的onCreate方法</span></div><div class="line">    <span class="keyword">for</span> (<span class="keyword">final</span> LoadedApk apk : apks) &#123;</div><div class="line">        String bundleApplicationName = apk.applicationName;</div><div class="line">        <span class="keyword">if</span> (bundleApplicationName == <span class="keyword">null</span>) <span class="keyword">continue</span>;</div><div class="line"></div><div class="line">        <span class="keyword">try</span> &#123;</div><div class="line">            <span class="keyword">final</span> Class applicationClass = Class.forName(bundleApplicationName);</div><div class="line">            Bundle.postUI(<span class="keyword">new</span> Runnable() &#123;</div><div class="line">                <span class="meta">@Override</span></div><div class="line">                <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</div><div class="line">                    <span class="keyword">try</span> &#123;</div><div class="line">                        BundleApplicationContext appContext = <span class="keyword">new</span> BundleApplicationContext(app, apk);</div><div class="line">                        Application bundleApplication = Instrumentation.newApplication(</div><div class="line">                                applicationClass, appContext);</div><div class="line">                        sHostInstrumentation.callApplicationOnCreate(bundleApplication);</div><div class="line">                    &#125; <span class="keyword">catch</span> (Exception e) &#123;</div><div class="line">                        e.printStackTrace();</div><div class="line">                    &#125;</div><div class="line">                &#125;</div><div class="line">            &#125;);</div><div class="line">        &#125; <span class="keyword">catch</span> (Exception e) &#123;</div><div class="line">            e.printStackTrace();</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="comment">// 初始化 lazy init providers</span></div><div class="line">    <span class="keyword">if</span> (mLazyInitProviders != <span class="keyword">null</span>) &#123;</div><div class="line">        <span class="keyword">try</span> &#123;</div><div class="line">            Method m = sActivityThread.getClass().getDeclaredMethod(</div><div class="line">                    <span class="string">"installContentProviders"</span>, Context.class, List.class);</div><div class="line">            m.setAccessible(<span class="keyword">true</span>);</div><div class="line">            m.invoke(sActivityThread, app, mLazyInitProviders);</div><div class="line">        &#125; <span class="keyword">catch</span> (Exception e) &#123;</div><div class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> RuntimeException(<span class="string">"Failed to lazy init content providers: "</span> + mLazyInitProviders);</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="comment">// 释放资源</span></div><div class="line">    sLoadedApks = <span class="keyword">null</span>;</div><div class="line">    sProviders = <span class="keyword">null</span>;</div><div class="line">    sActivityThread = <span class="keyword">null</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>可以发现这个方法做的东西还挺多的.完全解答了这个问题的疑问.</p>
+<p><code>postSetUp</code>方法主要做的以下几件事:</p>
+<ol>
+<li>将宿主,插件的<code>asset path</code>合并.</li>
+<li>将宿主,插件的<code>dex</code>文件合并到宿主<code>classLoader</code>中.</li>
+<li>将宿主,插件的<code>jnilib</code>合并.</li>
+<li>调用所有插件<code>Application</code>的<code>onCreate</code>方法.</li>
+<li>初始化 lazy init providers.</li>
+</ol>
+<p>至此<code>Small</code>从入门到深入这篇文章就结束了,现在插件化,模块化的技术方案已经很成熟了,而<code>Small</code>的确是一个比较轻量级的框架,不足的是到我写这篇博客为止,该框架还不支持<code>gradle 3.0</code>.</p>
+
+
+                <hr>
+
+                
+
+                <ul class="pager">
+                    
+                    
+                        <li class="next">
+                            <a href="/2017/12/18/Activity启动流程分析以及如何动态改变启动的页面/" data-toggle="tooltip" data-placement="top" title="Activity启动流程分析以及如何动态改变启动的页面">Next Post &rarr;</a>
+                        </li>
+                    
+                </ul>
+
+                
+
+                
+                <!-- disqus 评论框 start -->
+                <div class="comment">
+                    <div id="disqus_thread" class="disqus-thread"></div>
+                </div>
+                <!-- disqus 评论框 end -->
+                
+
+            </div>
+    <!-- Side Catalog Container -->
+        
+            <div class="
+                col-lg-2 col-lg-offset-0
+                visible-lg-block
+                sidebar-container
+                catalog-container">
+                <div class="side-catalog">
+                    <hr class="hidden-sm hidden-xs">
+                    <h5>
+                        <a class="catalog-toggle" href="#">CATALOG</a>
+                    </h5>
+                    <ul class="catalog-body"></ul>
+                </div>
+            </div>
+        
+
+    <!-- Sidebar Container -->
+
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                <!-- Featured Tags -->
+                
+                <section>
+                    <!-- no hr -->
+                    <h5><a href="/tags/">FEATURED TAGS</a></h5>
+                    <div class="tags">
+                       
+                    </div>
+                </section>
+                
+
+                <!-- Friends Blog -->
+                
+                <hr>
+                <h5>FRIENDS</h5>
+                <ul class="list-inline">
+
+                    
+                        <li><a href="http://lrd.ele.me/" target="_blank">lrd ele&#39;s Blog</a></li>
+                    
+                </ul>
+                
+            </div>
+
+        </div>
+    </div>
+</article>
+
+
+
+
+<!-- disqus 公共JS代码 start (一个网页只需插入一次) -->
+<script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES * * */
+    var disqus_shortname = "hexo-theme-huxblog";
+    var disqus_identifier = "http://mio4kon.com/2017/12/26/30分钟了解轻量级插件化方案--Small/";
+    var disqus_url = "http://mio4kon.com/2017/12/26/30分钟了解轻量级插件化方案--Small/";
+
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<!-- disqus 公共JS代码 end -->
+
+
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+<!-- anchor-js, Doc:http://bryanbraun.github.io/anchorjs/ -->
+<script>
+    async("https://cdn.bootcss.com/anchor-js/1.1.1/anchor.min.js",function(){
+        anchors.options = {
+          visible: 'always',
+          placement: 'right',
+          icon: '#'
+        };
+        anchors.add().remove('.intro-header h1').remove('.subheading').remove('.sidebar-container h5');
+    })
+</script>
+<style>
+    /* place left on bigger screen */
+    @media all and (min-width: 800px) {
+        .anchorjs-link{
+            position: absolute;
+            left: -0.75em;
+            font-size: 1.1em;
+            margin-top : -0.1em;
+        }
+    }
+</style>
+
+
+
+    <!-- Footer -->
+    <!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                
+                
+                
+
+                
+                    <li>
+                        <a target="_blank" href="http://weibo.com/u/3198010790">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-weibo fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+
+                
+                    <li>
+                        <a target="_blank"  href="https://github.com/Mio4kon">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+
+                </ul>
+                <p class="copyright text-muted">
+                    Copyright &copy; Mio4kon 2017 
+                    <br>
+                    Theme by <a href="http://huangxuan.me">Hux</a> 
+                    <span style="display: inline-block; margin: 0 5px;">
+                        <i class="fa fa-heart"></i>
+                    </span> 
+                    Ported by <a href="http://blog.kaijun.rocks">Kaijun</a> | 
+                    <iframe
+                        style="margin-left: 2px; margin-bottom:-5px;"
+                        frameborder="0" scrolling="0" width="91px" height="20px"
+                        src="https://ghbtns.com/github-btn.html?user=kaijun&repo=hexo-theme-huxblog&type=star&count=true" >
+                    </iframe>
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+<script src="/js/jquery.min.js"></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="/js/bootstrap.min.js"></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/js/hux-blog.min.js"></script>
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!-- 
+     Because of the native support for backtick-style fenced code blocks 
+     right within the Markdown is landed in Github Pages, 
+     From V1.6, There is no need for Highlight.js, 
+     so Huxblog drops it officially.
+
+     - https://github.com/blog/2100-github-pages-now-faster-and-simpler-with-jekyll-3-0  
+     - https://help.github.com/articles/creating-and-highlighting-code-blocks/    
+-->
+<!--
+    <script>
+        async("http://cdn.bootcss.com/highlight.js/8.6/highlight.min.js", function(){
+            hljs.initHighlightingOnLoad();
+        })
+    </script>
+    <link href="http://cdn.bootcss.com/highlight.js/8.6/styles/github.min.css" rel="stylesheet">
+-->
+
+
+<!-- jquery.tagcloud.js -->
+<script>
+    // only load tagcloud.js in tag.html
+    if($('#tag_cloud').length !== 0){
+        async("http://mio4kon.com/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                //size: {start: 1, end: 1, unit: 'em'},
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+<!--fastClick.js -->
+<script>
+    async("https://cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+<!-- Google Analytics -->
+
+
+
+
+<!-- Baidu Tongji -->
+
+
+<!-- Side Catalog -->
+
+<script type="text/javascript">
+    function generateCatalog (selector) {
+        var P = $('div.post-container'),a,n,t,l,i,c;
+        a = P.find('h1,h2,h3,h4,h5,h6');
+        a.each(function () {
+            n = $(this).prop('tagName').toLowerCase();
+            i = "#"+$(this).prop('id');
+            t = $(this).text();
+            c = $('<a href="'+i+'" rel="nofollow">'+t+'</a>');
+            l = $('<li class="'+n+'_nav"></li>').append(c);
+            $(selector).append(l);
+        });
+        return true;    
+    }
+
+    generateCatalog(".catalog-body");
+
+    // toggle side catalog
+    $(".catalog-toggle").click((function(e){
+        e.preventDefault();
+        $('.side-catalog').toggleClass("fold")
+    }))
+
+    /*
+     * Doc: https://github.com/davist11/jQuery-One-Page-Nav
+     * Fork by Hux to support padding
+     */
+    async("/js/jquery.nav.js", function () {
+        $('.catalog-body').onePageNav({
+            currentClass: "active",
+            changeHash: !1,
+            easing: "swing",
+            filter: "",
+            scrollSpeed: 700,
+            scrollOffset: 0,
+            scrollThreshold: .2,
+            begin: null,
+            end: null,
+            scrollChange: null,
+            padding: 80
+        });
+    });
+</script>
+
+
+
+
+
+<!-- Image to hack wechat -->
+<img src="http://mio4kon.com/img/icon_wechat.png" width="0" height="0" />
+<!-- Migrate from head to bottom, no longer block render and still work -->
+
+</body>
+
+</html>

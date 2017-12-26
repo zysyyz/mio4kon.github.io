@@ -99,13 +99,6 @@
 
                         
                         <li>
-                            <a href="/archives/">Archives</a>
-                        </li>
-                        
-                    
-
-                        
-                        <li>
                             <a href="/about/">About</a>
                         </li>
                         
@@ -114,6 +107,13 @@
                         
                         <li>
                             <a href="/tags/">Tags</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/archives/">Archives</a>
                         </li>
                         
                     
@@ -190,6 +190,36 @@
             
                 <!-- Main Content -->
 
+
+<div class="post-preview">
+
+    <a href="/2017/02/20/利用 jEnv 管理 Mac OS 多java版本/">
+        <h2 class="post-title">
+            利用 jEnv 管理 Mac OS 多java版本
+        </h2>
+        <h3 class="post-subtitle">
+            开发工具推荐
+        </h3>
+        <div class="post-content-preview">
+            以前管理java分支用的是alias的方式,最近发现一个工具jEnv也非常好用,不只可以管理java版本,还可管理maven,tomcat等等的版本控制.
+使用如下:
+
+安装 jEnv
+curl -L -s get.jenv.io | bash
+
+创建对应文件夹
+mkdir -p $HOME/.jenv/candidates/java
+cd ~/.jenv/candidates/java
+m......
+        </div>
+    </a>
+    <p class="post-meta">
+        Posted by Mio4kon on
+        2017-02-20
+    </p>
+
+</div>
+<hr>
 
 <div class="post-preview">
 
@@ -429,29 +459,6 @@ Picasso 是一个强大的图片下载缓存库,是Square公司的一个开源�
 </div>
 <hr>
 
-<div class="post-preview">
-
-    <a href="/2015/06/01/Design Support Library轻松打造酷炫Android5.0风格/">
-        <h2 class="post-title">
-            Design Support Library 轻松打造酷炫Android5.0风格
-        </h2>
-        <h3 class="post-subtitle">
-            Material Design
-        </h3>
-        <div class="post-content-preview">
-            NavigationViewDrawerLayout已经流行了一段时间了,现在知乎,饿了么等几乎都是使用DrawerLayout,而NavigationView是在Design Support Library中推出,使得抽屉的实现更加简单.
-build.gradle 
-12345dependencies &#123;    compile fileTree(dir: &apos;libs&a......
-        </div>
-    </a>
-    <p class="post-meta">
-        Posted by Mio4kon on
-        2015-06-01
-    </p>
-
-</div>
-<hr>
-
 
 
 <!-- Pager -->
@@ -511,15 +518,13 @@ build.gradle
                             
                         
                             
+                            <a href="/tags/#Material Design" title="Material Design" rel="3">Material Design</a>
+                            
+                        
+                            
                         
                             
                             <a href="/tags/#Kotlin" title="Kotlin" rel="2">Kotlin</a>
-                            
-                        
-                            
-                        
-                            
-                            <a href="/tags/#Material Design" title="Material Design" rel="3">Material Design</a>
                             
                         
                             
@@ -546,6 +551,8 @@ build.gradle
                         
                             
                             <a href="/tags/#Head First,设计模式" title="Head First,设计模式" rel="2">Head First,设计模式</a>
+                            
+                        
                             
                         
                     </div>
