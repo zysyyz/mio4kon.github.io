@@ -99,14 +99,14 @@
 
                         
                         <li>
-                            <a href="/archives/">Archives</a>
+                            <a href="/about/">About</a>
                         </li>
                         
                     
 
                         
                         <li>
-                            <a href="/about/">About</a>
+                            <a href="/archives/">Archives</a>
                         </li>
                         
                     
@@ -190,6 +190,45 @@
             
                 <!-- Main Content -->
 
+
+<div class="post-preview">
+
+    <a href="/2018/03/23/DumpHprof 文件分析记录/">
+        <h2 class="post-title">
+            DumpHprof 文件分析记录
+        </h2>
+        <h3 class="post-subtitle">
+            源码解析
+        </h3>
+        <div class="post-content-preview">
+            dump 流程
+header
+fix header
+
+java profile 版本
+size of id: 写死的为4
+当前时间
+
+当前 hprof remaining length (87133083)
+string table
+StartNewRecord(TAG,time) 主要作用如下: 
+
+该方法会写入三个值:
+
+写入 tag
+写入时间
+写入 length
+
+写入之后会写入 id......
+        </div>
+    </a>
+    <p class="post-meta">
+        Posted by Mio4kon on
+        2018-03-23
+    </p>
+
+</div>
+<hr>
 
 <div class="post-preview">
 
@@ -438,29 +477,6 @@ nose
 </div>
 <hr>
 
-<div class="post-preview">
-
-    <a href="/2017/04/12/移动端自动化测试系列之一——Appium环境搭建/">
-        <h2 class="post-title">
-            移动端自动化测试系列之一——Appium环境搭建
-        </h2>
-        <h3 class="post-subtitle">
-            Appium环境搭建
-        </h3>
-        <div class="post-content-preview">
-            前言最近准备写一系列移动端的自动化测试教程,大致打算分为五篇.包含环境搭建,依赖库的使用,以及最后的框架搭建和使用.
-本教程基于 Appium,如果没有听过 Appium 或者不太清楚它是做什么的可以参考我之前的一篇文章: 自动化之旅–Appium,之前这篇文章使用的 Java 做为开发语言. 而这一系列是我将使用 Python 做为开发语言(人生苦短  我用Python).
-如果你有一门编......
-        </div>
-    </a>
-    <p class="post-meta">
-        Posted by Mio4kon on
-        2017-04-12
-    </p>
-
-</div>
-<hr>
-
 
 
 <!-- Pager -->
@@ -496,6 +512,14 @@ nose
                     <div class="tags">
                         
                             
+                        
+                            
+                        
+                            
+                        
+                            
+                        
+                            
                             <a href="/tags/#源码分析" title="源码分析" rel="2">源码分析</a>
                             
                         
@@ -504,6 +528,8 @@ nose
                             
                         
                             
+                            <a href="/tags/#Material Design" title="Material Design" rel="3">Material Design</a>
+                            
                         
                             
                             <a href="/tags/#移动自动化测试" title="移动自动化测试" rel="8">移动自动化测试</a>
@@ -511,12 +537,6 @@ nose
                         
                             
                         
-                            
-                        
-                            
-                        
-                            
-                            <a href="/tags/#Material Design" title="Material Design" rel="3">Material Design</a>
                             
                         
                             
@@ -546,11 +566,9 @@ nose
                             
                         
                             
-                        
-                            
-                        
-                            
                             <a href="/tags/#Head First,设计模式" title="Head First,设计模式" rel="2">Head First,设计模式</a>
+                            
+                        
                             
                         
                     </div>
@@ -662,7 +680,7 @@ nose
 
                 </ul>
                 <p class="copyright text-muted">
-                    Copyright &copy; Mio4kon 2017 
+                    Copyright &copy; Mio4kon 2018 
                     <br>
                     Theme by <a href="http://huangxuan.me">Hux</a> 
                     <span style="display: inline-block; margin: 0 5px;">
