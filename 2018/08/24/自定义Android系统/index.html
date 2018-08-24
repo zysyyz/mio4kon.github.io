@@ -1,0 +1,675 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="android mio4kon mio">
+    <meta name="keyword"  content="">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>
+        
+          自定义你想要的 Android 系统 - Mio4kon的博客 | Mio4kon&#39;s Blog
+        
+    </title>
+
+    <link rel="canonical" href="http://mio4kon.com/2018/08/24/自定义Android系统/">
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/hux-blog.min.css">
+
+    <!-- Pygments Highlight CSS -->
+    <link rel="stylesheet" href="/css/highlight.css">
+
+    <!-- Custom Fonts -->
+    <!-- <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"> -->
+    <!-- Hux change font-awesome CDN to qiniu -->
+    <link href="https://cdn.staticfile.org/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+
+    <!-- Hux Delete, sad but pending in China
+    <link href='http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/
+    css'>
+    -->
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- ga & ba script hoook -->
+    <script></script>
+</head>
+
+
+<!-- hack iOS CSS :active style -->
+<body ontouchstart="">
+
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">Mio4kon</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <!-- Known Issue, found by Hux:
+            <nav>'s height woule be hold on by its content.
+            so, when navbar scale out, the <nav> will cover tags.
+            also mask any touch event of tags, unfortunately.
+        -->
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+
+                    
+
+                        
+                    
+
+                        
+                    
+
+                        
+                    
+
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/about/">About</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/archives/">Archives</a>
+                        </li>
+                        
+                    
+
+                        
+                        <li>
+                            <a href="/tags/">Tags</a>
+                        </li>
+                        
+                    
+                    
+                </ul>
+            </div>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+<script>
+    // Drop Bootstarp low-performance Navbar
+    // Use customize navbar with high-quality material design animation
+    // in high-perf jank-free CSS3 implementation
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        // CLOSE
+            $navbar.className = " ";
+            // wait until animation end.
+            setTimeout(function(){
+                // prevent frequently toggle
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        // OPEN
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+    <!-- Main Content -->
+    
+<!-- Image to hack wechat -->
+<!-- <img src="http://mio4kon.com/img/icon_wechat.png" width="0" height="0"> -->
+<!-- <img src="{{ site.baseurl }}/{% if page.header-img %}{{ page.header-img }}{% else %}{{ site.header-img }}{% endif %}" width="0" height="0"> -->
+
+<!-- Post Header -->
+<style type="text/css">
+    header.intro-header{
+        background-image: url('/img/home-bg.jpg')
+    }
+</style>
+<header class="intro-header" >
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+                        
+                    </div>
+                    <h1>自定义你想要的 Android 系统</h1>
+                    <h2 class="subheading">Android</h2>
+                    <span class="meta">
+                        Posted by Mio4kon on
+                        2018-08-24
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+    <!-- Post Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                <p>这篇博客记录了如何通过修改 Android 的系统源码来定制自己的 Android 系统.<br>内容主要包括下面几点:</p>
+<ul>
+<li>系统环境的预准备</li>
+<li>下载 Android 源码</li>
+<li>编译 Android 源码</li>
+<li>刷写设备</li>
+<li>定制 Android 系统</li>
+</ul>
+<p>下载 Android 源码并编译网上已经有很多教程了,我这里使用的是 mac 系统编译,如果你也查找过相关博客可以知道 mac 系统编译 Android 源码会遇到很多坑.网上也有利用 docker 来创建 Ubuntu Image 的方式来进行 Android 系统编译的,例如 <code>weishu</code> 大佬的这篇<a href="http://weishu.me/2016/12/30/simple-way-to-compile-android-source/" target="_blank" rel="external">&lt;史上最简单Android源码编译环境搭建方法&gt;</a>, 利用了 <a href="https://github.com/kylemanna/docker-aosp" target="_blank" rel="external">docker-aosp</a> 开源项目来进行傻瓜式的下载编译.最开始我也尝试使用这种方式,不过发现在新版的 mac 系统,因为 <code>uid</code> 的问题导致无法编译成功(<a href="https://github.com/kylemanna/docker-aosp/issues/19" target="_blank" rel="external">issues19</a>), 我也<del>没有过多的花时间去解决这个 uid 的问题</del>,总之最后我选择使用了传统的方式,尤其是第一次尝试下载编译的,还是不要把这个过程变成一个黑匣子.</p>
+<p>下面我会用我的踩坑经验来尽量让大家避免在下载编译,包括刷机时会遇到各种各样的错误.保证按照这个教程最后都能刷机成功,不过由于环境的复杂性,可能还是会遇到其他我没遇到的问题,这时可以 <a href="https://www.google.com/" target="_blank" rel="external">Google</a> 之..</p>
+<h1 id="环境预准备"><a href="#环境预准备" class="headerlink" title="环境预准备"></a>环境预准备</h1><p>下面是我的初始环境,电脑系统也是刚重装过的</p>
+<ul>
+<li>系统: macOS High Sierra 10.13.6</li>
+<li>xcode:  v9.4.1 </li>
+<li>手机: Nexus 6</li>
+<li>终端: zsh</li>
+</ul>
+<h3 id="分盘"><a href="#分盘" class="headerlink" title="分盘"></a>分盘</h3><p>编译 Android 源码需要保证自己的所在的分区格式是区分大小写的,而一般 macOS 默认是不区分的,所以需要创建独立的分区来编译源码.</p>
+<p><strong>创建存放 <code>dmg</code> 的位置</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">cd ~</div><div class="line">mkdir asop</div></pre></td></tr></table></figure>
+<p><strong>利用 <a href="https://ss64.com/osx/hdiutil.html" target="_blank" rel="external">hdiutil</a> 创建分区</strong></p>
+<p><code>hdiutil create -type SPARSE -fs &#39;Case-sensitive Journaled HFS+&#39; -size 200g ~/aosp/android.dmg -volname android</code></p>
+<p>这里我创建 200G 的分区用来下载和编译.最终实际使用了接近 130G.所以建议有足够大小的最好创建超过 150G 的分区大小.</p>
+<p><strong>创建挂载的快捷命令</strong></p>
+<p><code>vi ~/.zshrc</code> 将下面内容复制到最后.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"># mount the android file image</div><div class="line">function mountAndroid &#123; hdiutil attach ~/aosp/android.dmg.sparseimage -mountpoint /Volumes/android; &#125;</div><div class="line"></div><div class="line"># unmount the android file image</div><div class="line">function umountAndroid() &#123; hdiutil detach /Volumes/android; &#125;</div></pre></td></tr></table></figure>
+<p><strong>应用配置 <code>source ~/.zshrc</code></strong></p>
+<p><strong>挂载 <code>mountAndroid</code></strong></p>
+<p>这样就会在 <code>/Volumes</code> 目录下创建了 <code>android</code> 目录.这就是之后下载源码的路径,这里我创建了子文件夹来存放: <code>/Volumes/android/ANDROID_SPACE</code></p>
+<h3 id="xcode配置"><a href="#xcode配置" class="headerlink" title="xcode配置"></a>xcode配置</h3><p><strong>这一段很重要</strong>,把 xcode 配好,后面会顺畅很多,如果系统没有装 xcode 那是最好的.去下载 <strong>9</strong> 以下的版本(<a href="https://developer.apple.com/download/more/" target="_blank" rel="external">下载地址</a>),这里我下载了 <strong>8.3.3</strong> 版本. </p>
+<p>网上很多教程是用新版本 xcode, 然后通过修改下载后的源码中的某配置来添加支持的方式,如下:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">vi build/core/combo/mac_version.mk</div><div class="line">添加10.13在后面 mac_sdk_versions_supported := 10.8 10.9 10.10 10.11 10.13</div></pre></td></tr></table></figure>
+<p>不过这种方式最后在编译的时候,都会有各种各样的问题.</p>
+<p>现在如果你和我一样,都是使用 <strong>xcode 8.3.3</strong> 的话,还需要到 <a href="https://github.com/phracker/MacOSX-SDKs" target="_blank" rel="external">https://github.com/phracker/MacOSX-SDKs</a> 中下载 <strong>10.11</strong> 的 <code>mac sdk</code>,否则还是会在编译时出现一些错误.</p>
+<p>将下载下来的压缩包解压放到👇目录即可:</p>
+<p><code>/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/</code></p>
+<p><strong>总结下来其实很简单:</strong></p>
+<ol>
+<li>建议组合 <code>xcode 8.3.3 + 10.11 mac sdk</code></li>
+<li>尝试组合 <code>xcode 9.x.x + 10.11 mac sdk</code></li>
+</ol>
+<p>为啥是建议 8.3.3 呢,因为我就是在这个环境下,保证不会报错的.(踩坑过程中,有个报错,很多人建议是用9以下的版本,实际最后才发现其实<strong>可能</strong>只是和 <code>mac sdk</code> 相关联,并不是 xcode)</p>
+<h3 id="其他配置"><a href="#其他配置" class="headerlink" title="其他配置"></a>其他配置</h3><p><strong>确保环境变量 <code>/opt/local/bin</code> 显示在 <code>/usr/bin</code> 之前</strong></p>
+<p>检验: <code>echo $PATH</code> ,否则的话将👇的代码复制到 <code>~/.zshrc</code> 中.</p>
+<p><code>export PATH=/opt/local/bin:$PATH</code></p>
+<p>然后再应用配置 <code>source ~/.zshrc</code></p>
+<p><strong>安装MacPorts</strong></p>
+<p><a href="https://www.macports.org/install.php" target="_blank" rel="external">https://www.macports.org/install.php</a></p>
+<p><strong>获取 Make、Git 和 GPG 程序包</strong></p>
+<p><code>POSIXLY_CORRECT=1 sudo port install gmake libsdl git gnupg</code></p>
+<p><strong>设置fd上限</strong></p>
+<p><code>ulimit -S -n 1024</code></p>
+<h1 id="下载源码"><a href="#下载源码" class="headerlink" title="下载源码"></a>下载源码</h1><p>我们通过 Repo 下载 Android 源码. </p>
+<p>Repo 是谷歌用 Python 脚本写的调用 git 的一个脚本, 可以用来管理多个git库.</p>
+<h3 id="安装-Repo"><a href="#安装-Repo" class="headerlink" title="安装 Repo"></a>安装 Repo</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">mkdir ~/bin</div><div class="line">curl https://storage.googleapis.com/git-repo-downloads/repo &gt; ~/bin/repo</div><div class="line"># 无法连接 Google 可以使用清华大学镜像</div><div class="line">curl https://mirrors.tuna.tsinghua.edu.cn/git/git-repo  &gt; ~/bin/repo(清华大学镜像)</div><div class="line">chmod a+x ~/bin/repo</div></pre></td></tr></table></figure>
+<p>安装完成后,为了方便使用可以将 repo 添加到环境变量:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">#repo</div><div class="line">export PATH=/Users/xxx/bin:$PATH</div></pre></td></tr></table></figure>
+<p>下载完之后,如果网无法连接 Google , 还需要👇配置:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">vi ~/bin/repo</div><div class="line">修改 REPO_URL = &apos;https://gerrit-googlesource.proxy.ustclug.org/git-repo&apos;</div></pre></td></tr></table></figure>
+<h3 id="选择编译的版本"><a href="#选择编译的版本" class="headerlink" title="选择编译的版本"></a>选择编译的版本</h3><p>先切到下载目录</p>
+<p><code>cd /Volumes/android/ANDROID_SPACE</code></p>
+<p>根据自己的手机机型,以及自己想安装的版本号,来选择具体的版本,连接如下👇:</p>
+<p><a href="https://source.android.com/source/build-numbers#source-code-tags-and-builds" target="_blank" rel="external">https://source.android.com/source/build-numbers#source-code-tags-and-builds</a></p>
+<p>比如这里我选择的是如下版本(android-7.1.1_r57):</p>
+<p><img src="http://mio4kon.qiniudn.com/15350120173714.jpg" alt=""></p>
+<p><strong>这里要记住 <code>NGI77B</code> 这个代码,后面需要用到</strong>, 选择好之后,初始化 repo 的配置.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">repo init -u https://android.googlesource.com/platform/manifest -b android-7.1.1_r57</div><div class="line">repo init -u https://aosp.tuna.tsinghua.edu.cn/platform/manifest -b android-7.1.1_r57 (清华大学镜像)</div></pre></td></tr></table></figure>
+<h3 id="下载"><a href="#下载" class="headerlink" title="下载"></a>下载</h3><p><code>repo sync</code> </p>
+<h1 id="编译源码"><a href="#编译源码" class="headerlink" title="编译源码"></a>编译源码</h1><h3 id="编译准备"><a href="#编译准备" class="headerlink" title="编译准备"></a>编译准备</h3><p><strong>首先,如果你用的是 zsh, 请一定要切到bash. 直接输入<code>bash</code>即可.切记切记.</strong></p>
+<p><strong>下载对应设备硬件相关内容</strong></p>
+<p>下载地址👇:</p>
+<p><a href="https://developers.google.com/android/drivers" target="_blank" rel="external">https://developers.google.com/android/drivers</a></p>
+<p>对应之前我们选择的版本的代码,例如我的是 <code>NGI77B</code>,选择下载对应的驱动:</p>
+<p><img src="http://mio4kon.qiniudn.com/15350128667782.jpg" alt=""></p>
+<p>将下载的文件都解压,其实就是三个 shell 命令,将他们拷贝到下载的 Android 目录下.并执行:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">./extract-broadcom-shamu.sh</div><div class="line">./extract-moto-shamu.sh</div><div class="line">./extract-qcom-shamu.sh</div></pre></td></tr></table></figure>
+<p>中间需要接受相应 license,输出 <code>I ACCEPT</code> 即可.</p>
+<p><strong>配置相应的环境变量,可以直接复制👇的,需要改一改相应的目录名</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">#java home</div><div class="line">export JAVA_7_HOME=`/usr/libexec/java_home -v 1.7`</div><div class="line">export JAVA_8_HOME=`/usr/libexec/java_home -v 1.8`</div><div class="line">#defalut java_home</div><div class="line">export JAVA_HOME=$JAVA_8_HOME</div><div class="line">export PATH=$&#123;JAVA_HOME&#125;/bin:$PATH</div><div class="line">export ANDROID_JAVA_HOME=$JAVA_HOME</div><div class="line"></div><div class="line">#android</div><div class="line">export ANDROID_HOME=/Users/mio/Library/Android/sdk</div><div class="line">export PATH=/Users/xxx/Library/Android/sdk/build-tools/27.0.3:$PATH</div><div class="line">export PATH=/Users/xxx/Library/Android/sdk/platform-tools:/Users/mio/Library/Android/sdk/tools:$PATH</div></pre></td></tr></table></figure>
+<p><strong>ANDROID_JAVA_HOME 一定要配~~</strong></p>
+<p><em>Ps: 记得安装 Java 和 Android sdk ,这里不多说了</em></p>
+<p><strong>清理</strong></p>
+<p><code>make clobber</code></p>
+<p><strong>初始化编译的环境</strong></p>
+<p><code>source build/envsetup.sh</code></p>
+<p><strong>选择编译目标</strong></p>
+<p><code>lunch</code>命令会列出可以编译的目标,如下:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div></pre></td><td class="code"><pre><div class="line">Lunch menu... pick a combo:</div><div class="line">     1. aosp_arm-eng</div><div class="line">     2. aosp_arm64-eng</div><div class="line">     3. aosp_mips-eng</div><div class="line">     4. aosp_mips64-eng</div><div class="line">     5. aosp_x86-eng</div><div class="line">     6. aosp_x86_64-eng</div><div class="line">     7. full_fugu-userdebug</div><div class="line">     8. aosp_fugu-userdebug</div><div class="line">     9. mini_emulator_arm64-userdebug</div><div class="line">     10. m_e_arm-userdebug</div><div class="line">     11. m_e_mips-userdebug</div><div class="line">     12. m_e_mips64-eng</div><div class="line">     13. mini_emulator_x86-userdebug</div><div class="line">     14. mini_emulator_x86_64-userdebug</div><div class="line">     15. aosp_dragon-userdebug</div><div class="line">     16. aosp_dragon-eng</div><div class="line">     17. aosp_marlin-userdebug</div><div class="line">     18. aosp_sailfish-userdebug</div><div class="line">     19. aosp_flounder-userdebug</div><div class="line">     20. aosp_angler-userdebug</div><div class="line">     21. aosp_bullhead-userdebug</div><div class="line">     22. hikey-userdebug</div><div class="line">     23. aosp_shamu-userdebug</div></pre></td></tr></table></figure>
+<p>具体目标可以根据 <a href="https://source.android.com/source/running" target="_blank" rel="external">https://source.android.com/source/running</a> 来选择.</p>
+<p>因为我是 Nexus6 所以选择 23.</p>
+<h3 id="编译"><a href="#编译" class="headerlink" title="编译"></a>编译</h3><p><code>make -j16</code></p>
+<p>我下载的源码 <code>bison</code> 是存在 bug 的,所以需要打上修复后的 commit.可以先尝试编译,如果发现类似下面的错误可以如我所说的方式修复.</p>
+<p>错误内容❌:</p>
+<blockquote>
+<p>FAILED: /bin/bash -c “prebuilts/misc/darwin-x86/bison/bison -d  –defines=out/host/darwin-x86/obj/STATIC_LIBRARIES/libaidl-common_intermediates/aidl_language_y.h -o out/host/darwin-x86/obj/STATIC_LIBRARIES/libaidl-common_intermediates/aidl_language_y.cpp system/tools/aidl/aidl_language_y.yy”</p>
+</blockquote>
+<p>修复方法:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">cd external/bison</div><div class="line">git cherry-pick c0c852bd6fe462b148475476d9124fd740eba160</div><div class="line">cd ../../</div><div class="line">make bison</div><div class="line">cp /Volumes/android/ANDROID_SPACE/out/host/darwin-x86/bin/bison /Volumes/android/ANDROID_SPACE/prebuilts/misc/darwin-x86/bison/</div><div class="line">cd ../../</div></pre></td></tr></table></figure>
+<p>然后删除<code>out</code>文件夹,再进行编译.理论上如果之前按照我说的配置好 xcode,应该不会再报奇葩的错误了.</p>
+<p>然后就是等了.应该会比下载的时候快上不少.</p>
+<h1 id="刷写设备"><a href="#刷写设备" class="headerlink" title="刷写设备"></a>刷写设备</h1><p>编译完成后刷机其实非常简单</p>
+<p>如果没有 fastboot 和 adb 执行👇的代码:</p>
+<p><code>make fastboot adb</code></p>
+<p><strong>进入 fastboot 模式</strong></p>
+<p><code>adb reboot bootloader</code></p>
+<p><strong>解锁</strong></p>
+<p><code>fastboot flashing unlock</code></p>
+<p><strong>刷机</strong></p>
+<p><code>fastboot flashall -w</code></p>
+<p><em>友情提示:<br>如果刷跪了,可以直接到👉<a href="https://developers.google.com/android/images" target="_blank" rel="external">网址</a>下载官方镜像,重新刷.</em></p>
+<h1 id="修改源码"><a href="#修改源码" class="headerlink" title="修改源码"></a>修改源码</h1><h3 id="导入源码到-Android-Studio"><a href="#导入源码到-Android-Studio" class="headerlink" title="导入源码到 Android Studio"></a>导入源码到 Android Studio</h3><p>编译 <code>idegen</code> 模块,用来生成可以让 <code>idea/as</code> 打开的工程.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">mmm development/tools/idegen/</div><div class="line">./development/tools/idegen/idegen.sh</div></pre></td></tr></table></figure>
+<p>执行完成后,在当前目录下生成<code>android.ipr</code>,<code>android.iml</code>,<code>android.iws</code>三个文件.</p>
+<p>其中<code>android.ipr</code>文件可以直接用 Android Studio 打开.</p>
+<p>但是如果所有模块都通过 AS 打开会非常的慢,所以我们可以先编辑<code>android.iml</code>,<br>通过👇这种方式可以排除不需要的模块.</p>
+<p><code>&lt;excludeFolder url=&quot;file://$MODULE_DIR$/xxxxxx&quot; /&gt;</code></p>
+<p>例如,我不需要 <code>prebuild</code> 模块,便可以在该文件里添加下面一行配置:</p>
+<p><code>&lt;excludeFolder url=&quot;file://$MODULE_DIR$/prebuilt&quot; /&gt;</code></p>
+<p>PS: 当然我们也可以直接使用 <code>sublime</code> 打开想要修改的模块.</p>
+<h3 id="DEBUG-源码"><a href="#DEBUG-源码" class="headerlink" title="DEBUG 源码"></a>DEBUG 源码</h3><p>导入到 AS 之后,例如我们要 debug  <code>com.android.settings.dashboard.SummaryLoader</code>这个类.我们按照平时的方式打断点,之后点击下面的按钮:</p>
+<p><img src="http://mio4kon.qiniudn.com/15350887907699.jpg" alt=""></p>
+<p>在出现的对话框中选择 setting 进程即可.</p>
+<p><img src="http://mio4kon.qiniudn.com/15350888557047.jpg" alt=""></p>
+<h3 id="编译单独的模块"><a href="#编译单独的模块" class="headerlink" title="编译单独的模块"></a>编译单独的模块</h3><p>上面使用的 <code>mmm</code>命令实际上就是我们所说的编译单独模块的一个命令.如果提示找不到 <code>mmm</code> 命令.则需要先执行下面的命令(你肯定很熟悉:</p>
+<p><code>source build/envsetup.sh</code></p>
+<p>编译源码常用的有下面几种方式:</p>
+<ul>
+<li>-m 编译所有模块</li>
+<li>-mm 编译当前目录下的模块,不包括依赖</li>
+<li>-mmm 编译指定路径下的模块,不包括依赖</li>
+<li>-mmma 编译指定路径下的模块,包括依赖</li>
+</ul>
+<h3 id="实战一-修改-Settings-模块"><a href="#实战一-修改-Settings-模块" class="headerlink" title="实战一: 修改 Settings 模块"></a>实战一: 修改 Settings 模块</h3><p>例如我们修改<code>packages/apps/Settings/</code>下的 <code>String.xml</code>为👇:</p>
+<p><code>&lt;string name=&quot;notification_summary_none&quot; msgid=&quot;3440195312233351409&quot;&gt;&quot;已允许所有应用发送通知~~~喵&quot;&lt;/string&gt;</code></p>
+<p>修改完成后,需要对 <code>Settings</code> 模块重新打包.</p>
+<p><code>mmm packages/apps/Settings/</code></p>
+<p> 打包完成后我们需要去重新生成 <code>system.imgae</code>:</p>
+<p> <code>make snod</code></p>
+<p><code>image</code> 生成后,基本就大功告成了,我们只需要将它刷到手机当中即可.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">adb reboot bootloader</div><div class="line">fastboot flash system out/target/product/shamu/system.img</div></pre></td></tr></table></figure>
+<p>刷完之后就可以看到成果了👇:</p>
+<p><img src="http://mio4kon.qiniudn.com/15350286915332.jpg" alt=""></p>
+<h3 id="实战二-添加自己的模块"><a href="#实战二-添加自己的模块" class="headerlink" title="实战二: 添加自己的模块"></a>实战二: 添加自己的模块</h3><p>使用 Android Studio 创建一个测试项目 <code>AuthorSample</code>,并将项目复制到 <code>packages/apps</code>目录下面.</p>
+<p>由于是 AS 项目,所以我们在👇目录创建一个 <code>Android.mk</code> 文件,用来配置编译信息.</p>
+<p> <code>/Volumes/android/ANDROID_SPACE/packages/apps/AuthorSample/app/src/main</code> </p>
+<p><code>Android.mk</code>内容如下:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div></pre></td><td class="code"><pre><div class="line">#必备的两行，声明LOCAL_PATH变量，也就是当前的路径</div><div class="line">#并清除其它变量</div><div class="line">LOCAL_PATH := $(call my-dir)</div><div class="line">include $(CLEAR_VARS)</div><div class="line"></div><div class="line">#包名，这生成的apk名字。AuthorSample.apk</div><div class="line">LOCAL_PACKAGE_NAME := AuthorSample</div><div class="line"></div><div class="line">LOCAL_CERTIFICATE := platform</div><div class="line"></div><div class="line">#如果使用的系统的包，需要引入他们使用的资源文件，否则会提示编译资源找不到的错误</div><div class="line">LOCAL_RESOURCE_DIR += $(LOCAL_PATH)/res</div><div class="line">LOCAL_RESOURCE_DIR += frameworks/support/v7/appcompat/res</div><div class="line">#LOCAL_RESOURCE_DIR += frameworks/support/v7/gridlayout/res</div><div class="line">#LOCAL_RESOURCE_DIR += frameworks/support/v7/recyclerview/res</div><div class="line"></div><div class="line">#指定该模块的编译版本为optional</div><div class="line">#user: 指该模块只在user版本下才编译</div><div class="line">#eng: 指该模块只在eng版本下才编译</div><div class="line">#tests: 指该模块只在tests版本下才编译</div><div class="line">#optional:指该模块在所有版本下都编译</div><div class="line">LOCAL_MODULE_TAGS := tests</div><div class="line"></div><div class="line">#源码所在目录，这里就在当前位置的java目录下。所以直接写java</div><div class="line">LOCAL_SRC_FILES := $(call all-java-files-under, java)</div><div class="line"></div><div class="line">#LOCAL_SRC_FILES += \</div><div class="line"># src/xx/xx/xx/XxxOne.aidl \</div><div class="line"># src/xx/xx/xx/XxxTwo.aidl</div><div class="line"></div><div class="line">#依赖的jar包，包括系统的和第三方的（放在libs目录）jar包</div><div class="line">LOCAL_STATIC_JAVA_LIBRARIES +=  android-support-v4 \</div><div class="line">                                android-support-v7-appcompat</div><div class="line">                                #android-support-v7-recyclerview</div><div class="line"></div><div class="line">#混淆文件名</div><div class="line">LOCAL_PROGUARD_FLAG_FILES := proguard.flags</div><div class="line">#关闭混淆</div><div class="line">LOCAL_PROGUARD_ENABLED := disabled</div><div class="line"></div><div class="line">LOCAL_AAPT_FLAGS := --auto-add-overlay</div><div class="line">LOCAL_AAPT_FLAGS += --extra-packages android.support.v7.appcompat</div><div class="line">#LOCAL_AAPT_FLAGS += --extra-packages android.support.v7.gridlayout</div><div class="line">#LOCAL_AAPT_FLAGS += --extra-packages com.android.datetimepicker</div><div class="line">#LOCAL_AAPT_FLAGS += --extra-packages android.support.v7.recyclerview</div><div class="line"></div><div class="line">#打包成apk</div><div class="line">include $(BUILD_PACKAGE)</div><div class="line">include $(call all-makefiles-under,$(LOCAL_PATH))</div></pre></td></tr></table></figure>
+<p>再利用 <code>mmm</code> 命令编译该模块: </p>
+<p><code>mmm packages/apps/AuthorSample/app/src/main/</code></p>
+<p>编译完成之后 <code>apk</code> 会生成在👇目录中:</p>
+<p><code>/Volumes/android/ANDROID_SPACE/out/target/product/shamu/data/app/AuthorSample/AuthorSample.apk</code></p>
+<p>我们只需要将 apk push 到手机的 <code>/system/app/</code> 目录下即可.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">adb root </div><div class="line">adb remount</div><div class="line">adb push /Volumes/android/ANDROID_SPACE/out/target/product/shamu/data/app/AuthorSample/AuthorSample.apk /system/app/</div></pre></td></tr></table></figure>
+<p>重启之后你就发现手机上已经自带了你所写的应用(无法卸载哦~~)</p>
+
+
+                <hr>
+
+                
+
+                <ul class="pager">
+                    
+                    
+                        <li class="next">
+                            <a href="/2018/03/23/DumpHprof 文件分析记录/" data-toggle="tooltip" data-placement="top" title="DumpHprof 文件分析记录">Next Post &rarr;</a>
+                        </li>
+                    
+                </ul>
+
+                
+
+                
+                <!-- disqus 评论框 start -->
+                <div class="comment">
+                    <div id="disqus_thread" class="disqus-thread"></div>
+                </div>
+                <!-- disqus 评论框 end -->
+                
+
+            </div>
+    <!-- Side Catalog Container -->
+        
+            <div class="
+                col-lg-2 col-lg-offset-0
+                visible-lg-block
+                sidebar-container
+                catalog-container">
+                <div class="side-catalog">
+                    <hr class="hidden-sm hidden-xs">
+                    <h5>
+                        <a class="catalog-toggle" href="#">CATALOG</a>
+                    </h5>
+                    <ul class="catalog-body"></ul>
+                </div>
+            </div>
+        
+
+    <!-- Sidebar Container -->
+
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                <!-- Featured Tags -->
+                
+                <section>
+                    <!-- no hr -->
+                    <h5><a href="/tags/">FEATURED TAGS</a></h5>
+                    <div class="tags">
+                       
+                    </div>
+                </section>
+                
+
+                <!-- Friends Blog -->
+                
+                <hr>
+                <h5>FRIENDS</h5>
+                <ul class="list-inline">
+
+                    
+                        <li><a href="http://lrd.ele.me/" target="_blank">lrd ele&#39;s Blog</a></li>
+                    
+                </ul>
+                
+            </div>
+
+        </div>
+    </div>
+</article>
+
+
+
+
+<!-- disqus 公共JS代码 start (一个网页只需插入一次) -->
+<script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES * * */
+    var disqus_shortname = "hexo-theme-huxblog";
+    var disqus_identifier = "http://mio4kon.com/2018/08/24/自定义Android系统/";
+    var disqus_url = "http://mio4kon.com/2018/08/24/自定义Android系统/";
+
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<!-- disqus 公共JS代码 end -->
+
+
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+<!-- anchor-js, Doc:http://bryanbraun.github.io/anchorjs/ -->
+<script>
+    async("https://cdn.bootcss.com/anchor-js/1.1.1/anchor.min.js",function(){
+        anchors.options = {
+          visible: 'always',
+          placement: 'right',
+          icon: '#'
+        };
+        anchors.add().remove('.intro-header h1').remove('.subheading').remove('.sidebar-container h5');
+    })
+</script>
+<style>
+    /* place left on bigger screen */
+    @media all and (min-width: 800px) {
+        .anchorjs-link{
+            position: absolute;
+            left: -0.75em;
+            font-size: 1.1em;
+            margin-top : -0.1em;
+        }
+    }
+</style>
+
+
+
+    <!-- Footer -->
+    <!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                
+                
+                
+
+                
+                    <li>
+                        <a target="_blank" href="http://weibo.com/u/3198010790">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-weibo fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+
+                
+                    <li>
+                        <a target="_blank"  href="https://github.com/Mio4kon">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                
+
+                
+
+                </ul>
+                <p class="copyright text-muted">
+                    Copyright &copy; Mio4kon 2018 
+                    <br>
+                    Theme by <a href="http://huangxuan.me">Hux</a> 
+                    <span style="display: inline-block; margin: 0 5px;">
+                        <i class="fa fa-heart"></i>
+                    </span> 
+                    Ported by <a href="http://blog.kaijun.rocks">Kaijun</a> | 
+                    <iframe
+                        style="margin-left: 2px; margin-bottom:-5px;"
+                        frameborder="0" scrolling="0" width="91px" height="20px"
+                        src="https://ghbtns.com/github-btn.html?user=kaijun&repo=hexo-theme-huxblog&type=star&count=true" >
+                    </iframe>
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+<script src="/js/jquery.min.js"></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="/js/bootstrap.min.js"></script>
+
+<!-- Custom Theme JavaScript -->
+<script src="/js/hux-blog.min.js"></script>
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!-- 
+     Because of the native support for backtick-style fenced code blocks 
+     right within the Markdown is landed in Github Pages, 
+     From V1.6, There is no need for Highlight.js, 
+     so Huxblog drops it officially.
+
+     - https://github.com/blog/2100-github-pages-now-faster-and-simpler-with-jekyll-3-0  
+     - https://help.github.com/articles/creating-and-highlighting-code-blocks/    
+-->
+<!--
+    <script>
+        async("http://cdn.bootcss.com/highlight.js/8.6/highlight.min.js", function(){
+            hljs.initHighlightingOnLoad();
+        })
+    </script>
+    <link href="http://cdn.bootcss.com/highlight.js/8.6/styles/github.min.css" rel="stylesheet">
+-->
+
+
+<!-- jquery.tagcloud.js -->
+<script>
+    // only load tagcloud.js in tag.html
+    if($('#tag_cloud').length !== 0){
+        async("http://mio4kon.com/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                //size: {start: 1, end: 1, unit: 'em'},
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+<!--fastClick.js -->
+<script>
+    async("https://cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+<!-- Google Analytics -->
+
+
+
+
+<!-- Baidu Tongji -->
+
+
+<!-- Side Catalog -->
+
+<script type="text/javascript">
+    function generateCatalog (selector) {
+        var P = $('div.post-container'),a,n,t,l,i,c;
+        a = P.find('h1,h2,h3,h4,h5,h6');
+        a.each(function () {
+            n = $(this).prop('tagName').toLowerCase();
+            i = "#"+$(this).prop('id');
+            t = $(this).text();
+            c = $('<a href="'+i+'" rel="nofollow">'+t+'</a>');
+            l = $('<li class="'+n+'_nav"></li>').append(c);
+            $(selector).append(l);
+        });
+        return true;    
+    }
+
+    generateCatalog(".catalog-body");
+
+    // toggle side catalog
+    $(".catalog-toggle").click((function(e){
+        e.preventDefault();
+        $('.side-catalog').toggleClass("fold")
+    }))
+
+    /*
+     * Doc: https://github.com/davist11/jQuery-One-Page-Nav
+     * Fork by Hux to support padding
+     */
+    async("/js/jquery.nav.js", function () {
+        $('.catalog-body').onePageNav({
+            currentClass: "active",
+            changeHash: !1,
+            easing: "swing",
+            filter: "",
+            scrollSpeed: 700,
+            scrollOffset: 0,
+            scrollThreshold: .2,
+            begin: null,
+            end: null,
+            scrollChange: null,
+            padding: 80
+        });
+    });
+</script>
+
+
+
+
+
+<!-- Image to hack wechat -->
+<img src="http://mio4kon.com/img/icon_wechat.png" width="0" height="0" />
+<!-- Migrate from head to bottom, no longer block render and still work -->
+
+</body>
+
+</html>
